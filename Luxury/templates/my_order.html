@@ -1,0 +1,264 @@
+{% comment %} {% extends 'base.html' %} {% endcomment %}
+{% load static %}
+{% block title %}{% endblock title %}
+{% block description %}{% endblock description %}
+{% block keywords %}{% endblock keywords %}
+
+
+
+
+{% block page_css %}
+
+<link rel="stylesheet" href="{% static 'styles/bootstrap4/bootstrap.min.css' %}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link href="{% static 'plugins/malihu-custom-scrollbar/jquery.mCustomScrollbar.css' %}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/jquery-ui-1.12.1.custom/jquery-ui.css' %}">
+<link rel="stylesheet" href="{% static 'styles/main_styles.css' %}" />
+<link rel="stylesheet" href="{% static 'styles/responsive.css' %}" />
+
+
+{% comment %} extra CSS for nav bar color according to page {% endcomment %}
+<style>
+
+  .pt-5, .py-5 {
+    padding-top: 5rem !important;
+}
+.main_nav ul li a {
+    color: #000;
+  }
+  .header {
+    color: white;
+    background: transparent; 
+    position: fixed
+  }
+  .header.scrolled {
+   color: black; 
+}
+.logo a {
+  color: black;
+}
+.header.scrolled .logo a {
+  color: black;
+}
+.header .burger_container div {
+  background: black;
+}
+.burger_container:hover div
+{
+	background: #937c6f;
+}
+
+
+
+
+    .my-orders-page {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f8f8f8;
+      padding: 30px;
+    }
+
+    
+@media (max-width: 480px) {
+   .my-orders-page{
+    padding: 0px;
+  }
+
+ 
+  
+}
+
+    .my-orders-page .container {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin: auto;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .my-orders-page h1 {
+      margin-bottom: 5px;
+    }
+
+    .my-orders-page .subheading {
+      color: #777;
+      font-size: 14px;
+    }
+
+    .my-orders-page .order-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 20px 0;
+    }
+
+    .my-orders-page .order-header span {
+      color: #1a73e8;
+      background: #e8f0fe;
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
+
+    .my-orders-page .track-btn {
+      background: #ffa726;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .my-orders-page .product {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      border-top: 1px solid #eee;
+      padding-top: 20px;
+    }
+
+    .my-orders-page .product img {
+      width: 80px;
+      border-radius: 5px;
+      margin-right: 20px;
+    }
+
+    .my-orders-page .details {
+      flex: 1;
+    }
+
+    .my-orders-page .details h4 {
+      margin: 0;
+    }
+
+    .my-orders-page .details .meta {
+      color: #777;
+      font-size: 14px;
+    }
+
+    .my-orders-page .details .price {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .my-orders-page .status {
+      text-align: right;
+      font-size: 14px;
+    }
+
+    .my-orders-page .status span {
+      color: #ffa726;
+      font-weight: bold;
+    }
+
+    .my-orders-page .footer {
+      border-top: 1px solid #eee;
+      padding-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .my-orders-page .cancel-btn {
+      background: transparent;
+      border: none;
+      color: #f44336;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .my-orders-page .total {
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .my-orders-page .note {
+      font-size: 13px;
+      color: #777;
+    }
+
+
+</style>
+
+
+{% endblock page_css %}
+
+
+
+
+{% block content %}
+
+  <div class="my-orders-page">
+  <div class="container">
+    <h1>My Orders</h1>
+    <p class="subheading">View and edit all your pending, delivered, and returned orders here.</p>
+
+    {% if orders %}
+      {% for order in orders %}
+        <div class="order-header">
+          <div>
+            <span>#{{ order.order_id }}</span>
+            <div style="font-size: 13px; color: #666;">Order Placed: {{ order.created_at|date:"D, d M Y" }}</div>
+          </div>
+          <button class="track-btn" onclick="trackOrder()">TRACK ORDER</button>
+        </div>
+
+        {% for item in order.items.all %}
+          <div class="product">
+            <img src="{{ item.product.image1.url }}" alt="Product Image" />
+            <div class="details">
+              <h4>{{ item.product.title }}</h4>
+              <div class="meta">By: {{ item.product.brand|default:"Unknown" }}</div>
+              <div class="meta">Size: {{ item.size }} &nbsp; Qty: {{ item.quantity }}</div>
+              <div class="price">Rs. {{ item.product.price }}</div>
+            </div>
+            <div class="status">
+              Status<br><span>{{ item.delivery_status }}</span><br>
+              <div style="margin-top: 10px;">Delivery Expected by:<br><strong>{{ item.expected_delivery }}</strong></div>
+            </div>
+          </div>
+        {% endfor %}
+
+        <div class="footer">
+          <button class="cancel-btn" onclick="cancelOrder()">✖ CANCEL ORDER</button>
+          <div class="text-right">
+            <div class="note">Paid using {{ order.payment_details }}</div>
+            <div class="total">Rs. {{ order.paid_amount }}</div>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p style="margin-top:20px; font-weight:bold;">You haven't placed any orders yet.</p>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock content %}
+{% block page_js %}
+
+
+
+<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+  <script src="{% static 'styles/bootstrap4/popper.js' %}"></script>
+  <script src="{% static 'styles/bootstrap4/bootstrap.min.js' %}"></script>
+  <script src="{% static 'plugins/OwlCarousel2-2.2.1/owl.carousel.js' %}"></script>
+  <script src="{% static 'plugins/easing/easing.js' %}"></script>
+  <script src="{% static 'plugins/parallax-js-master/parallax.min.js' %}"></script>
+  <script src="{% static 'plugins/colorbox/jquery.colorbox-min.js' %}"></script>
+  <script src="{% static 'js/custom.js' %}"></script>
+  <script src="{% static 'script.js' %}"></script>
+
+   <script>
+    function trackOrder() {
+      alert("Tracking order #RO374915036...");
+    }
+
+    function cancelOrder() {
+      if (confirm("Are you sure you want to cancel the order?")) {
+        alert("Your order has been canceled.");
+      }
+    }
+  </script>
+
+</body>
+ {% endblock page_js %}
+</html>

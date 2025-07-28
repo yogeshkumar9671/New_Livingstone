@@ -1,0 +1,228 @@
+{% comment %} {% extends 'base.html' %} {% endcomment %}
+{% load static %}
+{% block title %}{% endblock title %}
+{% block description %}{% endblock description %}
+{% block keywords %}{% endblock keywords %}
+{% block page_css %}
+
+<link rel="stylesheet" href="{% static 'styles/bootstrap4/bootstrap.min.css' %}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link href="{% static 'plugins/malihu-custom-scrollbar/jquery.mCustomScrollbar.css' %}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/jquery-ui-1.12.1.custom/jquery-ui.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'styles/categories.css' %}">
+<link rel="stylesheet" href="{% static 'styles/main_styles.css' %}" />
+<link rel="stylesheet" href="{% static 'styles/responsive.css' %}" />
+
+
+<style>
+ * {
+      box-sizing: border-box;
+    }
+
+
+    .pt-5, .py-5 { padding-top: 5rem !important; }
+  .main_nav ul li a { color: #000; }
+  .header { color: white; background: transparent; position: fixed }
+  .header.scrolled { color: black; }
+  .logo a, .header.scrolled .logo a { color: black; }
+  .header .burger_container div { background: black; }
+  .burger_container:hover div { background: #937c6f; }
+
+
+  .ml-auto, .mx-auto {
+    margin-left: auto !important;
+    margin-top: 27px !important;
+
+  }
+    .container {
+      max-width: 100%;
+      margin: auto;
+      padding: 20px 20px;
+      color: #0b2e4e;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+
+
+    @media (max-width: 480px) {
+    .container{
+    padding: 15px 9px;
+  }
+
+ 
+  
+}
+
+
+
+    h2 {
+      text-transform: uppercase;
+      font-size: 18px;
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      margin-bottom: 20px;
+      font-size: 14px;
+      border-radius: 0;
+    }
+
+    .row {
+      display: flex;
+      gap: 20px;
+    }
+
+    .row > div {
+      flex: 1;
+    }
+
+    .note {
+      font-size: 10px;
+      color: #555;
+      margin-bottom: 20px;
+    }
+
+    .save-btn {
+      background-color: #001f3f;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      text-transform: uppercase;
+      font-size: 13px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .save-btn:hover {
+      background-color: #003366;
+    }
+
+    .section {
+      margin-top: 50px;
+      border-top: 1px solid #ccc;
+      padding-top: 30px;
+    }
+
+    .icon-input {
+      position: relative;
+    }
+
+    .icon-input input {
+      padding-right: 30px;
+    }
+
+    .icon-input .fa-info-circle {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      color: #888;
+      font-size: 14px;
+    }
+
+</style>
+
+
+    
+   
+{% endblock page_css %}
+
+
+
+
+{% block content %}
+<body>
+  <div class="container">
+  <h2>Profile</h2>
+
+  <form method="POST" action="">
+    {% csrf_token %}
+
+    <div class="icon-input">
+      <input type="email" name="email" placeholder="gmail.com" required />
+      <i class="fa fa-info-circle"></i>
+    </div>
+
+    <label>Gender (Optional)</label>
+    <select name="gender">
+      <option value="">Select Gender</option>
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+      <option value="nonbinary">Non-binary</option>
+      <option value="prefer_not_to_say">Prefer not to say</option>
+      <option value="other">Other</option>
+    </select>
+
+    <p class="note">Providing your gender is fully optional. This information helps us curate a more specific experience.</p>
+
+    <div class="icon-input">
+      <input type="text" name="mobile_number" placeholder="Mobile Number *" required>
+      <i class="fa fa-info-circle"></i>
+    </div>
+
+    <div class="icon-input">
+      <input type="text" name="phone_number" placeholder="Phone Number">
+      <i class="fa fa-info-circle"></i>
+    </div>
+
+    <input type="text" name="first_name" placeholder="First Name" required>
+    <input type="text" name="last_name" placeholder="Last Name" required>
+
+    <button type="submit" class="save-btn">Save</button>
+  </form>
+</div>
+
+
+
+
+    <!-- Change Password Section -->
+    <div class="section">
+      <h2>Change Password</h2>
+
+      <input type="password" placeholder="Current Password *">
+      <input type="password" placeholder="New Password *">
+      <input type="password" placeholder="Re-Enter New Password *">
+
+      <button class="save-btn">Save</button>
+    </div>
+  </div>
+
+
+
+{% endblock content %}
+
+
+
+
+{% block page_js %}
+  
+
+<script>
+  
+</script>
+
+  <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+  <script src="{% static 'styles/bootstrap4/popper.js' %}"></script>
+  <script src="{% static 'styles/bootstrap4/bootstrap.min.js' %}"></script>
+  <script src="{% static 'plugins/OwlCarousel2-2.2.1/owl.carousel.js' %}"></script>
+  <script src="{% static 'plugins/easing/easing.js' %}"></script>
+  <script src="{% static 'plugins/parallax-js-master/parallax.min.js' %}"></script>
+  <script src="{% static 'plugins/colorbox/jquery.colorbox-min.js' %}"></script>
+  <script src="{% static 'js/custom.js' %}"></script>
+  <script src="{% static 'script.js' %}"></script>
+
+
+</body>
+ {% endblock page_js %}
+</html>

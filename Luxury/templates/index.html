@@ -1,0 +1,480 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{% endblock title %}
+
+{% block description %}{% endblock description %}
+
+
+{% block keywords %}{% endblock keywords %}
+
+
+
+
+{% block page_css %}
+  <link rel="stylesheet" href="{% static 'styles/bootstrap4/bootstrap.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'plugins/OwlCarousel2-2.2.1/owl.carousel.css' %}" />
+  <link rel="stylesheet" href="{% static 'plugins/OwlCarousel2-2.2.1/owl.theme.default.css' %}" />
+  <link rel="stylesheet" href="{% static 'plugins/OwlCarousel2-2.2.1/animate.css' %}" />
+  <link rel="stylesheet" href="{% static 'plugins/colorbox/colorbox.css' %}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'styles/main_styles.css' %}" />
+  <link rel="stylesheet" href="{% static 'styles/responsive.css' %}" />
+  
+
+
+  
+
+{% endblock page_css %}
+
+
+
+
+{% block content %}
+  <body>
+      {% comment %} <div class="gallery">
+        <div class="firstcol">
+          <div class="image">
+          <img class="slide_img" src="{% static 'images/beermug1.png' %}" alt="" />
+        </div>
+        <div class="image">
+          <img class="slide_img" src="{% static 'images/beermug1.png' %}" alt="" />
+        </div>
+        <div class="image">
+          <img class="slide_img" src="{% static 'images/beermug1.png' %}" alt="" />
+        </div>
+        </div>
+        
+      <div class="firstcol">
+        <div class="image">
+          <img class="slide_img" src="{% static 'images/mnt15.png' %}" alt="" />
+        </div>
+        <div class="image">
+          <img class="slide_img" src="{% static 'images/mnt15.png' %}" alt="" />
+        </div>
+        <div class="image">
+          <img class="slide_img" src="{% static 'images/mnt15.png' %}" alt="" />
+        </div>
+      </div>
+
+      <div class="firstcol">
+        <div class="image">
+          <img class="slide_img" src="{% static 'images/tst7.png' %}" alt="" />
+        </div>
+        <div class="image">
+          <img class="slide_img" src="{% static 'images/tst7.png' %}" alt="" />
+        </div>
+        <div class="image">
+          <img class="slide_img" src="{% static 'images/tst7.png' %}" alt="" />
+        </div>
+      </div>
+      </div> {% endcomment %}
+
+      <!-- Home -->
+
+      <div class="home">
+        <!-- Home Slider -->
+        <div class="home_slider_container">
+          <div class="owl-carousel owl-theme home_slider">
+            <!-- Home Slider Item -->
+            <div class="owl-item">
+              <div
+                class="home_slider_background"
+                style="background-image: url('{% static "images/exp4.avif" %}')"
+              ></div>
+              <div class="home_slider_content">
+                <div class="home_slider_content_inner">
+                  <div class="home_slider_title">New Collection</div>
+                </div>
+                <div class="buttons">
+                    <a href="{% url 'men' %}" class="btn secondary">EXPLORE MORE</a>
+                  </div>
+              </div>
+            </div>
+            <div class="owl-item">
+              <div
+                class="home_slider_background"
+                style="background-image: url('{% static "images/exp5.avif" %}')"
+              ></div>
+              <div class="home_slider_content">
+                <div class="home_slider_content_inner">
+                  <div class="home_slider_title">New Collection</div>
+                </div>
+                <div class="buttons">
+                    <a href="{% url 'men' %}" class="btn secondary">EXPLORE MORE</a>
+                  </div>
+              </div>
+            </div>
+            <div class="owl-item">
+              <div
+                class="home_slider_background"
+                style="background-image: url('{% static "images/exp6.avif" %}')"
+              ></div>
+              <div class="home_slider_content">
+                <div class="home_slider_content_inner">
+                  <div class="home_slider_title">New Collection</div>
+                </div>
+                <div class="buttons">
+                    <a href="{% url 'women' %}" class="btn secondary">EXPLORE MORE</a>
+                  </div>
+              </div>
+            </div>
+
+            <!-- Home Slider Item -->
+            <div class="owl-item">
+              <div
+                class="home_slider_background"
+                style="background-image: url('{% static "images/exp1.jpg" %}')"
+              ></div>
+              <div class="home_slider_content">
+                <div class="home_slider_content_inner">
+                  <!-- <div class="home_slider_subtitle">Promo Prices</div> -->
+                  <div class="home_slider_title">New Collection</div>
+                </div>
+                  <div class="buttons">
+                    <a href="{% url 'women' %}" class="btn secondary">EXPLORE MORE</a>
+                  </div>  
+              </div>
+            </div>
+
+            <!-- Home Slider Item -->
+            <div class="owl-item">
+              <div
+                class="home_slider_background"
+                style="background-image: url('{% static "images/can6.jpg" %}')"
+              ></div>
+              <div class="home_slider_content">
+                <div class="home_slider_content_inner">
+                  <!-- <div class="home_slider_subtitle">Promo Prices</div> -->
+                  <div class="home_slider_title">New Collection</div>
+                </div>
+                <div class="buttons">
+                    {% comment %} <button class="btn">SHOP NOW</button> {% endcomment %}
+                    <a href="{% url 'kashnaar' %}" class="btn secondary">EXPLORE MORE</a>
+                  </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Home Slider Nav -->
+
+          <div
+            class="home_slider_next d-flex flex-column align-items-center justify-content-center"
+          >
+            <img src="{% static 'images/arrow_r.png' %}" alt="" />  
+          </div>
+
+          <!-- Home Slider Dots -->
+
+          <div class="home_slider_dots_container">
+            <div class="container">
+              <div class="row">
+                <div class="col">
+                  <div class="home_slider_dots">
+                    <ul
+                      id="home_slider_custom_dots"
+                      class="home_slider_custom_dots"
+                    >
+                      <li class="home_slider_custom_dot active">
+                        01.
+                        <div></div>
+                      </li>
+                      <li class="home_slider_custom_dot">
+                        02.
+                        <div></div>
+                      </li>
+                      <li class="home_slider_custom_dot">
+                        03.
+                        <div></div>
+                      </li>
+                      <li class="home_slider_custom_dot">
+                        04.
+                        <div></div>
+                      </li>
+                      <li class="home_slider_custom_dot">
+                        05.
+                        <div></div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- man women fashion page -->
+         <div class="video-background">
+     <video autoplay muted loop id="bgVideo">
+       <source src="{% static 'videos/man women fashion.mp4' %}" type="video/mp4" />
+
+       Your browser does not support HTML5 video.
+     </video>
+
+     <div class="content">
+       <h4>LIVINGSTONE LUXURY SPRING 2025</h4>
+       <h1>LIVINGSTONE LUXURY</h1>
+
+       <div class="category-buttons">
+          <a href="{% url 'men' %}">Men</a>
+          <a href="{% url 'women' %}">Women</a>
+        </div>        
+     </div>
+   </div>
+    
+
+      <!-- NEW added CSS slide -->
+
+      <div class="extra clearfix">
+        <div class="extra_promo extra_promo_1">
+          <div
+            class="extra_promo_image"
+            style="background-image: url('{% static "images/capwelcome.png" %}')"></div>
+          <div
+            class="extra_1_content d-flex flex-column align-items-center justify-content-center text-center">
+            <div class="extra_1_price">CAPS<span>off</span></div>
+            <div class="extra_1_title">On all caps</div>
+            <div class="extra_1_text">
+              *Integer ut imperdiet erat. Quisque ultricies lectus tellus, eu
+              tristique magna pharetra.
+            </div>
+            <div class="button extra_1_button">
+             <a href="{% url 'product_list' category='men' subcategory='accessory_caps' %}" class="button">SHOP NOW</a>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="extra_promo extra_promo_2">
+          <video autoplay muted loop playsinline class="extra_video">
+            <source src="{% static 'videos/handbag1.mp4' %}" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          <div class="extra_2_content d-flex flex-column align-items-center justify-content-center text-center">
+            <div class="extra_2_title">
+            </div>
+            <div class="button extra_2_button">
+              <a href="{% url 'product_list' category='women' subcategory='bag' %}" class="button secondary">CHECK OUT</a>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+
+
+
+    {% comment %} beer welcome page {% endcomment %}
+
+      <div class="beerhero">
+        <img src="{% static 'images/beerwelcome.png' %}" alt="Beer Mugs Banner" class="beerhero-bg desktop-img">
+        <video autoplay muted loop playsinline class="beerhero-bg mobile-video">
+          <source src="{% static 'videos/bgvdo.mp4' %}" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+
+        <div class="content">
+          <p class="subheading">LIVINGSTONE LUXURY SPRING 2025</p>
+          <h1 class="title">BEER MUGS</h1>
+          <div class="buttons">
+            <a href="{% url 'product_list' category='accessories' subcategory='accessory_beer_mug' %}" class="btn">SHOP NOW</a>
+          </div>
+        </div>
+      </div>
+
+
+
+      {% comment %} bag welcome page {% endcomment %}
+
+      <div class="bag-hero">
+        <video autoplay muted loop playsinline class="bag-video">
+          <source src="{% static 'videos/bag hero.mp4' %}" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+        <div class="bag-content">
+          <p class="bag-subheading">LIVINGSTONE LUXURY SPRING 2025</p>
+          <h1 class="bag-title">BAGS</h1>
+          <div class="buttons">
+            <a href="{% url 'product_list' category='women' subcategory='bag' %}" class="btn secondary">EXPLORE MORE</a>
+          </div>          
+        </div>
+      </div>
+
+      <!-- /* kashnaar welcome page */ -->
+
+      <div class="hero">
+        <img src="{% static 'images/kashnaar1.png' %}" alt="Kashnaar Desktop" class="hero-img desktop-img">
+        <img src="{% static 'images/candlembil.webp' %}" alt="Kashnaar Mobile" class="hero-img mobile-img">
+        <div class="content">
+          <p class="subheading">LIVINGSTONE LUXURY SPRING 2025</p>
+          <h1 class="title">KASHNAAR</h1>
+          <div class="buttons">
+            <a href="{% url 'product_list' category='home_decor' subcategory='candles' %}" class="btn">SHOP NOW</a>
+            <a href="#" class="btn secondary">EXPLORE MORE</a>
+          </div>          
+        </div>
+      </div>
+
+      
+
+      <!-- tshirt welcome page -->
+
+      <section class="candy-hero">
+        <div class="image-container">
+          <picture>
+            <source srcset="{% static 'images/tshirt_mobile.avif' %}" media="(max-width: 767px)">
+            <img src="{% static 'images/tshirt.avif' %}" alt="T-shirt Banner" />
+          </picture>
+
+         <div class="text-overlay">
+           <h2>T-SHIRTS</h2>
+           <h4>LIVINGSTONE LUXURY</h4>
+           <h3>T-Shirts Store</h3>
+           <p>A cheerful selection of colourful styles</p>
+
+           <div class="buttons">
+             <a href="{% url 'product_list' category='men' subcategory='tshirt' %}" class="btn">SHOP NOW</a>
+           </div>
+         </div>
+        </div>
+    </section>
+
+      <!-- explore more page -->
+
+      <section class="explore-section">
+        <div class="explore-text">
+          <h2>More to <span>Explore</span></h2>
+          <p>Explore seasonal collections, iconic accessories, and more</p>
+        </div>
+
+        <div class="explore-wrapper">
+          <button class="arrow left" onclick="scrollGrid(-1)">&#10094;</button>
+
+          <div class="explore-grid" id="exploreGrid">
+            
+            <a href="{% url 'product_list' category='women' subcategory='bag' %}" class="explore-link">
+              <div class="explore-item">
+                <img src="{% static 'images/mnt15.png' %}" alt="" />
+               <div class="label">Handbags</div>
+              </div>
+            </a>
+
+            <a href="{% url 'product_list' category='men' subcategory='wallet' %}" class="category-link">
+            <div class="explore-item">
+              <img src="{% static 'images/walnew.png' %}" alt="" />
+              <div class="label">Wallet</div>
+             </div>
+            </a>
+            
+           <a href="{% url 'product_list' category='men' subcategory='tshirt' %}" class="category-link">
+             <div class="explore-item">
+               <img src="{% static 'images/tst7.png' %}" alt="" />
+               <div class="label">Men’s Double RL</div>
+             </div>
+            </a>
+
+           <a href="{% url 'product_list' category='accessories' subcategory='accessory_beer_mug' %}" class="category-link">
+              <div class="explore-item">
+                <img src="{% static 'images/beermug1.png' %}" alt="" />
+                <div class="label">Mugs</div>
+              </div>
+            </a>
+
+            <a href="{% url 'accessories' %}" class="explore-link">
+              <div class="explore-item">
+                <img src="{% static 'images/cp2.png' %}" alt="" />
+                <div class="label">Accessories</div>
+              </div>
+            </a>
+
+            <a href="{% url 'kashnaar' %}" class="explore-link">
+              <div class="explore-item">
+                <img src="{% static 'images/can4.jpg' %}" alt="" />
+                <div class="label">kashnaar</div>
+              </div>
+            </a>
+          </div>
+
+          <button class="arrow right" onclick="scrollGrid(1)">&#10095;</button>
+        </div>
+      </section>
+
+    </div>
+
+    {% endblock content %}
+
+
+
+
+ {% block page_js %}
+
+ <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+<script src="https://unpkg.com/gsap@3/dist/ScrollTrigger.min.js"></script>
+<script>
+  console.clear();
+  gsap.registerPlugin(ScrollTrigger);
+
+  const cols = gsap.utils.toArray(".firstcol");
+
+  cols.forEach((col, i) => {
+    const images = Array.from(col.children);
+    
+    images.forEach((img) => {
+      col.appendChild(img.cloneNode(true));
+      col.appendChild(img.cloneNode(true));
+    });
+
+    const items = Array.from(col.children);
+    const columnHeight = col.scrollHeight;
+    const direction = i % 2 === 0 ? "-=" : "+=";
+
+    const localOffset = { val: 0 };
+
+    items.forEach((item) => {
+      gsap.to(item, {
+        y: direction + (columnHeight / 3),
+        duration: 20,
+        repeat: -1,
+        ease: "none",
+        modifiers: {
+          y: gsap.utils.unitize((y) => {
+            const yNum = parseFloat(y);
+            const mod = columnHeight / 3;
+            return direction === "+=" 
+              ? (yNum - localOffset.val) % mod 
+              : (yNum + localOffset.val) % -mod;
+          }),
+        },
+      });
+    });
+
+    ScrollTrigger.create({
+      trigger: "section",
+      start: "top 50%",
+      end: "bottom 50%",
+      onUpdate: (self) => {
+        const velocity = self.getVelocity();
+        if (velocity !== 0) {
+          gsap.to(localOffset, {
+            val: -velocity / 2000,
+            duration: 0.3,
+            overwrite: true,
+            onComplete: () => localOffset.val = 0
+          });
+        }
+      }
+    });
+  });
+</script>
+
+   <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+  <script src="{% static 'styles/bootstrap4/popper.js' %}"></script>
+  <script src="{% static 'styles/bootstrap4/bootstrap.min.js' %}"></script>
+  <script src="{% static 'plugins/OwlCarousel2-2.2.1/owl.carousel.js' %}"></script>
+  <script src="{% static 'plugins/easing/easing.js' %}"></script>
+  <script src="{% static 'plugins/parallax-js-master/parallax.min.js' %}"></script>
+  <script src="{% static 'plugins/colorbox/jquery.colorbox-min.js' %}"></script>
+  <script src="{% static 'js/custom.js' %}"></script>
+
+ 
+</body>
+  {% endblock page_js %}
+</html>

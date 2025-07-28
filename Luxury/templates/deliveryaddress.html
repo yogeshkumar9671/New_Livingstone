@@ -1,0 +1,287 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %}Delivery Address{% endblock title %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{% static 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css' %}">
+
+<link rel="stylesheet" href="{% static 'styles/bootstrap4/bootstrap.min.css' %}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link href="{% static 'plugins/malihu-custom-scrollbar/jquery.mCustomScrollbar.css' %}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/jquery-ui-1.12.1.custom/jquery-ui.css' %}">
+<link rel="stylesheet" href="{% static 'styles/main_styles.css' %}" />
+<link rel="stylesheet" href="{% static 'styles/responsive.css' %}" />
+
+<style>
+
+  .pt-5, .py-5 { padding-top: 5rem !important; }
+  .main_nav ul li a { color: #000; }
+  .header { color: white; background: transparent; position: fixed }
+  .header.scrolled { color: black; }
+  .logo a, .header.scrolled .logo a { color: black; }
+  .header .burger_container div { background: black; }
+  .burger_container:hover div { background: #937c6f; }
+
+
+  .address-form {
+    color: #0a2b55;
+    font-size: 15px;
+    box-shadow: 0px 2px 10px -4px black;
+    padding: 30px;
+    border-radius: 5px;
+  }
+
+  @media (max-width: 1000px) {
+    .address-form {
+      color: #0a2b55;
+      font-size: 12px;
+      box-shadow: none;
+      padding: 0;
+      border-radius: 0;
+    }
+  }
+
+  @media (max-width: 540px) {
+    .col-sm-6.border-end {
+      order: 2;
+      padding-top: 30px;
+    }
+
+    .col-sm-6.border-end form {
+      padding-top: 30px;
+      border-top: 1px solid rgba(0, 0, 0, .125);
+    }
+
+    .address-form {
+      color: #0a2b55;
+      font-size: 12px;
+      box-shadow: none;
+      padding: 0;
+      border-radius: 0;
+    }
+
+    .balance {
+      height: 0 !important;
+    }
+    .balance2{
+      height: 0!important;
+    }
+
+    .container.my-5 {
+      margin-top: 0 !important;
+      margin-bottom: 3rem !important;
+    }
+
+    .my-5 {
+      margin-top: 5rem !important;
+    }
+    .col-sm-4.offset-sm-1 {
+      padding: 0;
+    }
+
+    .col-sm-4.offset-sm-1 .address-list{
+      padding: 15px!important;
+    }
+    .col-sm-4.offset-sm-1 form {
+      padding-bottom: 30px;
+      /* border-bottom: 1px solid rgba(0, 0, 0, .125); */
+    }
+  }
+  
+
+  .btn-primary,
+.btn-warning {
+  background-color: #0a2b55 !important;
+  border-color: #0a2b55 !important;
+  color: wheat !important;
+}
+
+
+.my-5 {
+    margin-top: 4rem !important;
+}
+
+
+
+
+</style>
+{% endblock page_css %}
+
+
+
+
+
+{% block content %}
+<span style="position: static; display: inline-block; height: 50px; " class="balance"></span>
+<div style="font-family: 'Georgia', serif; color: #0a2b55;" class="container my-5 ">           
+  <div class="row">
+    <div class="col-sm-6 border-end">
+      <div class="title">
+        <h4 class="my-3" style="text-align: left; border-bottom: 1px solid gray; padding-bottom: 15px;" id="featured">
+          <span style="border-bottom: 3px solid #06203f; padding-bottom: 13px ; font-family: 'Georgia', serif;  ">
+            Shipping Address Form
+          </span>
+        </h4>
+      </div>
+      <form method="POST" class="address-form">
+        {% csrf_token %}
+        <div class="form-group">
+          <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 10px;">
+            <div style="width: 100%;">
+              {{ form.full_name.label_tag }} {{ form.full_name }}
+              <span><small class="text-danger">{{ form.full_name.errors | striptags }}</small></span>
+            </div>
+            <div style="width: 100%;">
+              {{ form.email.label_tag }} {{ form.email }}
+              <span><small class="text-danger">{{ form.email.errors | striptags }}</small></span>
+            </div>
+            
+          </div>
+
+          {% comment %} <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+            <div style="width: 100%;">
+              {{ form.mobile_number.label_tag }} {{ form.mobile_number }}
+              <span><small class="text-danger">{{ form.mobile_number.errors | striptags }}</small></span>
+            </div>
+          </div> {% endcomment %}
+
+          
+
+
+         <label for="phone">Phone Number:</label>
+           <div style="display: flex; width: 320px;">           
+             <select id="countryCode">
+               <option value="+91">🇮🇳 +91</option>
+               <option value="+1">🇺🇸 +1</option>
+               <option value="+44">🇬🇧 +44</option>
+               <option value="+61">🇦🇺 +61</option>
+               <option value="+81">🇯🇵 +81</option>
+             </select>
+             <input type="tel" id="phone" placeholder="Enter phone number" style="flex: 1;">
+           </div>
+          
+          <div style="display: flex; justify-content: space-between; gap: 10px; margin-bottom: 10px;">
+            <div style="width: 100%;">
+              {{ form.house_no.label_tag }} {{ form.house_no }}
+              <span><small class="text-danger">{{ form.house_no.errors | striptags }}</small></span>
+            </div>
+            <div style="width: 100%;">
+              {{ form.area.label_tag }} {{ form.area }}
+              <span><small class="text-danger">{{ form.area.errors | striptags }}</small></span>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: space-between; gap: 10px; margin-bottom: 10px;">
+            <div style="width: 100%;">
+              {{ form.landmark.label_tag }} {{ form.landmark }}
+              <span><small class="text-danger">{{ form.landmark.errors | striptags }}</small></span>
+            </div>
+            <div style="width: 100%;">
+              {{ form.pincode.label_tag }} {{ form.pincode }}
+              <span><small class="text-danger">{{ form.pincode.errors | striptags }}</small></span>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: space-between; gap: 10px; margin-bottom: 15px;">
+            <div style="width: 100%;">
+              {{ form.locality.label_tag }} {{ form.locality }}
+              <span><small class="text-danger">{{ form.locality.errors | striptags }}</small></span>
+            </div>
+            <div style="width: 100%;">
+              {{ form.city.label_tag }} {{ form.city }}
+              <span><small class="text-danger">{{ form.city.errors | striptags }}</small></span>
+            </div>
+            <div style="width: 100%;">
+              {{ form.state.label_tag }} {{ form.state }}
+              <span><small class="text-danger">{{ form.state.errors | striptags }}</small></span>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: left; align-items: center; gap: 20px;">
+            <div class="form-check" style="padding-left: 0;">
+              <label for="home">Home</label>
+              <input type="radio" id="home" name="addressType" value="home" required>
+            </div>
+            <div class="form-check" style="padding-left: 0;">
+              <label for="office">Office</label>
+              <input type="radio" id="office" name="addressType" value="office" required>
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3 px-5 fw-bold w-100">Submit</button>
+
+      </form>
+    </div>
+    <div class="col-sm-4 offset-sm-1">
+      <div class="address-list" style="background-color: white; padding: 0 15px 15px 15px; border-radius: 5px;">
+        <div class="title">
+          <h4 class="my-3" style="text-align: left; border-bottom: 1px solid gray; padding-bottom: 15px;" id="featured">
+            <span style="border-bottom: 3px solid #06203f; padding-bottom: 13px; font-family: 'Georgia', serif;">
+              Select Shipping Address
+            </span>
+          </h4>
+        </div>
+        <!-- <h4>Select Shipping Address</h4> -->
+        <!-- <hr> -->
+
+        
+        {% if messages %}
+        {% for message in messages %}
+        <div {% if messages %} class="alert alert-{{ message.tags }}" {% endif %} role="alert">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+        <form action="/checkout" id="payment-form">
+          <!-- address -->
+          {% for add in add %}
+          <div class="card">
+            <div  class="card-body">
+              <h5 style="font-family: 'Georgia', serif; color: #0a2b55;" >{{ add.full_name }}</h5>
+              <p style="font-family: 'Georgia', serif;">{{ add.locality }}, {{ add.city }}, {{ add.state }} - {{ add.pincode }}</p>
+            </div>
+          </div>
+          <div class="form-check mt-2 mb-2">
+            <input class="form-check-input" type="radio" name="custid" id="custadd{{forloop.counter}}"
+              value="{{add.id}}" required>
+            <label for="custadd{{forloop.counter}}" class="form-check-label fw-bold" style="display: block; padding: 5px 0;">Address: {{ forloop.counter }}</label>
+          </div>
+          {% endfor %}
+          <div class="text-end">
+            <button type="submit" class="btn btn-warning mt-3 px-5 fw-bold w-100">Place Order</button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<br><br>
+<span style="position: static; display: inline-block; height: 20px;" class="balance2"></span>
+{% endblock content %}
+
+
+{% block page_js %}
+
+<script>
+  function myaddressform() {
+    location.reload();
+  }
+
+    
+
+
+</script>
+
+
+
+
+
+<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+<script src="{% static 'styles/bootstrap4/popper.js' %}"></script>
+<script src="{% static 'styles/bootstrap4/bootstrap.min.js' %}"></script>
+<script src="{% static 'plugins/OwlCarousel2-2.2.1/owl.carousel.js' %}"></script>
+<script src="{% static 'plugins/easing/easing.js' %}"></script>
+<script src="{% static 'plugins/parallax-js-master/parallax.min.js' %}"></script>
+<script src="{% static 'plugins/colorbox/jquery.colorbox-min.js' %}"></script>
+<script src="{% static 'js/custom.js' %}"></script>
+<script src="{% static 'script.js' %}"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+{% endblock page_js %}

@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{% endblock title %}
+
+{% block description %}{% endblock description %}
+
+
+{% block keywords %}{% endblock keywords %}
+
+
+
+
+{% block page_css %}
+
+<link rel="stylesheet" href="{% static 'styles/bootstrap4/bootstrap.min.css' %}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link href="{% static 'plugins/malihu-custom-scrollbar/jquery.mCustomScrollbar.css' %}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/jquery-ui-1.12.1.custom/jquery-ui.css' %}">
+<link rel="stylesheet" href="{% static 'styles/main_styles.css' %}" />
+<link rel="stylesheet" href="{% static 'styles/responsive.css' %}" />
+
+
+{% comment %} extra CSS for nav bar color according to page {% endcomment %}
+<style>
+
+  .pt-5, .py-5 {
+    padding-top: 5rem !important;
+}
+.main_nav ul li a {
+    color: #000;
+  }
+  .header {
+    color: white;
+    background: transparent; 
+    position: fixed
+  }
+  .header.scrolled {
+   color: black; 
+}
+.logo a {
+  color: black;
+}
+.header.scrolled .logo a {
+  color: black;
+}
+.header .burger_container div {
+  background: black;
+}
+.burger_container:hover div
+{
+	background: #937c6f;
+}
+
+</style>
+
+
+{% endblock page_css %}
+
+
+
+
+{% block content %}
+
+<div class="create-wrapper">
+  <div class="main-wrapper">
+    
+    <div class="logcontainer">
+      <div class="tabs">
+        <div>
+          <a href="{% url 'sign_in' %}">Already have an account? Sign In</a>
+        </div>
+        <div class="active">Create Account</div>
+      </div>
+
+      <div class="checkbox">
+        <input type="checkbox" id="remember">
+        <label for="remember">
+          Remember me - I want Ralph Lauren to personalise my shopping experience
+        </label>
+      </div>
+
+      <div class="checkbox">
+        <input type="checkbox" id="offers">
+        <label for="offers">
+          Tick here if you would like to receive the latest news, special offers and/or exclusive events relating to Ralph Lauren products and services, by e-mail or targeted social media ads. By signing up, you consent to the use of tracking technologies for personalisation and analytics. You may unsubscribe at any time by clicking on the unsubscribe link in each e-mail. For more information, please read
+          <a href="#">Ralph Lauren Europe Sàrl’s Privacy Notice</a>
+        </label>
+      </div>
+
+      <form method="POST" action="{% url 'create_account' %}" style="margin-bottom: 20px;">
+        {% csrf_token %}
+        <input type="email" name="email" placeholder="EMAIL ADDRESS *" required>
+        <input type="email" name="confirm_email" placeholder="CONFIRM EMAIL ADDRESS" required>
+        <input type="password" name="password" placeholder="PASSWORD *" required>
+        <input type="password" name="re_password" placeholder="RE-ENTER PASSWORD *" required>
+        <input type="text" name="first_name" placeholder="NAME *" required>
+        <input type="text" name="last_name" placeholder="SURNAME *" required>
+        <button type="submit" class="submit-btn">CREATE ACCOUNT</button>
+      </form>
+    </div>
+
+    
+    <div class="checkorder-box" style="background: #f2f3f4;">
+      <h4>BENEFITS OF CREATING AN ACCOUNT</h4>
+      <p><strong>News and Exclusive Offers!</strong><br>
+      Sign up to receive email updates on special promotions, new product announcements, gift ideas and more.</p>
+
+      <p><strong>Order History</strong><br>
+      Receive important information about your order. You can even track it up to the minute it arrives.</p>
+
+      <p><strong>Faster Checkout</strong><br>
+      Save your billing and shipping information to make it easier to buy your favorite gear.</p>
+
+      <p><a href="#">Read more about security</a></p>
+    </div>
+  </div>
+</div>
+  {% endblock content %}
+
+
+
+ {% block page_js %}
+
+</body>
+
+<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+  <script src="{% static 'styles/bootstrap4/popper.js' %}"></script>
+  <script src="{% static 'styles/bootstrap4/bootstrap.min.js' %}"></script>
+  <script src="{% static 'plugins/OwlCarousel2-2.2.1/owl.carousel.js' %}"></script>
+  <script src="{% static 'plugins/easing/easing.js' %}"></script>
+  <script src="{% static 'plugins/parallax-js-master/parallax.min.js' %}"></script>
+  <script src="{% static 'plugins/colorbox/jquery.colorbox-min.js' %}"></script>
+  <script src="{% static 'js/custom.js' %}"></script>
+  <script src="{% static 'script.js' %}"></script>
+  
+{% endblock page_js %}
+
+</html>

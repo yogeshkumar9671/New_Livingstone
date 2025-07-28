@@ -1,0 +1,204 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{% endblock title %}
+{% block description %}{% endblock description %}
+{% block keywords %}{% endblock keywords %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{% static 'styles/bootstrap4/bootstrap.min.css' %}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link href="{% static 'plugins/malihu-custom-scrollbar/jquery.mCustomScrollbar.css' %}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/jquery-ui-1.12.1.custom/jquery-ui.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'styles/categories.css' %}">
+<link rel="stylesheet" href="{% static 'styles/main_styles.css' %}" />
+<link rel="stylesheet" href="{% static 'styles/responsive.css' %}" />
+<style>
+  .pt-5, .py-5 { padding-top: 5rem !important; }
+  .main_nav ul li a { color: #000; }
+  .header { color: white; background: transparent; position: fixed }
+  .header.scrolled { color: black; }
+  .logo a, .header.scrolled .logo a { color: black; }
+  .header .burger_container div { background: black; }
+  .burger_container:hover div { background: #937c6f; }
+
+
+
+  .checkout_container {
+    margin-top: 10rem;
+  }
+</style>
+{% endblock page_css %}
+
+{% block content %}
+
+
+<body>
+<div class="checkout_container">
+  <div class="checkout-header">
+    <button>PROCEED TO CHECKOUT</button>
+    <a href="#">Continue Shopping</a>
+  </div>
+  <h2>SHOPPING BAG (<span id="itemCount">0</span>)</h2>
+  <div id="cartItems"></div>
+  <div class="promo">APPLY A PROMO CODE <a>+ADD</a></div>
+  <div class="summary">
+    <div class="summary-box">
+      <p><strong>SUBTOTAL</strong> <span>₹ <span id="subtotal">0.00</span></span></p>
+      <p><strong>ESTIMATED TOTAL</strong> <span>₹ <span id="total">0.00</span></span></p>
+      <small>Page does not contain any content.</small>
+      <button onclick="finalizeCheckout()">PROCEED TO CHECKOUT</button>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
+
+{% block page_js %}
+<script>
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  console.log("Cart from localStorage:", cart);
+
+  function renderCart() {
+    const container = document.getElementById("cartItems");
+    let subtotal = 0;
+    let itemCount = 0;
+    container.innerHTML = "";
+
+    if (cart.length === 0) {
+      container.innerHTML = `
+        <div style="text-align: center; margin-top: 60px;">
+          <h3>Your Shopping Bag is Empty</h3>
+          <a href="/" style="text-decoration: underline;">« Continue Shopping</a>
+        </div>
+      `;
+      document.getElementById("subtotal").textContent = "0.00";
+      document.getElementById("total").textContent = "0.00";
+      document.getElementById("itemCount").textContent = "0";
+      return;
+    }
+
+    container.innerHTML = cart.map((item, index) => {
+      const price = parseFloat(item.price.replace(/[^\d.]/g, ''));
+      const total = price * item.quantity;
+      subtotal += total;
+      itemCount += item.quantity;
+
+      return `
+        <div class="cart-item">
+          <div class="cart-left">
+
+            <a href="/product/${item.id}/">
+              <img src="${item.image}" alt="${item.title}" />
+            </a>
+
+            
+            <div class="cart-details">
+              <h4>${item.title}</h4>
+              <p>Style Number: 3616853485740</p>
+              <p>Qty: ${item.quantity}</p>
+            </div>
+
+          </div>
+          <div class="cart-right">
+            <select data-index="${index}" class="qty-select">
+              ${[1,2,3,4,5].map(q => `<option value="${q}" ${q === item.quantity ? 'selected' : ''}>${q}</option>`).join('')}
+            </select>
+            <div class="icons">
+              <span class="edit" data-index="${index}" title="Edit">✎</span>
+              <span class="remove" data-index="${index}" title="Remove">✖</span>
+              <span class="wishlist" data-index="${index}" title="Add to Wishlist">♡</span>
+            </div>
+            <p>₹${price.toFixed(2)}</p>
+            <p><strong>₹${total.toFixed(2)}</strong></p>
+          </div>
+        </div>
+      `;
+    }).join("");
+
+    document.getElementById("subtotal").textContent = subtotal.toFixed(2);
+    document.getElementById("total").textContent = subtotal.toFixed(2);
+    document.getElementById("itemCount").textContent = itemCount;
+
+    attachIconEvents();
+
+    document.querySelectorAll(".qty-select").forEach(select => {
+      select.addEventListener("change", function () {
+        const index = parseInt(this.getAttribute("data-index"));
+        cart[index].quantity = parseInt(this.value);
+        localStorage.setItem("cart", JSON.stringify(cart));
+        renderCart();
+      });
+    });
+  }
+
+  function attachIconEvents() {
+    document.querySelectorAll(".remove").forEach(btn => {
+      btn.addEventListener("click", function () {
+        const index = parseInt(this.getAttribute("data-index"));
+        cart.splice(index, 1);
+        localStorage.setItem("cart", JSON.stringify(cart));
+        renderCart();
+      });
+    });
+
+    
+    document.querySelectorAll(".edit").forEach(btn => {
+      btn.addEventListener("click", function () {
+        const index = parseInt(this.getAttribute("data-index"));
+        alert("Edit function is not implemented yet for item: " + cart[index].title);
+      });
+    });
+
+    document.querySelectorAll(".wishlist").forEach(btn => {
+      btn.addEventListener("click", function () {
+        const index = parseInt(this.getAttribute("data-index"));
+        const item = cart[index];
+        alert(`${item.title} moved to wishlist.`);
+        cart.splice(index, 1);
+        localStorage.setItem("cart", JSON.stringify(cart));
+        renderCart();
+      });
+    });
+  }
+
+  renderCart();
+</script>
+
+
+<!-- reduce product quantity and store quantity when product remove from cart  -->
+
+<script>
+
+  function finalizeCheckout() {
+  window.location.href = "{% url 'deliveryaddress' %}";
+}
+
+
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== "") {
+    const cookies = document.cookie.split(";");
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.substring(0, name.length + 1) === name + "=") {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+</script>
+
+
+<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+<script src="{% static 'styles/bootstrap4/popper.js' %}"></script>
+<script src="{% static 'styles/bootstrap4/bootstrap.min.js' %}"></script>
+<script src="{% static 'plugins/OwlCarousel2-2.2.1/owl.carousel.js' %}"></script>
+<script src="{% static 'plugins/easing/easing.js' %}"></script>
+<script src="{% static 'plugins/parallax-js-master/parallax.min.js' %}"></script>
+<script src="{% static 'plugins/colorbox/jquery.colorbox-min.js' %}"></script>
+<script src="{% static 'js/custom.js' %}"></script>
+<script src="{% static 'script.js' %}"></script>
+</body>
+{% endblock page_js %}

@@ -1,0 +1,548 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{% endblock title %}
+{% block description %}{% endblock description %}
+{% block keywords %}{% endblock keywords %}
+{% block page_css %}
+
+
+
+<link rel="stylesheet" href="{% static 'styles/bootstrap4/bootstrap.min.css' %}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link href="{% static 'plugins/malihu-custom-scrollbar/jquery.mCustomScrollbar.css' %}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/jquery-ui-1.12.1.custom/jquery-ui.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'styles/categories.css' %}">
+<link rel="stylesheet" href="{% static 'styles/main_styles.css' %}" />
+<link rel="stylesheet" href="{% static 'styles/responsive.css' %}" />
+
+{% comment %} extra CSS for nav bar color according to page {% endcomment %}
+<style>
+
+  .pt-5, .py-5 {
+    padding-top: 5rem !important;
+}
+.main_nav ul li a {
+    color: #000;
+  }
+  .header {
+    color: white;
+    background: transparent; 
+    position: fixed
+  }
+  .header.scrolled {
+   color: black; 
+}
+.logo a {
+  color: black;
+}
+.header.scrolled .logo a {
+  color: black;
+}
+.header .burger_container div {
+  background: black;
+}
+.burger_container:hover div
+{
+	background: #937c6f;
+}
+
+
+
+{% comment %} style for size button {% endcomment %}
+
+.size-btn {
+    padding: 10px 16px;
+    border: 1px solid #333;
+    background-color: white;
+    color: #333;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+  }
+
+  .size-btn:hover {
+    background-color: #041e3a;
+    color: #fff;
+    border-color: #041e3a;
+  }
+
+
+  .accordion-section {
+  border-top: 1px solid #ccc;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.accordion-item {
+  border-bottom: 1px solid #ccc;
+  cursor: pointer;
+  padding: 15px 0;
+}
+
+.accordion-header {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #0a2540;
+}
+
+.accordion-icon {
+  transition: transform 0.3s ease;
+}
+
+.accordion-item.active .accordion-icon {
+  transform: rotate(90deg);
+}
+
+.accordion-content {
+  display: none;
+  padding-top: 10px;
+  color: #444;
+  font-weight: 400;
+}
+
+.accordion-item.active .accordion-content {
+  display: block;
+}
+
+
+{% comment %} image scroll side style {% endcomment %}
+.scroll-images {
+  max-height: 100vh;
+  overflow-y: auto;
+  padding-right: 15px;
+  scroll-behavior: smooth;
+
+  scrollbar-width: none; 
+  -ms-overflow-style: none;  
+}
+
+.scroll-images::-webkit-scrollbar {
+  display: none; 
+}
+
+
+</style>
+{% endblock page_css %}
+
+
+
+
+{% block content %}
+
+
+
+
+<body>
+
+<!--item fetch from product to productdetailspage -->
+
+
+{% comment %} <section id="best-sellers" class="best-sellers py-5 position-relative overflow-hidden">
+  <div class="container category-header">
+    <div class="breadcrumb">
+      <a href="#">WOMEN</a> /
+      <a href="#">BAG</a> /
+    </div>
+    <h1 class="text-uppercase">WOMEN BAGS</h1>
+  </div>
+
+  <div class="container mt-4">
+    <div class="row align-items-start">
+      
+      <div class="col-lg-6 scroll-images">
+        <div class="product-img-gallery">
+         
+         <img id="productImage" src="{% static 'images/img1.jpeg' %}" class="img-fluid mb-3" />
+         <img id="productImage" src="{% static 'images/img2.jpeg' %}" class="img-fluid mb-3" />
+         <img id="productImage" src="{% static 'images/img3.jpeg' %}" class="img-fluid mb-3" />
+         <img id="productImage" src="{% static 'images/img4.jpeg' %}" class="img-fluid mb-3" />
+       </div>
+     </div>
+     
+
+      <div class="col-lg-6">
+        <div class="product-details" style="position: fixed; top: 96; right: 15px; width: 50%; height: 100vh; overflow-y: auto; padding: 75px; background: #fff;">
+          <h4 id="productTitle" class="product-title">Default Product Title</h4>
+          <p class="product-brand">Livingstone Luxury</p>
+          <p><strong>Color:</strong></p>
+            <div id="colorSwatches" class="d-flex gap-2 mb-3">
+              <div class="color-swatch" data-color="Refined Navy" style="background-color: #1c2b50;"></div>
+              <div class="color-swatch" data-color="Maroon" style="background-color: maroon;"></div>
+              <div class="color-swatch" data-color="Olive Green" style="background-color:black;"></div>
+              <div class="color-swatch" data-color="Olive Green" style="background-color:white;"></div>
+            </div>
+          <p id="productPrice" class="product-price">₹ 0.00</p>
+          <p class="product-label text-uppercase text-warning">New Season</p>
+          <div class="mt-4" id="bagbutton">
+            <button class="btn w-100 custom-bag-btn" style="background-color: #041e3a; color: #fff;">
+             Add to Bag
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> {% endcomment %}
+
+
+
+<section id="best-sellers" class="best-sellers py-5 position-relative overflow-hidden">
+  <div class="container category-header">
+    <div class="breadcrumb">
+      <a href="#">{{ category|upper }}</a> /
+      <a href="#">{{ subcategory|upper }}</a> /
+    </div>
+  </div>
+
+  <div class="container mt-4">
+    <div class="row align-items-start">
+      
+      <!-- Product Images -->
+      <div class="col-lg-6 scroll-images">
+        <div class="product-img-gallery">
+          {% if product.image1 %}
+            <img id="productImage" src="{{ product.image1.url }}" class="img-fluid mb-3" />
+          {% endif %}
+          {% if product.image2 %}
+            <img src="{{ product.image2.url }}" class="img-fluid mb-3" />
+          {% endif %}
+          {% if product.image3 %}
+            <img src="{{ product.image3.url }}" class="img-fluid mb-3" />
+          {% endif %}
+          {% if product.image4 %}
+            <img src="{{ product.image4.url }}" class="img-fluid mb-3" />
+          {% endif %}
+        </div>
+      </div>
+
+
+
+      <!-- Product Details Panel -->
+      <div class="col-lg-6">
+
+
+        <div class="product-details sticky-top" style="top: 96px; padding: 75px; background: #fff;">
+
+
+          
+          <h4 id="productTitle" class="product-title">{{ product.title }}</h4>
+          <p class="product-brand">Livingstone Luxury</p>
+          <p><strong>Price:</strong> ₹ <span id="productPrice">{{ product.price }}</span></p>
+          
+          <p><strong>Color:</strong> {{ product.color }}</p>
+
+          <div id="colorSwatches" class="d-flex gap-2 mb-3">
+            <div class="color-swatch" style="background-color: #1c2b50;"></div>
+            <div class="color-swatch" style="background-color: maroon;"></div>
+            <div class="color-swatch" style="background-color: black;"></div>
+            <div class="color-swatch" style="background-color: white;"></div>
+          </div>
+
+          {% if product.subcategory|lower == "tshirt" %}
+            <p><strong>Size:</strong></p>
+            <div class="d-flex gap-2 mb-3">
+              <button class="size-btn">S</button>
+              <button class="size-btn">M</button>
+              <button class="size-btn">L</button>
+              <button class="size-btn">XL</button>
+            </div>
+          {% endif %}
+
+          <p class="product-label text-uppercase text-warning">New Season</p>
+
+          <!-- Form to send data to backend -->
+
+          <form id="cartForm" action="{% url 'add_to_cart' product.id %}" method="POST">
+           {% csrf_token %}
+            <div class="form-group mb-3">
+              <label for="quantity"><strong>Quantity:</strong></label>
+              <input type="number" name="quantity" id="quantityInput" class="form-control" min="1" max="{{ product.quantity }}" value="1" required>
+            </div>
+          </form>
+
+          <!-- This button will submit the form AND open the slide panel -->
+          <button onclick="submitCartAndOpenBag()" class="btn w-100 custom-bag-btn" style="background-color: #041e3a; color: #fff;">
+           Add to Bag
+          </button>
+
+          <!-- Show stock -->
+          <p class="mt-2"><strong>Available Stock:</strong> <strong>{{ product.quantity }}</strong></p>           
+
+          <!-- 
+          <div class="mt-4" id="bagbutton">
+            <button class="btn w-100 custom-bag-btn" style="background-color: #041e3a; color: #fff;">
+              Add to Bag
+            </button>
+          </div> -->
+
+          <hr class="my-4">
+
+          <!-- Accordion -->
+          <div class="accordion-section">
+            <div class="accordion-item">
+              <div class="accordion-header" onclick="toggleAccordion(this)">
+                <span>🏷️ PRODUCT DETAILS</span>
+                <span class="accordion-icon">→</span>
+              </div>
+              <div class="accordion-content">
+                <p>{{ product.description }}</p>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <div class="accordion-header" onclick="toggleAccordion(this)">
+                <span>🚚 DELIVERY & RETURNS</span>
+                <span class="accordion-icon">→</span>
+              </div>
+              <div class="accordion-content">
+                <p>{{ product.delivery_info }}</p>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <div class="accordion-header" onclick="toggleAccordion(this)">
+                <span>💳 PAYMENT OPTIONS</span>
+                <span class="accordion-icon">→</span>
+              </div>
+              <div class="accordion-content">
+                <p>{{ product.payment_info }}</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+
+
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+<!-- Slide-in Bag Panel -->
+<div id="sideBagPanel" class="bag-panel">
+  <div class="bag-header">
+    <span class="check-icon">✔</span>
+    <span>Item Added to Bag</span>
+    <button class="close-btn" onclick="closeBag()">×</button>
+  </div>
+  <div class="bag-body">
+    <img id="bagImage" src="{% static 'images/img1.jpeg' %}" alt="Product Image" />
+
+    <div class="bag-details">
+      <p class="brand">Polo Ralph Lauren</p>
+      <h5 id="bagTitle">Product Title</h5>
+      <p><strong>Color:</strong> <span id="bagColor">Refined Navy</span></p>
+      <!-- <p><strong>Size:</strong> <span id="bagSize">M</span></p> -->
+      <p class="price" id="bagPrice">₹ 0.00</p>
+      <!-- <p><strong>Quantity:</strong> <span id="bagQuantity">1</span></p> -->
+    </div>
+  </div>
+  <div class="bag-footer">
+    <button onclick="saveThenGoToCheckout()" class="checkout-btn" id="checkoutButton">Checkout (0)</button>
+
+
+    <button class="continue-btn" onclick="closeBag()">Continue Shopping</button>
+</div>
+</div>
+
+
+ {% endblock content %}
+
+
+
+
+ {% block page_js %}
+
+
+
+<!--item fetch from product to productdetailspage -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const title = urlParams.get("title");
+    const price = urlParams.get("price");
+    const image = urlParams.get("image");
+    const color = urlParams.get("color");
+
+
+    console.log("Loaded", title, price, image, color); 
+
+    if (title && price && image) {
+      document.getElementById("productTitle").textContent = decodeURIComponent(title);
+      document.getElementById("productPrice").textContent = decodeURIComponent(price);
+      document.getElementById("productImage").src = decodeURIComponent(image);
+      document.getElementById("productImage").alt = decodeURIComponent(title);
+    }
+
+    if (color) {
+      document.getElementById("productColor").textContent = decodeURIComponent(color);
+    }
+  });
+</script>
+
+
+
+<!-- side panel add to cart function -->
+<script>
+  let cartCount = 0;
+
+  function openBagPanel() {
+    const productImage = document.getElementById("productImage");
+    const productTitle = document.getElementById("productTitle");
+    const productPrice = document.getElementById("productPrice");
+    const quantityInput = document.getElementById("quantityInput");
+
+    const availableStock = {{ product.quantity }};
+    const selectedQuantity = parseInt(quantityInput.value);
+
+    if (productImage && productTitle && productPrice && selectedQuantity > 0 && selectedQuantity <= availableStock) {
+      cartCount += selectedQuantity;
+
+      document.getElementById("sideBagPanel").classList.add("open");
+      document.getElementById("bagImage").src = productImage.src;
+      document.getElementById("bagTitle").textContent = productTitle.textContent;
+      document.getElementById("bagPrice").textContent = productPrice.textContent;
+
+      document.getElementById("checkoutButton").textContent = `Checkout (${cartCount})`;
+    }
+  }
+
+  function closeBag() {
+    document.getElementById("sideBagPanel").classList.remove("open");
+  }
+
+  window.addEventListener("load", function () {
+    const bagButton = document.querySelector("#bagbutton button");
+    if (bagButton) {
+      bagButton.addEventListener("click", function () {
+        saveToCart();   // assuming you already have this function
+        openBagPanel();
+      });
+    }
+  });
+</script>
+
+
+
+<script>
+  function saveToCart() {
+  const productImage = document.getElementById("productImage");
+  const productTitle = document.getElementById("productTitle");
+  const productPrice = document.getElementById("productPrice");
+  const quantityInput = document.getElementById("quantityInput");
+
+  if (productImage && productTitle && productPrice && quantityInput) {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const existingIndex = cart.findIndex(item => item.title === productTitle.textContent);
+
+    const quantity = parseInt(quantityInput.value);
+
+    if (existingIndex !== -1) {
+      cart[existingIndex].quantity += quantity;
+    } else {
+
+      
+      cart.push({
+        id: {{ product.id }},
+        title: productTitle.textContent,
+        price: productPrice.textContent,
+        image: productImage.src,
+        quantity: quantity
+      });
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }
+}
+</script>
+
+
+<!-- for inventory management slide panel open -->
+<script>
+  function submitCartAndOpenBag() {
+    const form = document.getElementById("cartForm");
+    const formData = new FormData(form);
+
+    fetch(form.action, {
+      method: "POST",
+      headers: {
+        'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+      },
+      body: formData
+    })
+    .then(response => {
+      if (response.ok) {
+        openBagPanel(); // Open after successful backend update
+      } else {
+        response.json().then(data => {
+          alert(data.message || "Failed to add to cart.");
+        });
+      }
+    })
+    .catch(error => {
+      console.error("Error:", error);
+      alert("Failed to add to cart.");
+    });
+  }
+</script>
+
+
+
+
+
+
+
+<script>
+
+
+// document.getElementById("checkoutButton").addEventListener("click", function () {
+//   window.location.href = "checkout.html";
+// });
+
+
+
+// {% comment %} for drop down options of product details and payment details side {% endcomment %}
+
+function toggleAccordion(headerElement) {
+  const item = headerElement.closest(".accordion-item");
+  item.classList.toggle("active");
+}
+
+
+
+function saveThenGoToCheckout() {
+  saveToCart(); // this updates localStorage
+  setTimeout(() => {
+    window.location.href = "{% url 'cart' %}";
+  }, 100); // give a short delay for localStorage to update
+}
+
+
+
+
+</script>
+<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+  <script src="{% static 'styles/bootstrap4/popper.js' %}"></script>
+  <script src="{% static 'styles/bootstrap4/bootstrap.min.js' %}"></script>
+  <script src="{% static 'plugins/OwlCarousel2-2.2.1/owl.carousel.js' %}"></script>
+  <script src="{% static 'plugins/easing/easing.js' %}"></script>
+  <script src="{% static 'plugins/parallax-js-master/parallax.min.js' %}"></script>
+  <script src="{% static 'plugins/colorbox/jquery.colorbox-min.js' %}"></script>
+  <script src="{% static 'js/custom.js' %}"></script>
+  <script src="{% static 'script.js' %}"></script>
+
+
+
+
+</body>
+{% endblock page_js %}
+</html>

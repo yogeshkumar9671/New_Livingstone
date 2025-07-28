@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block page_css %}
+<style>
+
+
+/* {% comment %} extra CSS for nav bar color according to page {% endcomment %} */
+    .pt-5, .py-5 {
+    padding-top: 5rem !important;
+}
+.main_nav ul li a {
+    color: #000;
+  }
+  .header {
+    color: white;
+    background: transparent; 
+    position: fixed
+  }
+  .header.scrolled {
+   color: black; 
+}
+.logo a {
+  color: black;
+}
+.header.scrolled .logo a {
+  color: black;
+}
+.header .burger_container div {
+  background: black;
+}
+.burger_container:hover div
+{
+	background: #937c6f;
+}
+.address-form-wrapper {
+  max-width: 700px;
+  margin: 60px auto;
+  background-color: #fff;
+  padding: 40px;
+  font-family: 'Georgia', serif;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+.address-form-wrapper h2 {
+  font-size: 28px;
+  color: #0a2b55;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+}
+
+.address-form-wrapper form p {
+  margin-bottom: 20px;
+}
+
+.address-form-wrapper label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+.address-form-wrapper input[type="text"],
+.address-form-wrapper input[type="email"],
+.address-form-wrapper select {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  background-color: #f9f9f9;
+}
+
+.address-form-wrapper input:focus,
+.address-form-wrapper select:focus {
+  border-color: #0a2b55;
+  outline: none;
+}
+
+.address-form-wrapper button[type="submit"] {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #0a2b55;
+  color: #fff;
+  font-size: 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.address-form-wrapper button[type="submit"]:hover {
+  background-color: #08203e;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="address-form-wrapper">
+  <h2>{{ action }} Address</h2>
+  <form method="POST">
+  {% csrf_token %}
+  {{ form.non_field_errors }}
+
+
+
+  {{ form.as_p }}
+  {% for field in form %}
+    {% for error in field.errors %}
+      <div style="color: red;">{{ error }}</div>
+    {% endfor %}
+  {% endfor %}
+
+
+
+  
+  <button type="submit">Save</button>
+</form>
+</div>
+{% endblock %}
+
+
+ {% block page_js %}
+
+</body>
+
+<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+  <script src="{% static 'styles/bootstrap4/popper.js' %}"></script>
+  <script src="{% static 'styles/bootstrap4/bootstrap.min.js' %}"></script>
+  <script src="{% static 'plugins/OwlCarousel2-2.2.1/owl.carousel.js' %}"></script>
+  <script src="{% static 'plugins/easing/easing.js' %}"></script>
+  <script src="{% static 'plugins/parallax-js-master/parallax.min.js' %}"></script>
+  <script src="{% static 'plugins/colorbox/jquery.colorbox-min.js' %}"></script>
+  <script src="{% static 'js/custom.js' %}"></script>
+  <script src="{% static 'script.js' %}"></script>
+  
+{% endblock page_js %}
+</html>

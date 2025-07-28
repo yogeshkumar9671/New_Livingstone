@@ -1,0 +1,256 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{% endblock title %}
+{% block description %}{% endblock description %}
+{% block keywords %}{% endblock keywords %}
+
+
+
+
+{% block page_css %}
+
+<link rel="stylesheet" href="{% static 'styles/bootstrap4/bootstrap.min.css' %}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link href="{% static 'plugins/malihu-custom-scrollbar/jquery.mCustomScrollbar.css' %}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/jquery-ui-1.12.1.custom/jquery-ui.css' %}">
+<link rel="stylesheet" href="{% static 'styles/main_styles.css' %}" />
+<link rel="stylesheet" href="{% static 'styles/responsive.css' %}" />
+
+
+{% comment %} extra CSS for nav bar color according to page {% endcomment %}
+<style>
+
+  
+
+
+.content-policy{
+  padding-top: 200px;
+  font-family: "Mada", sans-serif;
+  background-color: #000000;
+  background-position: center;
+}
+
+
+h1.policy{
+  color: #AF9875;
+    top: 200px;
+    font-weight: 610;
+    font-size: 38px;
+    line-height: 38px;
+    text-align: center;
+}
+.policy-line{
+  width: 250px;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: auto;
+  margin-right: auto;
+  border-style: inset;
+  display:block;
+}
+.A img{
+  width: 60px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+p.policy{
+  font-weight: 300;
+  font-size: 17px;
+  line-height: 25px;
+  color: #FFFFFF;
+  align: center;
+  padding:20px;
+  margin-top: 0px;
+}
+
+h2.policy{
+  color: #AF9875;
+  font-weight: 610;
+  font-size: 19px;
+  line-height: 29px;
+  margin-top: 50px;
+  margin-bottom: 15px;
+  margin-left: 19px;
+ 
+}
+
+.container{
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  top: -120px;
+}
+
+
+
+
+@media (min-width: 600px) {
+  
+  
+  .logo img { 
+  width: 250px;
+ }
+ h1.policy{
+    font-size: 50px;
+}
+ 
+p.policy{
+  font-size: 20px;
+  line-height: 35px;
+}
+  
+ h2.policy{
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.policy-line{
+  width: 420px;
+  border width:2px;
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+  
+  .A img{
+  width: 75px;
+}
+ .container{
+  width: 100%;
+  }
+ 
+  
+
+
+}
+
+
+.A {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.A img {
+  height: 150px;
+  width: 150px;
+}
+
+
+
+
+</style>
+
+
+{% endblock page_css %}
+
+
+
+
+{% block content %}
+
+
+<div class="top">
+
+
+  <div class="content-policy">
+
+    <div class="container">
+
+      <hr class="policy-line" />
+      <h1 class="policy">PRIVACY POLICY</h1>
+      <hr class="policy-line" />
+
+      
+
+    <h2 class="policy">SECTION 1 – WHAT DO WE DO WITH YOUR INFORMATION?</h2>
+    <p class="policy">When you purchase something from our store, as part of the buying and selling process, we collect the personal information you give us such as your name, address and email address.
+
+When you browse our store, we also automatically receive your computer’s internet protocol (IP) address in order to provide us with information that helps us learn about your browser and operating system.
+
+When you provide us with personal information to complete a transaction, verify your credit card, place an order or signup on our website, then you are giving us explicit consent to reach out to you using various communication channels like RCS, Whatsapp, Email, SMS etc.</p>
+
+      <h2 class="policy">SECTION 2 – CONSENT
+How do you get my consent?</h2>
+    <p class="policy">When you provide us with personal information to complete a transaction, verify your credit card, place an order, arrange for a delivery or return a purchase, we imply that you consent to our collecting it and using it for that specific reason only.
+
+If we ask for your personal information for a secondary reason, like marketing, we will either ask you directly for your expressed consent or provide you with an opportunity to say no.</p>
+
+    <h2 class="policy">How do I withdraw my consent?</h2>
+    <p class="policy">If after you opt-in, you change your mind, you may withdraw your consent for us to contact you, for the continued collection, use or disclosure of your information, at any time, by contacting us at contact@johnnette.com or mailing us at: Johnnette Technologies Pvt Ltd C-270, Sector 71, Noida, Gautam Bhuddha Nagar, Near Sapphire International School Noida - 201301, India</p>
+
+
+    <h2 class="policy">SECTION 3 – DISCLOSURE
+</h2>
+    <p class="policy">We may disclose your personal information if we are required by law to do so or if you violate our Terms of Service.</p>
+
+
+<h2 class="policy">SECTION 4 – Payment
+</h2>
+    <p class="policy">If you choose a direct payment gateway to complete your purchase, then our system stores your credit card data. It is encrypted through the Payment Card Industry Data Security Standard (PCI- DSS). Your purchase transaction data is stored only as long as is necessary to complete your purchase transaction. After that is complete, your purchase transaction information is deleted.
+
+All direct payment gateways adhere to the standards set by PCI-DSS as managed by the PCI Security Standards Council, which is a joint effort of brands like Visa, MasterCard, American
+PCI-DSS requirements help ensure the secure handling of credit card information by our store and its service providers. Express and Discover.</p>
+
+  <h2 class="policy">SECTION 5 – THIRD-PARTY SERVICES
+</h2>
+    <p class="policy">In general, the third-party providers used by us will only collect, use and disclose your information to the extent necessary to allow them to perform the services they provide to us.
+However, certain third-party service providers, such as payment gateways and other payment transaction processors, have their own privacy policies in respect to the information we are required to provide to them for your purchase-related transactions.
+For these providers, we recommend that you read their privacy policies so you can understand the manner in which your personal information will be handled by these providers.
+
+In particular, remember that certain providers may be located in or have facilities that are located a different jurisdiction than either you or us. So, if you elect to proceed with a transaction that involves the services of a third-party service provider, then your information may become subject to the laws of the jurisdiction(s) in which that service provider or its facilities are located.
+Once you leave our store’s website or are redirected to a third-party website or application, you are no longer governed by this Privacy Policy or our website’s Terms of Service.
+When you click on links on our store, they may direct you away from our site. We are not responsible for the privacy practices of other sites and encourage you to read their privacy statements.</p>
+
+  <h2 class="policy">SECTION 6 – SECURITY
+</h2>
+    <p class="policy">To protect your personal information, we take reasonable precautions and follow industry best practices to make sure it is not inappropriately lost, misused, accessed, disclosed, altered or destroyed.
+
+If you provide us with your credit card information, the information is encrypted using secure socket layer technology (SSL) and stored with an AES-256 encryption. Although no method of transmission over the Internet or electronic storage is 100% secure, we follow all PCI-DSS requirements and implement additional generally accepted industry standards.</p>
+
+  <h2 class="policy">SECTION 7 – AGE OF CONSENT
+</h2>
+    <p class="policy">By using this site, you represent that you are at least the age of majority in your state or province of residence, or that you are the age of majority in your state or province of residence and you have given us your consent to allow any of your minor dependents to use this site.</p>
+  
+  <h2 class="policy">SECTION 8 – CHANGES TO THIS PRIVACY POLICY
+</h2>
+    <p class="policy">We reserve the right to modify this privacy policy at any time, so please review it frequently. Changes and clarifications will take effect immediately upon their posting on the website. If we make material changes to this policy, we will notify you here that it has been updated, so that you are aware of what information we collect, how we use it, and under what circumstances, if any, we use and/or disclose it.
+
+If our store is acquired or merged with another company, your information may be transferred to the new owners so that we may continue to sell products to you.</p>
+
+  
+  <h2 class="policy">QUESTIONS AND CONTACT INFORMATION
+</h2>
+    <p class="policy">If you would like to: access, correct, amend or delete any personal information we have about you, register a complaint, or simply want more information contact our Privacy Compliance Officer at contact@johnnette.com or by mail at JOHNNETTE TECHNOLOGIES PRIVATE LIMITED.</p>
+  
+    <div class="A" />
+      <img src="{% static 'images/favicon.png' %} " alt='word A' /> 
+    </div> 
+  </div>
+
+
+
+
+{% endblock content %}
+{% block page_js %}
+
+
+
+
+
+<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+<script src="{% static 'styles/bootstrap4/popper.js' %}"></script>
+<script src="{% static 'styles/bootstrap4/bootstrap.min.js' %}"></script>
+<script src="{% static 'plugins/OwlCarousel2-2.2.1/owl.carousel.js' %}"></script>
+<script src="{% static 'plugins/easing/easing.js' %}"></script>
+<script src="{% static 'plugins/parallax-js-master/parallax.min.js' %}"></script>
+<script src="{% static 'plugins/colorbox/jquery.colorbox-min.js' %}"></script>
+<script src="{% static 'js/custom.js' %}"></script>
+
+
+
+
+
+</body>
+{% endblock page_js %}
+</html>

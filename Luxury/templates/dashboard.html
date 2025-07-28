@@ -1,0 +1,458 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{% endblock title %}
+{% block description %}{% endblock description %}
+{% block keywords %}{% endblock keywords %}
+
+
+
+
+{% block page_css %}
+
+<link rel="stylesheet" href="{% static 'styles/bootstrap4/bootstrap.min.css' %}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link href="{% static 'plugins/malihu-custom-scrollbar/jquery.mCustomScrollbar.css' %}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/jquery-ui-1.12.1.custom/jquery-ui.css' %}">
+<link rel="stylesheet" href="{% static 'styles/main_styles.css' %}" />
+<link rel="stylesheet" href="{% static 'styles/responsive.css' %}" />
+
+
+
+<style>
+
+
+{% comment %} extra CSS for nav bar color according to page {% endcomment %}
+    .pt-5, .py-5 {
+    padding-top: 5rem !important;
+}
+.main_nav ul li a {
+    color: #000;
+  }
+  .header {
+    color: white;
+    background: transparent; 
+    position: fixed
+  }
+  .header.scrolled {
+   color: black; 
+}
+.logo a {
+  color: black;
+}
+.header.scrolled .logo a {
+  color: black;
+}
+.header .burger_container div {
+  background: black;
+}
+.burger_container:hover div
+{
+	background: #937c6f;
+}
+
+
+.dashboard-container {
+  font-family: 'Georgia', serif;
+  background: #fefefe;
+  color: #0b2e4e;
+  margin-top: 6rem;
+  padding: 60px 120px;
+}
+
+.dashboard-wrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.header-bar h1,
+.header-bar h2 {
+  font-size: 36px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.username {
+  color: #0b2e4e;
+}
+
+.sign-out {
+  font-size: 14px;
+  color: #0b2e4e;
+  text-decoration: underline;
+}
+
+.dashboard-nav {
+  margin-top: 40px;
+  border-bottom: 1px solid #ccc;
+  overflow-x: auto;
+}
+
+.dashboard-nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.dashboard-nav li {
+  padding-bottom: 10px;
+}
+
+.dashboard-nav a {
+  text-decoration: none;
+  font-size: 18px;
+  color: #a0a0a0;
+  white-space: nowrap;
+}
+
+.dashboard-nav .active a {
+  color: #0b2e4e;
+  font-weight: bold;
+  border-bottom: 2px solid #0b2e4e;
+}
+
+.dashboard-content {
+  margin-top: 60px;
+}
+
+.dashboard-content h2 {
+  font-size: 28px;
+  color: #0b2e4e;
+}
+
+
+@media (max-width: 992px) {
+  .dashboard-container {
+    padding: 40px 60px;
+  }
+
+  .header-bar h1,
+  .header-bar h2 {
+    font-size: 28px;
+  }
+
+  .dashboard-nav ul {
+    gap: 15px;
+  }
+
+  .dashboard-nav a {
+    font-size: 16px;
+  }
+
+  .dashboard-content h2 {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 576px) {
+  .dashboard-container {
+    padding: 30px 20px;
+  }
+
+  .dashboard-wrapper {
+    margin: 3rem auto;
+
+  }
+
+  .header-bar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header-bar h1,
+  .header-bar h2 {
+    font-size: 22px;
+  }
+
+  .dashboard-nav ul {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .dashboard-nav a {
+    font-size: 16px;
+  }
+
+  .dashboard-content h2 {
+    font-size: 20px;
+  }
+}
+
+
+
+{% comment %} wishlist style {% endcomment %}
+
+
+{% comment %} .dashboard-wishlist-section {
+  margin-top: 40px;
+}
+
+.wishlist-product {
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin: 10px 0;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.wishlist-product img {
+  width: 100px;
+  height: auto;
+}
+
+.heart {
+  color: red;
+  cursor: pointer;
+  margin-left: auto;
+  font-size: 20px;
+} {% endcomment %}
+
+
+
+
+
+.dashboard-wishlist-section {
+  margin-top: 40px;
+}
+
+.wishlist-product {
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin: 10px 0;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.wishlist-product img {
+  width: 100px;
+  height: auto;
+}
+
+.heart {
+  color: red;
+  cursor: pointer;
+  margin-left: auto;
+  font-size: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .wishlist-product {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0px;
+  }
+
+  .wishlist-product img {
+    width: 80px;
+  }
+
+  .heart {
+    margin-left: 0;
+    align-self: flex-end;
+  }
+}
+
+@media (max-width: 480px) {
+  .wishlist-product img {
+    width: 100%;
+  }
+
+  .heart {
+    font-size: 18px;
+  }
+}
+
+
+</style>
+
+
+{% endblock page_css %}
+
+
+
+
+{% block content %}
+
+
+
+<div class="dashboard-container">
+  <div class="dashboard-wrapper">
+    <div class="header-bar">
+      <h2 class="welcome-title">Welcome back, {{ user.first_name }}</h2>
+    
+    </div>
+    <nav class="dashboard-nav">
+      <ul>
+        <li><a href="#" data-section="order_history" data-url="{% url 'load_order_history_section' %}">Order History</a></li>
+        <li><a href="#" data-section="wishlist">Wishlist</a></li>
+        <li><a href="#" data-section="profile" data-url="{% url 'load_profile_section' %}">Profile</a></li>
+        <li><a href="#" data-section="addresses" data-url="{% url 'address_list' %}">Addresses</a></li>
+      </ul>
+    </nav>
+     <div id="dashboard-section-container">
+        <div id="wishlist" class="dashboard-section">
+          <h2>Wishlist</h2>
+          <div id="dashboardWishlistContainer"></div>
+        </div>
+      </div>      
+    </div> 
+        
+  </div>
+</div>
+
+
+
+{% endblock content %}
+{% block page_js %}
+
+<script>
+  const staticPath = "{% static '' %}";
+  const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+
+  function renderDashboardWishlist() {
+    const container = document.getElementById("dashboardWishlistContainer");
+
+    if (!container) {
+      console.warn("Wishlist container not found.");
+      return;
+    }
+
+    if (wishlist.length === 0) {
+      container.innerHTML = "<p>Your wishlist is empty.</p>";
+      return;
+    }
+
+    container.innerHTML = wishlist.map((item, index) => `
+      <div class="wishlist-product" data-index="${index}">
+        <img src="${item.image}" alt="${item.title}" />
+        <h4>${item.title}</h4>
+        <p>${item.brand}</p>
+        <p><strong>${item.price}</strong></p>
+        <span class="heart" onclick="removeFromDashboardWishlist(${index})">&#10084;</span>
+      </div>
+    `).join('');
+  }
+
+  function removeFromDashboardWishlist(index) {
+    wishlist.splice(index, 1);
+    localStorage.setItem("wishlist", JSON.stringify(wishlist));
+    renderDashboardWishlist();
+  }
+
+  function showDashboardSection(event) {
+    event.preventDefault();
+
+    const allTabs = document.querySelectorAll('.dashboard-nav li');
+    allTabs.forEach(li => li.classList.remove('active'));
+    event.target.parentElement.classList.add('active');
+
+    const section = event.target.dataset.section;
+    const sectionUrl = event.target.dataset.url;
+    const container = document.getElementById("dashboard-section-container");
+
+
+
+
+    // Wishlist tab clicked
+    if (section === 'wishlist') {
+      container.innerHTML = `
+        <div id="wishlist" class="dashboard-section">
+          <h2>Wishlist</h2>
+          <div id="dashboardWishlistContainer"></div>
+        </div>`;
+
+      setTimeout(() => {
+        renderDashboardWishlist();
+      }, 0);
+    }
+    else if (sectionUrl) {
+      fetch(sectionUrl)
+        .then(response => response.text())
+        .then(html => {
+          container.innerHTML = `
+            <div id="${section}" class="dashboard-section">
+              ${html}
+            </div>`;
+        });
+    }
+
+    else {
+      container.innerHTML = `
+        <div id="${section}" class="dashboard-section">
+          <h2>${event.target.innerText}</h2>
+          <p>Coming soon...</p>
+        </div>`;
+    }
+  }
+
+
+
+
+
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.dashboard-nav a').forEach(link => {
+      link.addEventListener('click', showDashboardSection);
+    });
+
+    renderDashboardWishlist();
+  });
+
+
+
+  document.addEventListener("DOMContentLoaded", function () {
+  const links = document.querySelectorAll('.dashboard-nav a');
+
+  links.forEach(link => {
+    link.addEventListener('click', function (e) {
+      e.preventDefault();
+      const url = this.getAttribute('data-url');
+      if (!url) return;
+
+      fetch(url)
+        .then(response => response.text())
+        .then(html => {
+          document.getElementById('dashboard-section-container').innerHTML = html;
+        })
+        .catch(error => {
+          console.error("Failed to load section:", error);
+        });
+    });
+  });
+});
+</script>
+
+
+
+
+
+
+
+<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+  <script src="{% static 'styles/bootstrap4/popper.js' %}"></script>
+  <script src="{% static 'styles/bootstrap4/bootstrap.min.js' %}"></script>
+  <script src="{% static 'plugins/OwlCarousel2-2.2.1/owl.carousel.js' %}"></script>
+  <script src="{% static 'plugins/easing/easing.js' %}"></script>
+  <script src="{% static 'plugins/parallax-js-master/parallax.min.js' %}"></script>
+  <script src="{% static 'plugins/colorbox/jquery.colorbox-min.js' %}"></script>
+  <script src="{% static 'js/custom.js' %}"></script>
+  <script src="{% static 'script.js' %}"></script>
+
+</body>
+ {% endblock page_js %}
+</html>

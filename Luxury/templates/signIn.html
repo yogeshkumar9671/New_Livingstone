@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{% endblock title %}
+{% block description %}{% endblock description %}
+{% block keywords %}{% endblock keywords %}
+
+
+
+
+{% block page_css %}
+
+<link rel="stylesheet" href="{% static 'styles/bootstrap4/bootstrap.min.css' %}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link href="{% static 'plugins/malihu-custom-scrollbar/jquery.mCustomScrollbar.css' %}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/jquery-ui-1.12.1.custom/jquery-ui.css' %}">
+<link rel="stylesheet" href="{% static 'styles/main_styles.css' %}" />
+<link rel="stylesheet" href="{% static 'styles/responsive.css' %}" />
+
+
+{% comment %} extra CSS for nav bar color according to page {% endcomment %}
+<style>
+
+  .pt-5, .py-5 {
+    padding-top: 5rem !important;
+}
+.main_nav ul li a {
+    color: #000;
+  }
+  .header {
+    color: white;
+    background: transparent; 
+    position: fixed
+  }
+  .header.scrolled {
+   color: black; 
+}
+.logo a {
+  color: black;
+}
+.header.scrolled .logo a {
+  color: black;
+}
+.header .burger_container div {
+  background: black;
+}
+.burger_container:hover div
+{
+	background: #937c6f;
+}
+
+
+
+</style>
+
+
+{% endblock page_css %}
+
+
+
+
+{% block content %}
+<div class="signin-wrapper">
+  <div class="main-wrapper">
+   
+    <div class="signcontainer">
+      <div class="tabs">
+        <div class="active">Sign In</div>
+        <div >
+          <a href="{% url 'create_account' %}">Create Account</a>  
+        </div>
+      </div>
+
+      <div class="checkbox">
+        <input type="checkbox" id="remember" />
+        <label for="remember">Remember me - I want Ralph Lauren to personalise my shopping experience</label>
+      </div>
+
+      <form method="POST" action="{% url 'sign_in' %}">
+        {% csrf_token %}
+        <div class="form-group">
+          <input type="email" name="email" placeholder="EMAIL ADDRESS *" required />
+        </div>
+        <div class="form-group">
+          <input type="password" name="password" placeholder="PASSWORD *" required />
+        </div>
+        <div class="bottom-text">
+          <a href="{% url 'password_reset' %}">Forgot Password?</a>
+          <span>*Required</span>
+        </div>
+        <button type="submit" class="submit-btn">SIGN IN</button>
+      </form>
+
+    </div>
+
+    
+    <div class="checkorder-box" style="background: #f2f3f4;">
+      <h4>CHECK ORDER</h4>
+      <p>
+        See your order even if you are not a registered user. Enter the order number and the billing address postcode.
+      </p>
+      <input type="text" placeholder="ORDER NUMBER *" />
+      <input type="email" placeholder="ORDER EMAIL ADDRESS *" />
+      <input type="text" placeholder="INVOICING POSTCODE *" />
+      <button type="submit">CHECK STATUS</button>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+{% block page_js %}
+
+
+
+<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+  <script src="{% static 'styles/bootstrap4/popper.js' %}"></script>
+  <script src="{% static 'styles/bootstrap4/bootstrap.min.js' %}"></script>
+  <script src="{% static 'plugins/OwlCarousel2-2.2.1/owl.carousel.js' %}"></script>
+  <script src="{% static 'plugins/easing/easing.js' %}"></script>
+  <script src="{% static 'plugins/parallax-js-master/parallax.min.js' %}"></script>
+  <script src="{% static 'plugins/colorbox/jquery.colorbox-min.js' %}"></script>
+  <script src="{% static 'js/custom.js' %}"></script>
+  <script src="{% static 'script.js' %}"></script>
+
+</body>
+ {% endblock page_js %}
+</html>

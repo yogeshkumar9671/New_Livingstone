@@ -1,0 +1,330 @@
+{% extends 'base.html' %} 
+{% load static %} 
+{% block title %}Orders{% endblock title %} 
+
+
+{% block page_css %}
+<!--Custom CSS-->
+<link rel="stylesheet" href="{% static 'app/css/orders.css' %}"> 
+<style>
+    .progress{
+        height: 10px;
+        margin-bottom: 0px;
+    }
+    .detail {
+        flex-wrap: nowrap;
+        text-align: left;
+        padding-left: 10px;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+    
+    .detail>div {
+        margin-top: 5px;
+    }
+    
+    .company_logo {
+        width: 20%;
+        border: 3px solid rgba(1, 1, 66, 0.3);
+        border-radius: 10px;
+        font-weight: bolder;
+    }
+    
+    .company_logo img {
+        display: flex;
+        width: 100%;
+    }
+    
+    .brand_name {
+        color: black;
+        overflow: hidden;
+        font-weight: bold;
+    }
+    
+    .actual_price {
+        color: gray;
+        overflow: hidden;
+    }
+    
+    .item {
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    .card_right {
+        flex: 90%;
+        padding-left: 20px;
+    }
+    #mobile{
+        display: none;
+    }
+    #desktop{
+        display: block;
+    }
+    @media screen and (max-width: 540px) {
+        #mobile{
+            display: block;
+        }
+        #desktop{
+            display: none;
+        }
+        .card-body #card-body{
+            padding-right: 10px;
+            padding-left: 10px;
+        }
+        .col-sm-12.mb-4{
+            padding-left: 0;
+            padding-right: 0;
+        }
+        .col-sm-2.border-end{
+            margin-bottom: 50px;
+        }
+        .balance1 {
+        height: 0 !important;
+        }
+
+        .balance2 {
+        height: 0 !important;
+        }
+        .container.my-5 {
+            margin-top: 1rem !important;
+            margin-bottom: 0rem !important;
+        }
+    }
+
+    #card-body .card-body{
+        box-shadow: 0px 3px 6px 2px black;
+    }
+
+    @media screen and (max-width: 500px){
+        .pagination-container {
+            text-align: center!important;
+            font-size: 11px;
+        }
+        .pagination-container .container div{
+            text-align: center!important;
+        }
+    }
+</style>
+{% endblock page_css %} 
+
+
+
+{% block content %}
+<span style="position: static; display: inline-block; height: 50px;" class="balance1"></span> 
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-sm-2 border-end">
+                <div class="title" style=" margin-bottom: 20px;">
+                    <h4 class="my-3" style="text-align: left; border-bottom: 1px solid gray; padding-bottom: 15px;" id="featured">
+                      <span style="border-bottom: 3px solid red; padding-bottom: 13px;">
+                        My Orders
+                      </span>
+                    </h4>
+                </div>
+                <!-- <h4 style="color: black!important; text-align: center;">Welcome <span class="text-capitalize">{{ user.first_name }}</span></h4>
+                <hr> -->
+                <ul class="list-unstyled">
+                    
+                </ul>
+            </div>
+            <div class="col-sm-10">
+                {% if order_placed %}
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 style="text-align: left; font-weight: bold;">Order Items</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                    {% for order in order_placed %}
+                                        <!-- order one -->
+                                        <div class="col-sm-12 mb-5" id="card-body">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                                        <div class="btn btn-primary">{{ order.product_id_number }}</div>
+                                                        <form id="trackerForm" action="/tracker/" class="d-inline" method="post">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="prod_id" value="{{ order.product_id_number }}" id="prod_id">
+                                                            <button style="border: 2px solid rgb(179, 179, 179); padding: 4px 8px; border-radius: 3px;" type="submit" class="btn shadow px-5 py-2"><i class="fas fa-map-marker-alt" style="color: rgb(2, 116, 238);"></i> Track</button>
+                                                        </form>
+                                                    </div>
+                                                    <hr>
+                                                    <div class="item">
+                                                        <div class="text-center">
+                                                            <a href="{% url 'productdetails' order.product.id %}">
+                                                                <img src="{{ order.product.img1.url }}" class="img-fluid img-thumbnail shadow-sm" height="150" width="150">
+                                                            </a>
+                                                        </div>
+                                                        <div class="card_right">
+                                                            <div class="detail col-sm-5">
+                                                                <div class="brand_name">{{ order.product.brand_name }}</div>
+                                                                <div class="product_title">{{ order.product.product_title }}</div>
+                                                                <div class="prodcut_price">
+                                                                    <label for="quantity">Total Price:</label>&nbsp;
+                                                                    <span class="selling_price"><strong><span>&#8377;</span>{{ order.total_amount }}</strong><span><strong>0 /-</strong></span></span>
+                                                                </div>
+                                                                {% if order.offer %} 
+                                                                    <div style="margin-top: 0;"><span style="color: black; font-weight: bold;">Offer </span> &nbsp; <span style="font-weight: bold; color: green;">{{order.offer}}<span style="font-weight: bold; color: green;">% off</span></span></div>
+                                                                {% endif %}
+                                                                <div style="margin-top: 4px;">
+                                                                    <label for="quantity">Quantity:</label>&nbsp;
+                                                                    <span id="quantity">{{ order.quantity }}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div id="desktop" class="detail col-sm-5 offset-1">
+                                                                {% if order.expected_delivery_date %}
+                                                                    <div><span style="color: gray;">Delivery expected by</span>&nbsp; <strong>{{order.expected_delivery_date | date}}</strong></div>
+                                                                {% endif %}
+                                                                {% if order.payment_status %}
+                                                                    <div><span style="color: gray;">Payment status </span>&nbsp; 
+                                                                        <strong>
+                                                                            {% if order.payment_status == 1%} 
+                                                                            Success
+                                                                            {% endif %}
+                                                                        </strong>
+                                                                    </div>
+                                                                {% endif %}
+                                                                {% if order.status == "Deliverd" %} 
+                                                                    <div><span style="color: gray;">Download invoice</span> &nbsp; <a href="" style=" font-weight: bold;">invoice</a></div>
+                                                                {% endif %}
+                                                                <div class="fw-bold">
+                                                                    <p>Order Status: {{ order.status }}</p>
+                                                                    {% if order.status == "Pending" %}
+                                                                    <div class="progress">
+                                                                        <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemax="100" aria-valuemin="0">
+                                                                        </div>
+                                                                    </div>
+                                                                    {% endif %}
+                                                                    {% if order.status == "Accepted" %}
+                                                                    <div class="progress">
+                                                                        <div class="progress-bar" role="progressbar" style="width: 20%;" aria-valuenow="20" aria-valuemax="100" aria-valuemin="0">
+                                                                        </div>
+                                                                    </div>
+                                                                    {% endif %}
+                                                                    {% if order.status == "Packed" %}
+                                                                    <div class="progress">
+                                                                        <div class="progress-bar bg-info" role="progressbar" style="width: 40%;" aria-valuenow="40" aria-valuemax="100" aria-valuemin="0">
+                                                                        </div>
+                                                                    </div>
+                                                                    {% endif %}
+                                                                    {% if order.status == "On The Way" %}
+                                                                    <div class="progress">
+                                                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 70%;" aria-valuenow="70" aria-valuemax="100" aria-valuemin="0">
+                                                                        </div>
+                                                                    </div>
+                                                                    {% endif %}
+                                                                    {% if order.status == "Deliverd" %}
+                                                                    <div class="progress">
+                                                                        <div class="progress-bar bg-success" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemax="100" aria-valuemin="0">
+                                                                        </div>
+                                                                    </div>
+                                                                    {% endif %}
+                                                                    {% if order.status == "Cancelled" %}
+                                                                    <div class="progress">
+                                                                        <div class="progress-bar bg-danger" role="progressbar" style="width: 100%;" aria-valuenow="20" aria-valuemax="100" aria-valuemin="0">
+                                                                        </div>
+                                                                    </div>
+                                                                    {% endif %}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div id="mobile" class="detail col-sm-12">
+                                                        {% if order.expected_delivery_date %}
+                                                            <div><span style="color: gray;">Delivery expected by</span>&nbsp; <strong>{{order.expected_delivery_date | date}}</strong></div>
+                                                        {% endif %}
+                                                        {% if order.payment_status %}
+                                                            <div><span style="color: gray;">Payment status </span>&nbsp; 
+                                                                <strong>
+                                                                    {% if order.payment_status == 1%} 
+                                                                    Success
+                                                                    {% endif %}
+                                                                </strong>
+                                                            </div>
+                                                        {% endif %}
+                                                        {% if order.status == "Deliverd" %} 
+                                                            <div><span style="color: gray;">Download invoice</span> &nbsp; <a href="" style=" font-weight: bold;">invoice</a></div>
+                                                        {% endif %}
+                                                        <div class="fw-bold">
+                                                            <p>Order Status: {{ order.status }}</p>
+                                                            {% if order.status == "Pending" %}
+                                                            <div class="progress">
+                                                                <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemax="100" aria-valuemin="0">
+                                                                </div>
+                                                            </div>
+                                                            {% endif %}
+                                                            {% if order.status == "Accepted" %}
+                                                            <div class="progress">
+                                                                <div class="progress-bar" role="progressbar" style="width: 20%;" aria-valuenow="20" aria-valuemax="100" aria-valuemin="0">
+                                                                </div>
+                                                            </div>
+                                                            {% endif %}
+                                                            {% if order.status == "Packed" %}
+                                                            <div class="progress">
+                                                                <div class="progress-bar bg-info" role="progressbar" style="width: 40%;" aria-valuenow="40" aria-valuemax="100" aria-valuemin="0">
+                                                                </div>
+                                                            </div>
+                                                            {% endif %}
+                                                            {% if order.status == "On The Way" %}
+                                                            <div class="progress">
+                                                                <div class="progress-bar bg-warning" role="progressbar" style="width: 70%;" aria-valuenow="70" aria-valuemax="100" aria-valuemin="0">
+                                                                </div>
+                                                            </div>
+                                                            {% endif %}
+                                                            {% if order.status == "Deliverd" %}
+                                                            <div class="progress">
+                                                                <div class="progress-bar bg-success" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemax="100" aria-valuemin="0">
+                                                                </div>
+                                                            </div>
+                                                            {% endif %}
+                                                            {% if order.status == "Cancelled" %}
+                                                            <div class="progress">
+                                                                <div class="progress-bar bg-danger" role="progressbar" style="width: 100%;" aria-valuenow="20" aria-valuemax="100" aria-valuemin="0">
+                                                                </div>
+                                                            </div>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                    <hr>
+                                                    <div style="display: flex; justify-content: space-between;">
+                                                        <div><span style="color: gray;">Ordered On</span>&nbsp; <strong>{{order.datetime_of_payment | date}}</strong></div>
+                                                        <div><span style="color: gray;">Total Price</span>&nbsp; <strong><span>&#8377;</span>{{order.total_amount}}<span><strong>0 /-</strong></span></strong></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="col-sm-12 mb-4">
+                        <div class="">
+                            <div class="card-body">
+                                <div class="title" style=" margin-bottom: 20px;">
+                                    <h4 class="my-3" style="text-align: left; border-bottom: 1px solid gray; padding-bottom: 15px;" id="featured">
+                                      <span style="border-bottom: 3px solid red; padding-bottom: 13px; color: red;">
+                                        No Order Found
+                                      </span>
+                                    </h4>
+                                </div>
+                                <div style="text-align: center;">
+                                    <img class="mb-2" src="{% static 'app/images/logo/address.gif' %}" class="img-fluid"  style="opacity: .8; width: 100%; max-width: 500px;" alt=""> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div> 
+    <br><br>
+<span style="position: static; display: inline-block; height: 20px;" class="balance2"></span> 
+{% endblock content %}
+
+{% block page_js %} 
+{% endblock page_js %}
+
+

@@ -1,0 +1,124 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Verify Your Email</title>
+  <link rel="stylesheet" href="{% static 'styles/bootstrap4/bootstrap.min.css' %}">
+  <style>
+    .otp-body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background: rgba(0, 0, 0, 0.6);
+      min-height: 100vh;
+      padding-top: 40px;
+    }
+    .otp-container {
+      max-width: 400px;
+      margin: auto;
+      background: white;
+      border-radius: 20px;
+      padding: 30px 40px;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+    .otp-container img {
+      width: 70px;
+      margin-bottom: 20px;
+    }
+    .otp-title {
+      font-weight: 600;
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+    .otp-description {
+      color: #888;
+      font-size: 14px;
+      margin-bottom: 30px;
+    }
+    .otp-inputs {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .otp-inputs input {
+      width: 50px;
+      height: 50px;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .verify-btn {
+      background-color: #041e3a;
+      border: none;
+      color: white;
+      width: 100%;
+      padding: 12px;
+      border-radius: 25px;
+      font-weight: 600;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    .verify-btn:hover {
+      background-color: #041e3a;
+    }
+    .otp-footer {
+      margin-top: 15px;
+      font-size: 13px;
+    }
+    .otp-footer a {
+      color: #007bff;
+      text-decoration: none;
+    }
+    .otp-footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+<div class="otp-body">
+  <div class="otp-container">
+    <img src="{% static 'images/otp.png' %}" alt="Email Icon">
+    <div class="otp-title">Verify Your Email Address</div>
+    <div class="otp-description">
+      Please enter the 6-digit code sent to your email.
+    </div>
+
+    <form method="POST">
+      {% csrf_token %}
+      <div class="otp-inputs">
+        <input type="text" name="otp1" maxlength="1" required>
+        <input type="text" name="otp2" maxlength="1" required>
+        <input type="text" name="otp3" maxlength="1" required>
+        <input type="text" name="otp4" maxlength="1" required>
+        <input type="text" name="otp5" maxlength="1" required>
+        <input type="text" name="otp6" maxlength="1" required>
+      </div>
+      <button type="submit" class="verify-btn">Verify Email</button>
+    </form>
+
+    <div class="otp-footer">
+      Want to Change Your Email Address? <a href="{% url 'create_account' %}">Change Here</a><br>
+      <a href="#">Resend Code</a>
+    </div>
+  </div>
+</div>
+
+
+
+
+<script>
+  const inputs = document.querySelectorAll('.otp-inputs input');
+  inputs.forEach((input, i) => {
+    input.addEventListener('input', () => {
+      if (input.value.length === 1 && i < inputs.length - 1) {
+        inputs[i + 1].focus();
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

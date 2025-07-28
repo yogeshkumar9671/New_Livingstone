@@ -1,0 +1,472 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+      {% block title %}{% endblock title %}
+      {% if request.path == '/' %}
+
+      {% else %}
+        |
+      {% endif %}
+      Livingstone Luxury
+    </title>
+
+    <meta name="description" content="{% block description %}{% endblock description %}">
+    <meta name="keywords" content="Livingstone Luxury, {% block keywords %}{% endblock keywords %}">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon2.ico' %}">
+    <link rel="shortcut icon" href="{% static 'images/favicon2.ico' %}" type="image/x-icon">
+
+
+
+
+    <link rel="stylesheet" href="{% static 'styles/bootstrap4/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'plugins/OwlCarousel2-2.2.1/owl.carousel.css' %}" />
+    <link rel="stylesheet" href="{% static 'plugins/OwlCarousel2-2.2.1/owl.theme.default.css' %}" />
+    <link rel="stylesheet" href="{% static 'plugins/OwlCarousel2-2.2.1/animate.css' %}" />
+    <link rel="stylesheet" href="{% static 'plugins/colorbox/colorbox.css' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'styles/main_styles.css' %}" />
+    <link rel="stylesheet" href="{% static 'styles/responsive.css' %}" />
+
+
+    <style>
+
+{% comment %} #loader-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:gray;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+  }
+
+  #loader-wrapper.fade-out {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  #loader-img {
+    width: 80px;
+    height: 80px;
+    animation: pulse 1.5s infinite;
+  }
+
+  @keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.2); opacity: 0.5; }
+    100% { transform: scale(1); opacity: 1; }
+  } {% endcomment %}
+
+
+  #loader-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: black;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+  }
+
+  #loader-wrapper.fade-out {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .footer_logo a {
+    font-family: 'Lucida', serif;
+    font-size: 5vw;
+    text-transform: uppercase;
+    line-height: 1;
+    text-align: center;
+    background: linear-gradient(90deg, rgba(186,148,62,1) 0%, rgba(236,172,32,1) 20%, rgba(186,148,62,1) 39%, rgba(249,244,180,1) 50%, rgba(186,148,62,1) 60%, rgba(236,172,32,1) 80%, rgba(186,148,62,1) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;	
+    animation: shine 3s infinite;
+    background-size: 200%;
+    background-position: left;
+  }
+
+  @keyframes shine {
+    0% { background-position: left; }
+    100% { background-position: right; }
+  }
+
+    </style>
+
+    {% block meta_tags %}
+
+    {% endblock meta_tags %}
+
+
+
+
+
+
+
+    {% block head %}
+    {% endblock head %}
+
+    {% block page_css %}
+    {% endblock page_css %}
+
+ <style>
+
+
+</style>
+
+</head>
+
+
+
+
+<body >
+  <div id="loader-wrapper">
+  <div class="footer_logo">
+    <a href="#">LIVINGSTONE LUXURY</a>
+  </div>
+</div>
+
+  {% comment %} <div id="loader-wrapper">
+  <img id="loader-img" src="{% static 'images/favicon.png' %}" alt="Loading..." />
+</div> {% endcomment %}
+
+    <div class="super_container">
+      <div class="top_header_bar">
+        <div class="top_bar_container">
+          <span><i class="fas fa-phone" style="color: #ffffff;"></i>  7428684519</span>
+          <div class="top_bar_right">
+              {% comment %} <span><i class="fas fa-globe"></i> IN English</span> {% endcomment %}
+              <span><i class="fas fa-envelope" style="color: #ffffff;"></i> contact@johnnette.com</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Header -->
+
+
+      <!-- SEGMENT HOVER PAGE -->
+      <header class="header">
+        <div
+          class="header_inner d-flex flex-row align-items-center justify-content-start">
+          <div class="logo">
+            <a href="{% url 'index' %} "> LIVINGSTONE LUXURY</a>
+          </div>
+          <!-- <div class="logo">
+            <a href="#"><img src="images/logo2.png" alt="Wish Logo" /></a>
+          </div> -->
+          <nav class="main_nav">
+            <ul>
+              
+              <li><a href="{% url 'men' %}">MEN</a></li>
+              <li><a href="{% url 'women' %}">WOMEN</a></li>
+              <li><a href="{% url 'kashnaar' %}">KASHNAAR</a></li>
+              <li><a href="{% url 'accessories' %}">ACCESSORIES</a></li>
+              <li><a href="{% url 'index' %}">HOME</a></li>
+              {% comment %} <li><a href="{% url 'contact' %}">CONTACT</a></li> {% endcomment %}
+
+            </ul>
+          </nav>
+
+           <a href="{% url 'search' %}">
+              <div class="header_content ml-auto" style="cursor: pointer;"> 
+               <div class="search header_search">
+                 <form action="#">
+                   {% comment %} <input type="search" class="search_input" required="required" />
+                   button type="submit" id="search_button" class="search_button"> {% endcomment %}
+                     <img src="{% static 'images/magnifying-glass.svg' %}" alt="" />
+                   </button>
+                 </form>
+               </div>
+            </a>
+
+            <div class="shopping">
+              <a href="{% url 'cart' %}">
+                <div class="cart">
+                  <img src="{% static 'images/shopping-bag.svg' %}" alt="" />
+                  <div class="cart_num_container">
+                    <div class="cart_num_inner">
+                      <div class="cart_num" id="cartItemCount">0</div> 
+                    </div>
+                  </div>
+                </div>
+              </a>
+              <a href="{% url 'wishlist' %}">
+                <div class="star">
+                  <img src="{% static 'images/heart-thin-icon.svg' %}" alt="" />
+                  <div class="star_num_container">
+                    <div class="star_num_inner">
+                      <div class="star_num" id="wishlistCount">0</div>
+                    </div>
+                  </div>
+                </div>
+              </a>
+              {% comment %} <div class="avatar-dropdown-wrapper">
+                <a href="#">
+                  <div class="avatar">
+                    <img src="{% static 'images/avatar.svg' %}" alt="Avatar" />
+                  </div>
+                </a>
+                <div class="dropdown-login">
+                  <form class="login-form">
+                    <h3>Sign In</h3>
+                    <a class="create-account" href="#">CREATE ACCOUNT</a>
+
+                    <input type="email" placeholder="EMAIL ADDRESS *" required />
+                    <input type="password" placeholder="PASSWORD *" required />
+
+                    <a href="#" class="forgot-password">Forgot Password?</a>
+                    <label class="remember-label">
+                      <input type="checkbox" />
+                    Remember me - I want Livingstone Luxury to personalise my shopping experience
+                    </label>
+
+                   <button type="submit" class="sign-in-btn">SIGN IN</button>
+                    <div class="divider">or</div>
+                  </form>
+                </div>
+              </div>  {% endcomment %}
+
+            </div>
+          </div>
+          <div
+            class="burger_container d-flex flex-column align-items-center justify-content-around menu_mm">
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+      </header>
+      <!-- SEGMENT HOVER PAGE  END-->
+
+
+
+
+
+      <!-- side menu  -->
+      <div class="menu menu_mm">
+        <div class="menu_header">
+          <!-- <img  src="{% static 'images/logo2.png' %}"  alt="" /> -->
+           <div class="logo" > 
+            <a href="{% url 'index' %} " style="color: black; font-size: 18px;"> LIVINGSTONE LUXURY</a> 
+          </div>
+          <div class="menu_icons">
+
+          <a href="{% url 'search' %}"><img src="{% static 'images/magnifying-glass.svg' %}" alt="" /></a>   
+          <a href="{% url 'cart' %}"><img src="{% static 'images/shopping-bag.svg' %}" alt="" /></a>  
+            <img src="{% static 'images/close_img.png' %}" alt="" />
+          </div>
+        </div>
+        <nav class="menu_nav">
+          <ul>
+            {% if user.is_authenticated %}
+               <li>
+                 <a href="#"><i class="fa fa-user"></i> {{ user.first_name }}</a>
+                 
+               </li>
+               <li>
+                 <a href="{% url 'account' %}"><i class="fa fa-user-circle"></i> My Account</a>
+                 <span class="menu_arrow">›</span>
+
+               </li>
+               <li>
+                 <a href="#"><i class="fa fa-exchange-alt"></i> Orders & Returns</a>
+               </li>
+               <li>
+                   <a href="{% url 'track_order' %}">
+                     <i class="fa fa-truck"></i> Track Order
+                   </a>
+                 </li>                               
+               <li>
+                 <a href="{% url 'logout' %}"><i class="fa fa-sign-out-alt"></i> Logout</a>
+               </li>
+               {% else %}
+               <li>
+                 <a href="{% url 'sign_in' %}"><i class="fa fa-user"></i> Sign In / Register</a>
+                 <span class="menu_arrow">›</span>
+               </li>
+             {% endif %}
+            <li>
+              <a href="{% url 'men' %}">Men</a>
+              <span class="menu_arrow">›</span>
+            </li>
+            <li>
+              <a href="{% url 'women' %}">Women</a>
+              <span class="menu_arrow">›</span>
+            </li>
+            <li>
+              <a href="{% url 'kashnaar' %}">Kashnaar</a>
+              <span class="menu_arrow">›</span>
+            </li>
+            <li>
+              <a href="{% url 'accessories' %}">Accessories</a>
+              <span class="menu_arrow">›</span>
+            </li>
+            <li>
+              <a href="{% url 'index' %}">Home</a>
+              <span class="menu_arrow">›</span>
+            </li>
+          </ul>          
+        </nav>
+        <div class="menu_footer">
+          {% comment %} <ul>
+            <li><i class="icon-map-marker"></i> Stores</li>
+            <li><i class="icon-globe"></i> In English</li>
+          </ul> {% endcomment %}
+        </div>
+      </div>
+<!-- side menu with hamburger END -->
+    
+
+
+
+
+
+
+
+    
+
+
+    {% block content %}
+
+    {% endblock content %}
+    <footer class="footer">
+        <div class="footer-container">
+          {% comment %} <div class="footer-column">
+            <h4>ABOUT</h4>
+            <ul>
+              <li>About Us</li>
+              <li>Careers</li>
+              <li>Privacy</li>
+              <li>Terms Of Use</li>
+            </ul>
+          </div> {% endcomment %}
+
+          <div class="footer-column">
+           <h4>ACCOUNT</h4>
+           <ul>
+            <li><a href="{% url 'account' %}">My Account</a></li>
+            <li><a href="{% url 'refund-policy' %}">Refund Policy</a></li>
+            <li><a href="{% url 'privacy-policy' %}">Privacy Policy</a></li>
+             <li><a href="{% url 'tearms-policy' %}">Terms of Service</a></li> 
+           </ul>
+         </div>
+         <div class="footer-column">
+            <h4>MEN</h4>
+            <ul>
+              <li><a href="{% url 'product_list' category='men' subcategory='tshirt' %}">T-Shirt</a></li>
+              <li><a href="{% url 'product_list' category='men' subcategory='wallet' %}">Wallet</a></li>
+               <li><a href="{% url 'product_list' category='men' subcategory='belt_men' %}">Belt</a></li>
+            </ul>
+
+            <div class="footer-column">
+              <h4>WOMEN</h4>
+              <ul>
+                 <li><a href="{% url 'product_list' category='women' subcategory='women_tshirt' %}">T-Shirt</a></li>
+                <li><a href="{% url 'product_list' category='women' subcategory='bag' %}">Bag</a></li>
+                <li><a href="#">Women Belt</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="footer-column">
+             <h4>Accessories</h4>
+             <ul>
+               <li><a href="#">Belt</a></li>
+              <li><a href="{% url 'product_list' category='men' subcategory='wallet' %}">Wallet</a></li>
+              <li><a href="{% url 'product_list' category='men' subcategory='accessory_caps' %}">Caps</a></li>
+              <li><a href="{% url 'product_list' category='accessories' subcategory='accessory_beer_mug' %}">Beer Mug</a></li>
+            </ul>
+
+            
+          </div>
+          
+
+          
+          
+
+          <div class="footer-column newsletter">
+
+            <div class="footer-column">
+               <h4>Kashnaar</h4>
+              <ul>
+                 <li><a href="{% url 'kashnaar' %}">Candles</a></li>
+              </ul>
+             </div>
+            {% comment %} <h3>
+                SIGN UP TO RECEIVE THE LATEST NEWS, SPECIAL OFFERS AND/OR
+                EXCLUSIVE EVENTS RELATING TO LIVINGSTONE LUXURY PRODUCTS AND SERVICES,
+                BY E-MAIL OR TARGETED SOCIAL MEDIA ADS. BY SIGNING UP, YOU
+                CONSENT TO THE USE OF TRACKING TECHNOLOGIES FOR PERSONALISATION
+                AND ANALYTICS.
+            </h3>
+            <div class="newsletter-form">
+              <input type="email" placeholder="ENTER EMAIL ADDRESS" />
+              <button>SUBMIT</button>
+            </div>
+           <p class="unsubscribe-text">
+              You may unsubscribe at any time by clicking on the unsubscribe
+              link in each e-mail. For more information, please read Ralph
+              Lauren Europe Sàrl’s <a href="#">Privacy Policy</a>.
+            </p>  {% endcomment %}
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <div style="background-color: black;" class="footer_logo"><a href="#">LIVINGSTONE LUXURY</a></div>
+          <div class="social-icons">
+            {% comment %} <a href="#"><i class="fab fa-pinterest"></i></a> {% endcomment %}
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            {% comment %} <a href="#"><i class="fab fa-twitter"></i></a> {% endcomment %}
+           </div>
+          <p>© COPYRIGHT 2025 LIVINGSTONE LUXURY MEDIA LLC</p>
+        </div >
+        
+    </footer>
+
+
+    {% block page_js %}
+
+    {% endblock page_js %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    {% comment %} <script>
+  window.addEventListener("load", function () {
+    const loader = document.getElementById("loader-wrapper");
+    loader.classList.add("fade-out");
+    setTimeout(() => {
+      loader.style.display = "none";
+    }, 600); 
+  });
+</script> {% endcomment %}
+
+<script>
+  window.addEventListener("load", function () {
+    const loader = document.getElementById("loader-wrapper");
+    loader.classList.add("fade-out");
+    setTimeout(() => {
+      loader.style.display = "none";
+    }, 600);
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,266 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{% endblock title %}
+
+{% block description %}{% endblock description %}
+
+
+{% block keywords %}{% endblock keywords %}
+
+
+
+
+{% block page_css %}
+
+<link rel="stylesheet" href="{% static 'styles/bootstrap4/bootstrap.min.css' %}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link href="{% static 'plugins/malihu-custom-scrollbar/jquery.mCustomScrollbar.css' %}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/jquery-ui-1.12.1.custom/jquery-ui.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'styles/categories.css' %}">
+<link rel="stylesheet" href="{% static 'styles/main_styles.css' %}" />
+<link rel="stylesheet" href="{% static 'styles/responsive.css' %}" />
+
+  <style>
+  .logo a
+{
+	font-family: 'Lucida', serif;
+	font-size: 30px;
+	color: white;
+  text-decoration: none;
+}
+
+</style>
+
+
+{% endblock page_css %}
+
+
+
+
+{% block content %}
+
+
+
+
+<body>
+	<!-- Home -->
+
+	<div class="home">
+  <video autoplay muted loop playsinline class="home_background_video">
+    <source src="{% static 'videos/fashion5.mp4' %}" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="home_container">
+          <div class="home_content">
+            <div class="content">
+                <h1 class="title">LIVINGSTONE LUXURY WOMEN</h1>
+                <div class="buttons">
+                  {% comment %} <button class="btn">SHOP NOW</button>
+                  <button class="btn secondary">EXPLORE THE CAMPAIGN</button> {% endcomment %}
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- category -->
+
+{% comment %} <section class="shop-category">
+    <h2>Livingstone Bags</h2>
+    <div class="category-slider" id="slider">
+      <div class="category-card">
+      
+        <img src="{% static 'images/img1.jpeg' %}" alt="Casual Shirts" />
+		<div class="text-overlay">
+            <h2>T-SHIRTS</h2>
+            <h4>LIVINGSTONE LUXURY</h4>
+          </div>
+        
+      </div>
+      <div class="category-card">
+        <img src="{% static 'images/img2.jpeg' %}" alt="Casual Shirts" />
+		<div class="text-overlay">
+            <h2>CAPS</h2>
+            <h4>LIVINGSTONE LUXURY</h4>
+          </div>
+        
+      </div>
+      <div class="category-card">
+        <img src="{% static 'images/img6.jpeg' %}" alt="belt" />
+		<div class="text-overlay">
+            <h2>MUGS</h2>
+            <h4>LIVINGSTONE LUXURY</h4>
+          </div>
+        
+      </div>
+      <div class="category-card">
+        <img src="{% static 'images/img4.jpeg' %}" alt="wallet" />
+		<div class="text-overlay">
+            <h2>WALLET</h2>
+            <h4>LIVINGSTONE LUXURY</h4>
+          </div>
+        
+      </div>
+      <div class="category-card">
+         <img src="{% static 'images/img5.jpeg' %}" alt="beermug1" />
+		<div class="text-overlay">
+            <h2>BELT</h2>
+            <h4>LIVINGSTONE LUXURY</h4>
+          </div>
+        
+      </div>
+    </div>
+    <button class="slider-btn prev" onclick="scrollSlider(-1)">&#10094;</button>
+    <button class="slider-btn next" onclick="scrollSlider(1)">&#10095;</button>
+  </section> {% endcomment %}
+
+
+			<!-- Sidebar Right -->
+<div class="sidebar_right">
+  <div class="promo_row">
+    
+    <!-- Promo 1: Image Section -->
+    <div class="sidebar_promo sidebar_promo_1">
+      <div class="sidebar_promo_image" style="background-image: url('{% static "images/img1.jpeg" %}');"></div>
+      <div class="sidebar_promo_content">
+        <h1 class="sidebar_promo_title">LIVINGSTONE WOMEN BAGS</h1>
+        <p class="sidebar_promo_subtitle">LIVINGSTONE SPRING 2025</p>
+        <div class="sidebar_promo_button">
+          <a href="{% url 'product_list' category='women' subcategory='bag' %}">SHOP NOW</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Promo 2: Video Section -->
+    <div class="sidebar_promo sidebar_promo_2">
+      <div class="sidebar_promo_video_wrapper">
+        <video autoplay muted loop playsinline class="sidebar_promo_video">
+          <source src="{% static 'videos/fashion3.mp4' %}" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      <!-- <div class="sidebar_promo_content">
+        <h1 class="sidebar_promo_title">EXPERIENCE THE CRAFT</h1>
+        <p class="sidebar_promo_subtitle">BEHIND THE SCENES</p>
+        <div class="sidebar_promo_button">
+          <a href="#">WATCH VIDEO</a>
+        </div>
+      </div> -->
+    </div>
+
+  </div>
+</div>
+
+	<!-- tshirt_section -->
+    
+
+ <div class="accesssories_section">
+        <div class="hero-content">
+         <h1>LIVINGSTONE LUXURY</h1>
+         <h2>PURPLE LABEL</h2>
+         <h1>SPRING 2025</h1>
+         <p>
+             Inspired by the enduring spirit of effortless elegance,<br />
+             the Spring 2025 Purple Label collection draws upon<br />
+             timeless icons and a renewed appreciation<br />
+          for authenticity
+         </p>
+        <div class="hero-buttons">
+          <a href="{% url 'product_list' category='accessories' subcategory='all' %}">EXPLORE MORE</a>
+        </div>
+        </div>
+        <div class="hero-image"></div>
+    </div>
+</div>
+
+{% comment %} video slide section {% endcomment %}
+
+
+
+
+
+    <section class="explore-section">
+        <div class="explore-text">
+          <h2>More to <span>Explore</span></h2>
+          <p>Explore seasonal collections, iconic accessories, and more</p>
+        </div>
+
+        <div class="explore-wrapper">
+          <button class="arrow left" onclick="scrollGrid(-1)">&#10094;</button>
+
+          <div class="explore-grid" id="exploreGrid">
+            
+            <a href="{% url 'product_list' category='women' subcategory='bag' %}" class="explore-link">
+              <div class="explore-item">
+                <img src="{% static 'images/mnt15.png' %}" alt="" />
+               <div class="label">Handbags</div>
+              </div>
+            </a>
+
+            <a href="{% url 'product_list' category='men' subcategory='wallet' %}" class="category-link">
+            <div class="explore-item">
+              <img src="{% static 'images/walnew.png' %}" alt="" />
+              <div class="label">Wallet</div>
+             </div>
+            </a>
+            
+           <a href="{% url 'product_list' category='women' subcategory='women_tshirt' %}" class="category-link">
+             <div class="explore-item">
+               <img src="{% static 'images/women1.avif' %}" alt="" />
+               <div class="label">Women’s t-shirt</div>
+             </div>
+            </a>
+
+           <a href="{% url 'product_list' category='accessories' subcategory='accessory_beer_mug' %}" class="category-link">
+              <div class="explore-item">
+                <img src="{% static 'images/beermug1.png' %}" alt="" />
+                <div class="label">Mugs</div>
+              </div>
+            </a>
+
+            <a href="{% url 'accessories' %}" class="explore-link">
+              <div class="explore-item">
+                <img src="{% static 'images/cp2.png' %}" alt="" />
+                <div class="label">Accessories</div>
+              </div>
+            </a>
+
+            <a href="{% url 'kashnaar' %}" class="explore-link">
+              <div class="explore-item">
+                <img src="{% static 'images/can4.jpg' %}" alt="" />
+                <div class="label">kashnaar</div>
+              </div>
+            </a>
+          </div>
+
+          <button class="arrow right" onclick="scrollGrid(1)">&#10095;</button>
+        </div>
+      </section>
+ {% endblock content %}
+
+
+
+
+ {% block page_js %}
+
+<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+<script src="{% static 'styles/bootstrap4/popper.js' %}"></script>
+<script src="{% static 'styles/bootstrap4/bootstrap.min.js' %}"></script>
+<script src="{% static 'plugins/OwlCarousel2-2.2.1/owl.carousel.js' %}"></script>
+<script src="{% static 'plugins/easing/easing.js' %}"></script>
+<script src="{% static 'plugins/parallax-js-master/parallax.min.js' %}"></script>
+<script src="{% static 'plugins/colorbox/jquery.colorbox-min.js' %}"></script>
+<script src="{% static 'js/custom.js' %}"></script>
+<script src="{% static 'script.js' %}"></script>
+
+
+</body>
+
+{% endblock page_js %}
+</html>

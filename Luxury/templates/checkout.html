@@ -1,0 +1,467 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{% endblock title %}
+{% block description %}{% endblock description %}
+{% block keywords %}{% endblock keywords %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{% static 'styles/bootstrap4/bootstrap.min.css' %}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link href="{% static 'plugins/malihu-custom-scrollbar/jquery.mCustomScrollbar.css' %}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/jquery-ui-1.12.1.custom/jquery-ui.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'styles/categories.css' %}">
+<link rel="stylesheet" href="{% static 'styles/main_styles.css' %}" />
+<link rel="stylesheet" href="{% static 'styles/responsive.css' %}" />
+<style>
+
+
+.pt-5, .py-5 {
+    padding-top: 5rem !important;
+}
+.main_nav ul li a {
+    color: #000;
+  }
+  .header {
+    color: white;
+    background: transparent; 
+    position: fixed
+  }
+  .header.scrolled {
+   color: black; 
+}
+.logo a {
+  color: black;
+}
+.header.scrolled .logo a {
+  color: black;
+}
+.header .burger_container div {
+  background: black;
+}
+.burger_container:hover div
+{
+	background: #937c6f;
+}
+
+
+
+
+
+
+/* PAYMENT & BILLING SUMMARY SECTION */
+.payment-billing-section {
+  max-width: 1200px;
+  margin: 60px auto;
+  display: flex;
+  gap: 60px;
+  justify-content: space-between;
+  font-family: 'Georgia', serif;
+}
+
+.payment-form {
+  flex: 1.2;
+}
+
+.billing-summary {
+  flex: 0.8;
+}
+
+.payment-form h2,
+.billing-summary h2 {
+  color: #0d2343;
+  font-weight: normal;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 8px;
+  margin-bottom: 15px;
+}
+
+.payment-form label {
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 20px;
+  display: block;
+}
+
+.payment-form input,
+.payment-form select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.payment-form .expiry-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.payment-form .security-code {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.payment-form button {
+  background-color: #0d2343;
+  color: #fff;
+  padding: 14px;
+  border: none;
+  width: 100%;
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.payment-form p,
+.billing-summary p {
+  font-size: 13px;
+  margin-top: 10px;
+}
+
+.billing-summary .summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+
+.billing-summary hr {
+  border: none;
+  
+  border-top: 1px solid #ccc;
+  margin: 10px 0;
+}
+
+.billing-summary .summary-total {
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .payment-billing-section {
+    flex-direction: column;
+    gap: 30px;
+    padding: 0 15px;
+  }
+
+  .payment-form,
+  .billing-summary {
+    width: 100%;
+  }
+
+  .payment-form .expiry-row,
+  .payment-form .security-code {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+
+
+.order-summary {
+    width: 100%;
+    font-family: 'Georgia', serif;
+    font-size: 14px;
+    margin-top: 20px;
+  }
+
+  .order-summary th {
+    border-bottom: 1px solid #ccc;
+    color: #0a2b55;
+    padding-bottom: 8px;
+  }
+
+  .order-summary td {
+    vertical-align: top;
+    padding: 20px 10px;
+  }
+
+  .product-img {
+    width: 80px;
+  }
+
+  .product-details {
+    line-height: 1.6;
+    color: #0a2b55;
+  }
+
+  .product-details strong {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 16px;
+  }
+
+  .label {
+    color: #000;
+    font-weight: bold;
+  }
+@media (max-width: 768px) {
+  .order-summary {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .order-summary table,
+  .order-summary thead,
+  .order-summary tbody,
+  .order-summary th,
+  .order-summary td,
+  .order-summary tr {
+    display: block;
+    width: 100%;
+  }
+
+  .order-summary thead {
+    display: none;
+  }
+
+  .order-summary td {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    text-align: left;
+    position: relative;
+  }
+
+  .order-summary td:before {
+    content: attr(data-label);
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    color: #0a2b55;
+  }
+
+  .product-img {
+    float: left;
+    margin-right: 10px;
+  }
+
+  .product-details {
+    overflow: hidden;
+  }
+}
+
+
+</style>
+{% endblock page_css %}
+
+{% block content %}
+
+<!-- Payment and Billing Summary -->
+<div class="payment-billing-section" style="display: flex; justify-content: space-between; gap: 60px; max-width: 1350px; margin: 230px auto;">
+  <div class="payment-form" style="flex: 1.2;">
+
+
+  <!-- Order Summary -->
+  <h2 style="font-family: 'Georgia', serif; color: #0a2b55; border-bottom: 1px solid #ccc; padding-bottom: 8px;">Order Summary</h2>
+
+  <table class="order-summary">
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th style="width: 165px;">&nbsp;</th>
+      <th style="text-align: center;">QUANTITY</th>
+      <th style="text-align: right;">PRICE</th>
+      <th style="text-align: right;">TOTAL</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in cart_items %}
+    <tr>
+      <td>
+        <img src="{{ item.product.image.url }}" alt="{{ item.product.title }}" style="width: 80px; height: 100px; object-fit: cover;" />
+      </td>
+      <td class="product-details">
+        <strong>{{ item.product.title }}</strong>
+      </td>
+      <td style="text-align: center;">{{ item.quantity }}</td>
+      <td style="text-align: right;">₹ {{ item.product.price }}</td>
+      <td style="text-align: right;">₹ {{ item.product.price|floatformat:2|add:item.quantity|floatformat:2 }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+ </div>
+
+
+ <form action="{{ data.action }}"  name="payuForm" method="post">
+    {% csrf_token %}        
+    <input type="hidden" name="key" value="{{ data.key }}" />            
+    <input type="hidden" name="hash" value="{{ data.hash }}"/>            
+    <input type="hidden" name="txnid" value="{{ data.txnid }}" />
+    <input type="hidden" name="amount" value="{{ data.amount }}" />
+    <input type="hidden" name="email" value="{{ data.email }}" />
+    <input type="hidden" name="firstname" value="{{ data.firstname }}" />
+    <input type="hidden" name="phone" value="{{ data.phone }}" />
+    <input type="hidden" name="productinfo" value="{{ data.productinfo }}"/>
+    <input type="hidden" name="surl" value="{{ data.surl }}"/>
+    <input type="hidden" name="furl" value="{{ data.furl }}" />
+    <input type="hidden" name="service_provider" value="{{ data.service_provider }}"/>
+
+
+    <!-- Billing Summary -->
+
+
+    <div class="billing-summary" style="flex: 0.8;">
+      <h2 style="font-family: 'Georgia', serif; color: #0a2b55;">Billing Summary</h2>
+      <div style="margin-top: 20px;">
+          <p style="display: flex; justify-content: space-between;"><span>Items total</span><span>₹ {{ total|floatformat:2 }}</span></p>
+          <p style="display: flex; justify-content: space-between;"><span>Shipping</span><span>₹ 0.00</span></p>
+        <hr />
+          <p style="display: flex; justify-content: space-between; font-weight: bold;"><span>Total For Your Order</span><span>₹ {{ total|floatformat:2 }}</span></p>
+                  <p style="font-size: 12px; margin-top: 20px;">
+          The total amount you pay includes all applicable customs duties & taxes. We guarantee no additional charges on delivery.
+        </p>
+        <button type="submit" style="width: 100%; background: #0a2b55; color: wheat; padding: 14px; margin-top: 20px; border: none;" value="Pay Now">
+          PAY AND PLACE ORDER
+        </button>
+      </div>
+    </div>
+  </form>
+  
+</div>
+
+
+
+
+{% endblock content %}
+
+{% block page_js %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // 1. Billing summary price update from session
+    const total = sessionStorage.getItem("checkout_total");
+    if (total) {
+      document.querySelectorAll(".billing-summary span").forEach((el) => {
+        if (el.textContent.includes("₹")) {
+          el.textContent = "₹ " + parseFloat(total).toFixed(2);
+        }
+      });
+    }
+
+    // 2. Delivery address handling
+    const deliveryFields = document.getElementById("delivery-fields");
+    const sameRadio = document.getElementById("same");
+    const alternativeRadio = document.getElementById("alternative");
+
+    function copyBillingToDelivery() {
+      deliveryFields.style.display = "none";
+      document.getElementById('delivery_address1').value = document.getElementsByName('address1')[0].value;
+      document.getElementById('delivery_address2').value = document.getElementsByName('address2')[0].value;
+      document.getElementById('delivery_city').value = document.getElementsByName('city')[0].value;
+      document.getElementById('delivery_zipcode').value = document.getElementsByName('zipcode')[0].value;
+      document.getElementById('delivery_phone').value = document.getElementsByName('mobile')[0].value;
+    }
+
+    function clearDeliveryFields() {
+      deliveryFields.style.display = "block";
+      document.getElementById('delivery_address1').value = '';
+      document.getElementById('delivery_address2').value = '';
+      document.getElementById('delivery_city').value = '';
+      document.getElementById('delivery_zipcode').value = '';
+      document.getElementById('delivery_phone').value = '';
+    }
+
+
+    if (alternativeRadio.checked) {
+      clearDeliveryFields();
+    } else {
+      copyBillingToDelivery();
+    }
+
+
+    sameRadio.addEventListener("change", copyBillingToDelivery);
+    alternativeRadio.addEventListener("change", clearDeliveryFields);
+  });
+</script>
+
+
+
+
+
+<!-- rennder price to order summary -->
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const total = sessionStorage.getItem("checkout_total");
+    const originalPrice = 52400.00;
+
+    if (total) {
+      const totalFloat = parseFloat(total).toFixed(2);
+      const savedAmount = (originalPrice - totalFloat).toFixed(2);
+
+      // Update billing summary
+      document.querySelectorAll(".billing-summary span").forEach((el) => {
+        if (el.textContent.includes("₹")) {
+          el.textContent = "₹ " + totalFloat;
+        }
+      });
+
+      // Update order summary
+      document.getElementById("order-summary-total").textContent = totalFloat;
+      document.getElementById("order-summary-saved").textContent = savedAmount;
+    }
+  });
+</script>
+
+<!-- render products from checkout page to order summary-->
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const cart = JSON.parse(sessionStorage.getItem("cart_items") || "[]");
+  const tbody = document.getElementById("order-summary-body");
+
+  if (!tbody) return;
+
+  tbody.innerHTML = ""; 
+
+  cart.forEach(item => {
+    const price = parseFloat(item.price.replace(/[^\d.]/g, "")) || 0;
+    const original = item.original_price ? parseFloat(item.original_price.replace(/[^\d.]/g, "")) : price;
+    const quantity = item.quantity || 1;
+    const total = price * quantity;
+    const saved = original > price ? (original - price) * quantity : 0;
+
+    const row = document.createElement("tr");
+    row.style.borderBottom = "1px solid #ccc";
+    row.innerHTML = `
+      <td style="padding: 10px 0;">
+        <img src="${item.image}" alt="${item.title}" style="width: 100px;" />
+      </td>
+      <td style="padding: 10px;">
+        <div style="color: #0a2b55; font-weight: bold;">${item.title}</div>
+       
+      </td>
+      <td style="text-align: center;">${quantity}</td>
+      <td style="text-align: right;">₹ ${price.toFixed(2)}</td>
+      <td style="text-align: right;">
+        ₹ ${total.toFixed(2)}<br>
+        <span style="font-size: 13px; text-decoration: line-through; color: grey;">Was: ₹ ${original.toFixed(2)}</span><br>
+        <span style="font-size: 13px; color: green;">You Save: ₹ ${saved.toFixed(2)}</span>
+      </td>
+    `;
+    tbody.appendChild(row);
+  });
+});
+</script>
+
+
+
+
+
+
+
+<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+<script src="{% static 'styles/bootstrap4/popper.js' %}"></script>
+<script src="{% static 'styles/bootstrap4/bootstrap.min.js' %}"></script>
+<script src="{% static 'plugins/OwlCarousel2-2.2.1/owl.carousel.js' %}"></script>
+<script src="{% static 'plugins/easing/easing.js' %}"></script>
+<script src="{% static 'plugins/parallax-js-master/parallax.min.js' %}"></script>
+<script src="{% static 'plugins/colorbox/jquery.colorbox-min.js' %}"></script>
+<script src="{% static 'js/custom.js' %}"></script>
+<script src="{% static 'script.js' %}"></script>
+</body>
+{% endblock page_js %}

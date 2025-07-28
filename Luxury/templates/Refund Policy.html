@@ -1,0 +1,236 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{% endblock title %}
+{% block description %}{% endblock description %}
+{% block keywords %}{% endblock keywords %}
+
+
+
+
+{% block page_css %}
+
+<link rel="stylesheet" href="{% static 'styles/bootstrap4/bootstrap.min.css' %}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link href="{% static 'plugins/malihu-custom-scrollbar/jquery.mCustomScrollbar.css' %}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/jquery-ui-1.12.1.custom/jquery-ui.css' %}">
+<link rel="stylesheet" href="{% static 'styles/main_styles.css' %}" />
+<link rel="stylesheet" href="{% static 'styles/responsive.css' %}" />
+
+
+{% comment %} extra CSS for nav bar color according to page {% endcomment %}
+<style>
+
+  
+
+
+.content-policy{
+  padding-top: 200px;
+  font-family: "Mada", sans-serif;
+  background-color: #000000;
+  background-position: center;
+}
+
+
+h1.policy{
+  color: #AF9875;
+    top: 200px;
+    font-weight: 610;
+    font-size: 38px;
+    line-height: 38px;
+    text-align: center;
+}
+.policy-line{
+  width: 250px;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: auto;
+  margin-right: auto;
+  border-style: inset;
+  display:block;
+}
+.A img{
+  width: 60px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+p.policy{
+  font-weight: 300;
+  font-size: 17px;
+  line-height: 25px;
+  color: #FFFFFF;
+  align: center;
+  padding:20px;
+  margin-top: 0px;
+}
+
+h2.policy{
+  color: #AF9875;
+  font-weight: 610;
+  font-size: 19px;
+  line-height: 29px;
+  margin-top: 50px;
+  margin-bottom: 15px;
+  margin-left: 19px;
+ 
+}
+
+.container{
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  top: -120px;
+}
+
+
+
+
+@media (min-width: 600px) {
+  
+  
+  .logo img { 
+  width: 250px;
+ }
+ h1.policy{
+    font-size: 50px;
+}
+ 
+p.policy{
+  font-size: 20px;
+  line-height: 35px;
+}
+  
+ h2.policy{
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.policy-line{
+  width: 420px;
+  border width:2px;
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+  
+  .A img{
+  width: 75px;
+}
+ .container{
+  width: 100%;
+  }
+ 
+}
+
+
+.A {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.A img {
+  height: 150px;
+  width: 150px;
+}
+
+
+
+
+
+</style>
+
+
+{% endblock page_css %}
+
+
+
+
+{% block content %}
+
+
+<div class="top">
+
+
+  <div class="content-policy">
+
+    <div class="container">
+
+      <hr class="policy-line" />
+      <h1 class="policy">Refund & Shipping Policy</h1>
+      <hr class="policy-line" />
+
+      <div class="A" />
+      <img src="{% static 'images/favicon.png' %} " alt='word A' /> 
+    </div> 
+
+    <h2 class="policy">Shipping Policies</h2>
+    <p class="policy">To ensure that your order reaches you in the fastest time and in good condition, we only ship through reputed courier agencies.
+While we shall strive to ship all items in your order together, this may not always be possible due to product characteristics, or availability. However, we will inform you before doing it.
+If you believe that the product is not in good condition, or if the packaging is tampered with or damaged, before accepting delivery of the goods, please refuse to take delivery of the package, and contact us, mentioning your order reference number. We shall make our best efforts to ensure that a replacement delivery is made to you at the earliest.
+You may track the shipping status of your order on our website, by clicking at Track your Order section.
+Please note all items (including gifts) will be shipped with an invoice mentioning the price, as per Indian Tax Regulations.</p>
+
+      <h2 class="policy">Shipping Partners</h2>
+    <p class="policy">We use Delhivery, BlueDart, Ecomexpress, Xpressbees, Ekart, Shadow Fax to ship our products to your destination as available during checkout.
+We also can ship through EMS Speed post on special request to remote locations, if you think that our shipping partners does not have coverage or served you improperly. HOWEVER, WE CAN’T GUARANTEE TO COMPLY TO YOUR REQUEST. This is due to the reason each shipment content is being verified by the post office before accepting. If they feel that the item may be damaged, then they will not accept the shipment.</p>
+
+    <h2 class="policy">Shipping Time / Delivery Time</h2>
+    <p class="policy">We make our best efforts to ship your order within same day of the order. 99% of our orders are shipped within 24 Hours.
+We ship on week days (Monday to Saturday), excluding public holidays. Orders placed on SUNDAY will be shipped only on MONDAY
+Orders placed before 4.00 PM will be shipped on the same day except on Sundays and Public Holidays.
+Shipments through Delhivery, BlueDart, Ecomexpress, Xpressbees, Ekart, Shadow Fax, if created before 04:00 PM will be picked up by them on the same day. Otherwise, the shipment will be picked up only on the next day.
+Though we can guarantee a delivery time of 2-5 days to anywhere in India, it is totally beyond our control. Each shipping companies have their own methods, intermediate transit locations etc. and the delivery time is not predictable.
+Please plan your order allowing sufficient time for the delivery instead of last-minute orders.</p>
+
+
+    <h2 class="policy">Guarantee/Warranty</h2>
+    <p class="policy">All items are delivered with standard warranty of minimum 15 Days (unless otherwise specified in the product page) to protect the customers from any manufacturing defect. If you have any problems with your order, please notify us within this duration from date of shipment of any defective product. You agree to pay for the return shipping on exchanges and returns and we will reimburse this cost upon verification of a defect with the product. We will replace or repair the damaged products at free of cost with shipping prepaid by us. In case, we do not have the product in stock to provide replacement, we will issue 100% refund. Furthermore, no warranty will apply if the Product has been subject to misuse, static discharge, neglect, accident, modification, or has been soldered or altered in any way.
+
+To the product need to be exchanged, firstly, please send the photos of damaged products to us. We will estimate the damages then decide the best way to exchange or return the product. If the particular item is not in stock to replace ,we will provide the full refund.</p>
+
+
+<h2 class="policy">100% Refund/Replacement:</h2>
+    <p class="policy">We guarantee to provide accurate descriptions and high-quality product as mentioned in the website. In order to protect customers from shipping damage, item mismatch or parts missing etc., we are providing 2 days’ time (From the date of order delivery) to report the complaint. Our technical team will verify the submitted details visually and will issue RMA number to return the material. Once we received the product our experts will verify the issue reported and will send the replacement items to the customer shipping cost prepaid by us. In case, we do not have the product in stock to provide replacement, we will issue 100% refund. Furthermore, no warranty will apply if the Product has been subject to misuse, static discharge, neglect, accident, modification, or has been soldered or altered in any way. Due to the nature of the products, we are selling and our strict quality policy, we are unable to offer order cancellation and return without valid reason. JOHNNETTE TECHNOLOGIES PRIVATE LIMITED reserves the right to take the final decision on all refund request.</p>
+
+  <h2 class="policy">Cancelling An Order:
+</h2>
+    <p class="policy">You want it cancelled? You can ask us (by email only) to cancel your order, update an address. Customer Service will get back to you by email within one business day regarding your request. Only orders that are still in status “Pending” or “Payment Verification” can be altered or cancelled. If your order has already moved to a different status, you won’t be able to alter it or cancel it. In some cases Order cancellation may attract 5% bank charges depending on the payment methods used by customer. (It is because most of payment gateway providers collect their Commissions even though order cancelled and refunded.).Due to the nature of the products we are selling and our strict quality policy, we are unable to offer order cancellation and return without valid reason. JOHNNETTE TECHNOLOGIES PRIVATE LIMITED reserves the right to take the final decision on all refund request.</p>
+
+  <h2 class="policy">Return Guidelines:
+</h2>
+    <p class="policy">Once we confirmed the faulty item cannot be repairable by customer or by Remote Desktop (Team Viewer), we will issue the RMA Number, which you have to mention clearly on Shipping boxes. Do not write anything on the merchandise packaging (Product package). Defective unused merchandise will be replaced within 2 days of receipt. All returns must include a copy of the original packing list that came with your shipment.</p>
+
+  <h2 class="policy">Limits Of Responsibility:
+</h2>
+    <p class="policy">We accept no responsibility for improper installation of our products. Electrical polarity must be properly observed in hooking up electrical components.</p>
+  
+    <p class="policy"></p>
+  
+  </div>
+
+
+
+
+{% endblock content %}
+{% block page_js %}
+
+
+
+
+
+<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+<script src="{% static 'styles/bootstrap4/popper.js' %}"></script>
+<script src="{% static 'styles/bootstrap4/bootstrap.min.js' %}"></script>
+<script src="{% static 'plugins/OwlCarousel2-2.2.1/owl.carousel.js' %}"></script>
+<script src="{% static 'plugins/easing/easing.js' %}"></script>
+<script src="{% static 'plugins/parallax-js-master/parallax.min.js' %}"></script>
+<script src="{% static 'plugins/colorbox/jquery.colorbox-min.js' %}"></script>
+<script src="{% static 'js/custom.js' %}"></script>
+
+
+
+
+
+</body>
+{% endblock page_js %}
+</html>

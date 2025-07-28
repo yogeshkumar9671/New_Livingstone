@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}Transaction Successful{% endblock title %}
+
+{% block page_css %}
+{% endblock page_css %}
+
+
+{% block content %}
+
+<span style="position: static; display: inline-block; height: 25px;" class="balance"></span> 
+    <div class="container">
+        <div class="row">
+            <div class="">
+                <div class="" style="text-align: center;">
+                    <img src="{% static 'app/images/logo/logo/right3.gif' %}" width="300px;" class="img-fluid">
+                    <div style="display: flex; justify-content: center;">
+                        <p style="font-size: 18px; max-width: 750px; color: rgb(91, 91, 91)!important; text-align: center;">We are pleased to inform you that your transaction has been successfully processed. To ensure the completion of the process, kindly avoid refreshing the page or using the back button on your browser.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<br><br>
+
+
+<form id="myForm" action="/paymentdone" class="d-inline">
+    {% csrf_token %}
+    <input type="hidden" name="transaction_id" value="{{ transaction_id }}" id="transaction_id">
+    <input type="hidden" name="mihpayid" value="{{ mihpayid }}" id="mihpayid">
+    <input type="hidden" name="status" value="{{ status }}" id="status">
+    <input type="hidden" name="mode" value="{{ mode }}" id="mode">
+</form>
+
+<span style="position: static; display: inline-block; height: 30px;" class="balance"></span> 
+
+
+{% endblock content %}
+
+
+
+{% block page_js %}
+<script>
+    window.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('myForm').submit();
+    });
+</script>
+{% endblock page_js %}

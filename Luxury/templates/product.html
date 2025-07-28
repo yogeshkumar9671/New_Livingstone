@@ -1,0 +1,220 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{% endblock title %}
+{% block description %}{% endblock description %}
+{% block keywords %}{% endblock keywords %}
+{% block page_css %}
+
+<link rel="stylesheet" href="{% static 'styles/bootstrap4/bootstrap.min.css' %}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link href="{% static 'plugins/malihu-custom-scrollbar/jquery.mCustomScrollbar.css' %}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/jquery-ui-1.12.1.custom/jquery-ui.css' %}">
+
+
+<link rel="stylesheet" type="text/css" href="{% static 'styles/categories.css' %}">
+<link rel="stylesheet" href="{% static 'styles/main_styles.css' %}" />
+<link rel="stylesheet" href="{% static 'styles/responsive.css' %}" />
+
+{% comment %} extra CSS for nav bar color according to page {% endcomment %}
+<style>
+
+  .pt-5, .py-5 {
+    padding-top: 5rem !important;
+}
+.main_nav ul li a {
+    color: #000;
+  }
+  .header {
+    color: white;
+    background: transparent; 
+    position: fixed
+  }
+  .header.scrolled {
+   color: black; 
+}
+.logo a {
+  color: black;
+}
+.header.scrolled .logo a {
+  color: black;
+}
+.header .burger_container div {
+  background: black;
+}
+.burger_container:hover div
+{
+	background: #937c6f;
+}
+
+
+
+.pt-5, .py-5 {
+    padding-top: 9rem !important;
+}
+
+</style>
+
+
+{% endblock page_css %}
+
+
+
+
+{% block content %}
+
+
+
+ <section id="best-sellers" class="best-sellers py-5 position-relative overflow-hidden">
+    <div class="container category-header">
+     <div class="breadcrumb">
+        <a href="#">{{ category|upper }}</a> /
+        <a href="#">{{ subcategory|upper }}</a> /
+      </div>
+
+     <div class="header-content d-flex justify-between align-items-start">
+       <div class="text-block">
+         <!-- <h1 class="title">Women's Shirts &amp; Blouses</h1> -->
+         <p class="description">
+           From special statement pieces to elevated everyday staples, Ralph Lauren’s women's, shirts, and blouses reimagine
+           classic silhouettes in modern styles. Polo’s iconic cotton oxford shirts, in slim or overs...
+           <a href="#">More</a>
+         </p>
+
+         <div class="filters">
+            <button class="filter-btn" data-filter="*">All</button>
+            <button class="filter-btn" data-filter=".tote">TOTE Bag</button>
+            <button class="filter-btn" data-filter=".sholder">Sholder Bag</button>
+           <button class="filter-btn" data-filter=".handheld">Handheld Bag</button>
+          </div>   
+                 
+       </div>
+
+       <div class="filter-sort">
+         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="#0a2540" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sliders" viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+         <span>FILTER &amp; SORT</span>
+       </div>
+     </div>
+   </div>
+
+
+    <div class="product-grid gallery-grid">
+   
+      {% for product in products %}
+         <div class="product-item image-zoom-effect link-effect">
+           <div class="image-holder">
+             <a href="{% url 'productdetails' product.id %}">
+               <img src="{{ product.image1.url }}" class="product-image" alt="{{ product.title }}">
+             </a>
+             <a href="{% url 'wishlist' %}" 
+                class="btn-icon btn-wishlist" 
+                data-title="{{ product.title }}" 
+                data-price="₹{{ product.price }}" 
+                data-image="{{ product.image1.url }}" 
+                data-brand="LIVINGSTONE LUXURY" 
+                onclick="addToWishlist(event, this)">
+               <svg class="wishlist-heart" viewBox="0 0 24 24" width="24" height="24">
+                 <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 
+                  2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09
+                  C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 
+                  22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+               </svg>
+             </a>
+           </div>
+           <div class="product-content">         
+            <h5 class="text-uppercase fs-5 mt-3">
+               <a href="{% url 'productdetails' product.id %}">{{ product.title }}</a>
+             </h5>
+             <a href="#" class="text-decoration-none"><span>₹{{ product.price }}</span></a>
+           </div>
+         </div>
+        {% empty %}
+     <p>No products found in this category.</p>
+     {% endfor %}
+    </div>
+  </div>
+</section> 
+
+
+{% endblock content %}
+
+
+
+
+{% block page_js %}
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
+<script>
+  
+  $(document).ready(function () {
+    var $grid = $('.gallery-grid').isotope({
+      itemSelector: '.product-item',
+      layoutMode: 'fitRows'
+    });
+
+    $('.filter-btn').on('click', function () {
+      var filterValue = $(this).attr('data-filter');
+      $grid.isotope({ filter: filterValue });
+
+      $('.filter-btn').removeClass('active');
+      $(this).addClass('active');
+    });
+  });
+</script>
+
+
+<!-- wishlist -->
+
+<script>
+  function addToWishlist(event, element) {
+    event.preventDefault();
+
+    const title = element.getAttribute("data-title");
+    const price = element.getAttribute("data-price");
+    const image = element.getAttribute("data-image");
+    const brand = element.getAttribute("data-brand") || "LIVINGSTONE LUXURY";
+
+    const product = { title, price, image, brand };
+    let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+
+    const index = wishlist.findIndex(item => item.title === title && item.image === image);
+    const svgHeart = element.querySelector(".wishlist-heart");
+
+    if (index !== -1) {
+      // Remove from wishlist
+      wishlist.splice(index, 1);
+      svgHeart.classList.remove("active");
+    } else {
+      // Add to wishlist
+      wishlist.push(product);
+      svgHeart.classList.add("active");
+    }
+
+    localStorage.setItem("wishlist", JSON.stringify(wishlist));
+  }
+
+  // On page load, check for already wishlisted items
+  document.addEventListener("DOMContentLoaded", function () {
+    const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+
+    document.querySelectorAll(".btn-wishlist").forEach(button => {
+      const title = button.getAttribute("data-title");
+      const image = button.getAttribute("data-image");
+      const svgHeart = button.querySelector(".wishlist-heart");
+
+      const found = wishlist.some(item => item.title === title && item.image === image);
+      if (found) {
+        svgHeart.classList.add("active");
+      } else {
+        svgHeart.classList.remove("active");
+      }
+    });
+  });
+</script>
+  <script src="{% static 'js/custom.js' %}"></script>
+  
+  
+</body>
+{% endblock page_js %}
+</html>

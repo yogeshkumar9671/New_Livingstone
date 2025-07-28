@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{% endblock title %}
+{% block description %}{% endblock description %}
+{% block keywords %}{% endblock keywords %}
+{% block page_css %}
+<link rel="stylesheet" href="{% static 'styles/bootstrap4/bootstrap.min.css' %}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link href="{% static 'plugins/malihu-custom-scrollbar/jquery.mCustomScrollbar.css' %}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/jquery-ui-1.12.1.custom/jquery-ui.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'styles/categories.css' %}">
+<link rel="stylesheet" href="{% static 'styles/main_styles.css' %}" />
+{% endblock page_css %}
+
+
+
+
+{% block content %}
+
+  
+<body>
+
+  <div class="main-content">
+    <h2>default</h2>
+    <p>Color: default</p>
+    <p>Size: default</p>
+    <p>₹ default</p>
+    <img id="productImage" src="images/img1.jpeg" alt="Product" style="width: 200px; margin-bottom: 20px;" />
+    <div class="mt-4" id="bagbutton">
+      <button class="custom-bag-btn" onclick="openBag()">Add to Bag</button>
+    </div>
+  </div>
+
+  <!-- Slide-in Panel -->
+  <div id="sideBagPanel" class="bag-panel">
+    <div class="bag-header">
+      <span class="check-icon">✔</span>
+      <span>Item Added to Bag</span>
+      <button class="close-btn" onclick="closeBag()">×</button>
+    </div>
+    <div class="bag-body">
+      <img id="bagImage" src="{% static 'images/img1.jpeg' %} " />
+
+      <div class="bag-details">
+        <p class="brand">Polo Ralph Lauren</p>
+        <h5 id="bagTitle">Wimbledon Classic Fit Stretch Polo Shirt</h5>
+        <p><strong>Color:</strong> <span id="bagColor">Refined Navy</span></p>
+        <p><strong>Size:</strong> <span id="bagSize">M</span></p>
+        <p class="price" id="bagPrice">₹ 59,700.00</p>
+      </div>
+    </div>
+    <div class="bag-footer">
+      <button class="checkout-btn">Checkout (1)</button>
+      <button class="continue-btn" onclick="closeBag()">Continue Shopping</button>
+    </div>
+  </div>
+
+  {% endblock content %}
+
+
+
+
+ {% block page_js %}
+
+  <script>
+    function openBag() {
+      document.getElementById("sideBagPanel").classList.add("open");
+      // You can update dynamic data here too
+    }
+
+    function closeBag() {
+      document.getElementById("sideBagPanel").classList.remove("open");
+    }
+  </script>
+
+</body>
+ {% endblock page_js %}
+</html>
