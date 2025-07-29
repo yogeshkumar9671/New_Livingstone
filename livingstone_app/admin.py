@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Profile, Product, CartItem, Order_Tracker, Placed_Order, Address, Order, OrderItem
+from .models import Profile, Product, CartItem, Order_Tracker, Placed_Order, Address
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
@@ -13,6 +13,9 @@ from django.contrib import admin
 from .models import Product
 
 
+@admin.register(Address)
+class AddressModelAdmin(admin.ModelAdmin):
+    list_display = ['id', 'user', 'full_name', 'locality', 'city', 'pincode', 'state']
 
 
 from django.urls import reverse
@@ -64,23 +67,3 @@ class OrderUpdateModelAdmin(admin.ModelAdmin):
             return format_html("<a href='{}'>{}</a>", link, obj.orderInfo.product_id_number)
         else:
             return "No order information"
-        
-
-
-
-
-# for order history produuct save
-
-@admin.register(Order)
-class OrderAdmin(admin.ModelAdmin):
-    list_display = ('order_id', 'user', 'created_at', 'paid_amount')
-
-@admin.register(OrderItem)
-class OrderItemAdmin(admin.ModelAdmin):
-    list_display = ('order', 'product', 'quantity', 'delivery_status')
-
-
-# @admin.register(CartItem)
-# class CartItemAdmin(admin.ModelAdmin):
-#     list_display = ('user', 'product', 'quantity', 'added_at')
-

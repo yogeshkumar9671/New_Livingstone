@@ -14,8 +14,8 @@
 
 <link rel="stylesheet" type="text/css" href="{% static 'styles/categories.css' %}">
 
-<link rel="stylesheet" href="{% static 'styles/main_styles.css' %}" />
-<link rel="stylesheet" href="{% static 'styles/responsive.css' %}" /> 
+ {% comment %} <link rel="stylesheet" href="{% static 'styles/main_styles.css' %}" />
+<link rel="stylesheet" href="{% static 'styles/responsive.css' %}" />  {% endcomment %}
 
 <style>
   .logo a
@@ -79,7 +79,7 @@
 
      <a href="{% url 'product_list' category='men' subcategory='tshirt' %}" class="category-link">
       <div class="category-card" class="category-link">
-        <img src="{% static 'images/tshirts1.png' %} " alt="tshirt" />
+        <img src="{% static 'images/tshirts1.png' %} " alt="Casual Shirts" />
 
 		      <div class="text-overlay">
             <h2>T-SHIRTS</h2>
@@ -89,7 +89,7 @@
       </a> 
       <a href="{% url 'product_list' category='men' subcategory='accessory_caps' %}" class="category-link">
        <div class="category-card" class="category-link">
-        <img src="{% static 'images/cap1.png' %} " alt="caps" />
+        <img src="{% static 'images/cap1.png' %} " alt="Polo Shirts" />
 
 		     <div class="text-overlay">
             <h2>CAPS</h2>
@@ -100,7 +100,7 @@
 
     <a href="{% url 'product_list' category='accessories' subcategory='accessory_beer_mug' %}" class="category-link">
       <div class="category-card" class="category-link">
-        <img src="{% static 'images/beermug1.png' %} " alt="mug" />
+        <img src="{% static 'images/beermug1.png' %} " alt="belt" />
 
 		      <div class="text-overlay">
             <h2>MUGS</h2>
@@ -192,7 +192,7 @@
           for authenticity
          </p>
         <div class="hero-buttons">
-          <a href="{% url 'product_list' category='accessories' subcategory='all' %}">EXPLORE MORE</a>
+             <a href="{% url 'accessories' %}">EXPLORE MORE</a>
         </div>
         </div>
         <div class="hero-image"></div>
@@ -213,48 +213,36 @@
           <button class="arrow left" onclick="scrollGrid(-1)">&#10094;</button>
 
           <div class="explore-grid" id="exploreGrid">
-            
-            <a href="{% url 'product_list' category='women' subcategory='bag' %}" class="explore-link">
-              <div class="explore-item">
-                <img src="{% static 'images/mnt15.png' %}" alt="" />
-               <div class="label">Handbags</div>
-              </div>
-            </a>
-
-            <a href="{% url 'product_list' category='men' subcategory='wallet' %}" class="category-link">
             <div class="explore-item">
-              <img src="{% static 'images/walnew.png' %}" alt="" />
+              <img src="{% static 'images/img7.jpeg' %} " alt="Purple Label" />
+
+              <div class="label">Handbags</div>
+            </div>
+            <div class="explore-item">
+              <img src="{% static 'images/wallet1.png' %} " alt="Collection" />
               <div class="label">Wallet</div>
-             </div>
-            </a>
-            
-           <a href="{% url 'product_list' category='men' subcategory='tshirt' %}" class="category-link">
-             <div class="explore-item">
-               <img src="{% static 'images/tst7.png' %}" alt="" />
-               <div class="label">Men’s Double RL</div>
-             </div>
-            </a>
+            </div>
+            <div class="explore-item">
+              <img src="{% static 'images/tshirts1.png' %} " alt="Men’s" />
 
-           <a href="{% url 'product_list' category='accessories' subcategory='accessory_beer_mug' %}" class="category-link">
-              <div class="explore-item">
-                <img src="{% static 'images/beermug1.png' %}" alt="" />
-                <div class="label">Mugs</div>
-              </div>
-            </a>
+              <div class="label">Men’s Double RL</div>
+            </div>
+            <div class="explore-item">
+              <img src="{% static 'images/beermug1.webp' %} " alt="Women" />
 
-            <a href="{% url 'accessories' %}" class="explore-link">
-              <div class="explore-item">
-                <img src="{% static 'images/cp2.png' %}" alt="" />
-                <div class="label">Accessories</div>
-              </div>
-            </a>
+              <div class="label">Mugs</div>
+            </div>
+            <div class="explore-item">
+              <img src="{% static 'images/cap1.png' %} " alt="Accessories" />
 
-            <a href="{% url 'kashnaar' %}" class="explore-link">
-              <div class="explore-item">
-                <img src="{% static 'images/can4.jpg' %}" alt="" />
-                <div class="label">kashnaar</div>
-              </div>
-            </a>
+              
+              <div class="label">Accessories</div>
+            </div>
+            <div class="explore-item">
+              <img src="{% static 'images/candle1.png' %} " alt="candle" />
+
+              <div class="label">candles</div>
+            </div>
           </div>
 
           <button class="arrow right" onclick="scrollGrid(1)">&#10095;</button>

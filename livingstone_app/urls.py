@@ -3,11 +3,9 @@ from . import views
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.views import LogoutView
 
+
 from django.conf import settings
 from django.conf.urls.static import static
-
-from .views import address_list_view, add_address_view
-
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -16,20 +14,7 @@ urlpatterns = [
     path('product/', views.product, name='product'),
     path('productdetails/', views.productdetails, name='productdetails'),
     path('addtocart/', views.addtocart, name='addtocart'),
-    path('wishlist/', views.wishlist, name='wishlist'), 
-
-    path('search/', views.search_products, name='search'),
-    path('privacy_policy/', views.privacy_policy, name='privacy-policy'),
-
-    path('refund_policy/', views.refund_policy, name='refund-policy'),
-    path('tearms_policy/', views.tearms_policy, name='tearms-policy'),
-
-
-    
-
-
-
-
+    path('wishlist/', views.wishlist, name='wishlist'),
     path('sign-in/', views.sign_in, name='sign_in'),
     path('create-account/', views.create_account, name='create_account'),
     path('logout/', views.custom_logout, name='logout'),
@@ -49,26 +34,18 @@ urlpatterns = [
     path('kashnaar/', views.kashnaar_view, name='kashnaar'),
     path('accessories/', views.accessories, name='accessories'),
     path('checkout-final/', views.checkout_final, name='checkout_final'),
+    path('search/', views.search_products, name='search'),
+    path('search/', views.search_products, name='search'),
+    path('privacy_policy/', views.privacy_policy, name='privacy-policy'),
+    path('refund_policy/', views.refund_policy, name='refund-policy'),
+    path('tearms_policy/', views.tearms_policy, name='tearms-policy'),
     
-    
-    path('payment-done/', views.payment_done, name='payment_done'),
-    path('payment-failed/', views.payment_failed, name='payment_failed'),
-
-
     path('my-orders/section/', views.load_order_history_section, name='load_order_history_section'),
-
-
-
+    
     path('addresses/', views.address_list_view, name='address_list'),
     path('addresses/add/', views.add_address_view, name='add_address'),
     path('addresses/edit/<int:pk>/', views.edit_address_view, name='edit_address'),
     path('addresses/delete/<int:pk>/', views.delete_address_view, name='delete_address'),
-    
-
-
-
-
-
 
 
 
@@ -77,15 +54,10 @@ urlpatterns = [
 
 
 
-    path('deliveryaddress/', views.Deliveryaddress, name="deliveryaddress"),
+    # path("deliveryaddress/", views.deliveryaddress, name="deliveryaddress"),
     path('products/<str:category>/<str:subcategory>/', views.product_list, name='product_list'),
     path('product/<int:product_id>/', views.product_details, name='productdetails'),
-
-    
     path('add-to-cart/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
-
-    path('remove-cart-item/', views.remove_from_cart_backend, name='remove_cart_item'),
-
     path('cart/', views.cart, name='cart'),
     path('billing-address/', views.billing_address, name='billing_address'),
     path('checkout/', views.checkout, name='checkout'),
@@ -95,6 +67,8 @@ urlpatterns = [
     path('orders/', views.orders, name='orders'),
     path('tracker/', views.tracker, name="tracker"),
 
+
+    path('webhook/payu/', views.payu_webhook, name='payu_webhook'),
 ]
 
 

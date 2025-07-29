@@ -5,4 +5,4 @@ class LivingstoneAppConfig(AppConfig):
     name = 'livingstone_app'
 
     def ready(self):
-        import livingstone_app.signals 
+        import livingstone_app.signals  # ✅ Add this line

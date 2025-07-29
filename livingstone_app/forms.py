@@ -1,5 +1,5 @@
 from django import forms
-from .models import Profile, Address 
+from .models import Profile
 from livingstone_app.models import Address 
 
 class ProfileForm(forms.ModelForm):
@@ -31,7 +31,6 @@ class CustomerAddressForm(forms.ModelForm):
             'home': forms.CheckboxInput(attrs={'class': 'fas fa-home-lg-alt'}),
             'office': forms.CheckboxInput(),
         }
-
 
 
 
@@ -68,7 +67,5 @@ class AddressForm(forms.ModelForm):
             'home': forms.CheckboxInput(),
             'office': forms.CheckboxInput(),
         }
-
-
 
 

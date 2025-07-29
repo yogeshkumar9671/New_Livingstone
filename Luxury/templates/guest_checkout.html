@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{% endblock title %}
+{% block description %}{% endblock description %}
+{% block keywords %}{% endblock keywords %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{% static 'styles/bootstrap4/bootstrap.min.css' %}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link href="{% static 'plugins/malihu-custom-scrollbar/jquery.mCustomScrollbar.css' %}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="{% static 'plugins/jquery-ui-1.12.1.custom/jquery-ui.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'styles/categories.css' %}">
+<link rel="stylesheet" href="{% static 'styles/main_styles.css' %}" />
+<link rel="stylesheet" href="{% static 'styles/responsive.css' %}" />
+<style>
+  .pt-5, .py-5 { padding-top: 5rem !important; }
+  .main_nav ul li a { color: #000; }
+  .header { color: white; background: transparent; position: fixed }
+  .header.scrolled { color: black; }
+  .logo a, .header.scrolled .logo a { color: black; }
+  .header .burger_container div { background: black; }
+  .burger_container:hover div { background: #937c6f; }s
+
+.guest-checkout-page {
+  min-height: 100vh;                
+  display: flex;
+  justify-content: center;
+  align-items: center;            
+  padding: 60px 20px;              
+  background-color: #fff;
+  font-family: Arial, sans-serif;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 1;        
+}
+
+.guest-checkout-page .container {
+  max-width: 500px;
+  width: 100%;
+  color: #0a0a0a;
+  min-height: 660px; /
+  padding-bottom: 40px;
+  top: 80px;
+}
+
+.guest-checkout-page h2 {
+  font-weight: normal;
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+.guest-checkout-page .required {
+  float: right;
+  font-size: 12px;
+  color: #999;
+}
+
+.guest-checkout-page .subtext {
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.guest-checkout-page .email-input {
+  width: 100%;
+  padding: 10px;
+  font-size: 15px;
+  border: 1px solid #000;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+}
+
+.guest-checkout-page .checkbox-label {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.guest-checkout-page .checkbox-label input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+.guest-checkout-page .checkbox-label a {
+  color: #000080;
+  text-decoration: underline;
+}
+
+.guest-checkout-page .btn {
+  width: 100%;
+  padding: 15px;
+  font-size: 15px;
+  border: none;
+  margin: 10px 0;
+  cursor: pointer;
+}
+
+.guest-checkout-page .btn.dark {
+  background-color: #001f3f;
+  color: #fff;
+}
+
+.guest-checkout-page .note {
+  font-size: 13px;
+  margin: 20px 0 10px;
+}
+
+
+</style>
+{% endblock page_css %}
+
+{% block content %}
+
+<div class="guest-checkout-page">
+    <div class="container">
+      <h2>GUEST CHECKOUT <span class="required">*Required</span></h2>
+      <p class="subtext">You can check out without having an account. You'll have a chance to create an account later.</p>
+
+      <input type="email" placeholder="nisha70016@gmail.com" class="email-input" required>
+
+      <label class="checkbox-label">
+        <input type="checkbox">
+        Tick here if you would like to receive the latest news, special offers and/or exclusive events relating to Ralph Lauren products and services, by e-mail or targeted social media ads. By signing up, you consent to the use of tracking technologies for personalisation and analytics. You may unsubscribe at any time by clicking on the unsubscribe link in each e-mail. For more information, please read 
+        <a href="#" target="_blank">Ralph Lauren Europe Sàrl’s Privacy Notice</a>
+      </label>
+
+      <button class="btn dark">CHECKOUT AS GUEST</button>
+
+      <p class="note">Creating an account is quick and gives you access to exclusive offers, news, order history and faster checkout.</p>
+      
+      <button class="btn dark">CREATE AN ACCOUNT</button>
+    </div>
+  </div>
+{% endblock content %}
+
+{% block page_js %}
+<script>
+ 
+</script>
+
+
+<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+<script src="{% static 'styles/bootstrap4/popper.js' %}"></script>
+<script src="{% static 'styles/bootstrap4/bootstrap.min.js' %}"></script>
+<script src="{% static 'plugins/OwlCarousel2-2.2.1/owl.carousel.js' %}"></script>
+<script src="{% static 'plugins/easing/easing.js' %}"></script>
+<script src="{% static 'plugins/parallax-js-master/parallax.min.js' %}"></script>
+<script src="{% static 'plugins/colorbox/jquery.colorbox-min.js' %}"></script>
+<script src="{% static 'js/custom.js' %}"></script>
+<script src="{% static 'script.js' %}"></script>
+</body>
+{% endblock page_js %}

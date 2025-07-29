@@ -120,8 +120,8 @@
                 </video>
     
                 <div class="catagory-content">
-                    {% comment %} <h6>in Bags excepting the new collection</h6>
-                    <h2>Cinnamon Cabin</h2> {% endcomment %}
+                    <h6>in Bags excepting the new collection</h6>
+                    <h2>Cinnamon Cabin</h2>
                     {% comment %} <a href="shop.html" class="btn karl-btn">SHOP NOW</a> {% endcomment %}
                 </div>
             </div>            
@@ -133,23 +133,22 @@
 
 
         <!-- ****** Offer Area Start ****** -->
-        <section class="offer_area height-700 section_padding_100">
-        <img src="{% static 'images/cndlbig.png' %}" alt="Offer Banner" class="desktop-banner">
-        <img src="{% static 'images/cndlmbil.jpg' %}" alt="Mobile Banner" class="mobile-banner">
-         <div class="container h-100">
-             <div class="row h-100 align-items-end">
-             <div class="col-12 col-md-8 col-lg-6">
-                 <div class="offer-content-area wow fadeInUp" data-wow-delay="1s">
-                 <h2>Rose Reverie <span class="karl-level">Hot</span></h2>
-                 <p>* Free shipping until 25 Dec 2017</p>
-                 <div class="offer-product-price">
-                     <h3><span class="regular-price">$25.90</span> $15.90</h3>
-                </div>
-                <a href="{% url 'product_list' category='home_decor' subcategory='candles' %}" class="btn">SHOP NOW</a>
+        <section class="offer_area height-700 section_padding_100 bg-img" style="background-image: url('{% static "images/can2.png" %}')">
+            <div class="container h-100">
+                <div class="row h-100 align-items-end justify-content-end">
+                    <div class="col-12 col-md-8 col-lg-6">
+                        <div class="offer-content-area wow fadeInUp" data-wow-delay="1s">
+                            <h2>Rose Reverie <span class="karl-level">Hot</span></h2>
+                            <p>* Free shipping until 25 Dec 2017</p>
+                            <div class="offer-product-price">
+                                <h3><span class="regular-price">$25.90</span> $15.90</h3>
+                            </div>
+                            <a href="{% url 'product_list' category='home_decor' subcategory='candles' %}" class="btn">SHOP NOW</a>
+
+                        </div>
+                    </div>
                 </div>
             </div>
-            </div>
-        </div>
         </section>
         <!-- ****** Offer Area End ****** -->
 

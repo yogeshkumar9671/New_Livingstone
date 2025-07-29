@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'livingstone_app',
     'crispy_forms',
-    'phonenumber_field',
 ]
 
 MIDDLEWARE = [
@@ -80,15 +79,15 @@ WSGI_APPLICATION = 'livingstone_project.wsgi.application'
 
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'Luxury' / 'static',   
+    BASE_DIR / 'Luxury' / 'static',   # Source static files
 ]
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Destination for collectstatic
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')    
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')         # For uploaded files
 
 
 
@@ -170,11 +169,15 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 #========= PayUmoney Credentials ===========
 #======== test mode ========
 PAYU_CONFIG = {
-    "merchant_key": "JIKPO",
-    "merchant_salt": "8i0VrUBR4xGt8RJvjkQSG",
+    "merchant_key": "Zpf2AW",
+    "merchant_salt": "8i0VrUBR4xGt8RJvjkWhCTYrupZakQSG",
     "mode": "test",
 }
 
 
 
 
+EASYPOST_API_KEY = "EZTKcbf995de31f3448d9c125a11b91a6e224pENSya4asE6GPfQDDpPIA"
+
+
+# EASYPOST_WEBHOOK_SECRET = "your_webhook_signing_secret"

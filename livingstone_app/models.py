@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from phonenumber_field.modelfields import PhoneNumberField
 from datetime import date
@@ -44,27 +43,20 @@ def validate_pincode(value):
     if len(str(value)) != 6:
         raise ValidationError("Pincode must be exactly 6 digits")
 
-
-
-# for save user address home/ office
-from phonenumber_field.modelfields import PhoneNumberField
-
 class Address(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=200)
-    email = models.EmailField(max_length=256)
-    mobile_number = PhoneNumberField(region=None, blank=True)
-    house_no = models.CharField(max_length=250)
-    area = models.CharField(max_length=250)
+    email=models.EmailField(max_length=256, blank=False, default=None)
+    mobile_number=PhoneNumberField(help_text='Enter valid contact number with country code', max_length=13, null=False, blank=False)
+    house_no = models.CharField(max_length=250, verbose_name="House No. / Building Name", default=None)
+    area = models.CharField(max_length=250, verbose_name="Road name, Area, Colony", default=None)
     landmark = models.CharField(max_length=250)
     locality = models.CharField(max_length=200)
     city = models.CharField(max_length=50)
     state = models.CharField(choices=state, max_length=50)
     pincode = models.IntegerField(validators=[validate_pincode])
-    home = models.BooleanField(default=False)
-    office = models.BooleanField(default=False)
-    is_default = models.BooleanField(default=False)
-
+    home=models.BooleanField(default=False)
+    office=models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.id)
@@ -122,10 +114,6 @@ class Product(models.Model):
     size = models.CharField(max_length=10, choices=SIZE_CHOICES, blank=True, null=True)
     category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
 
-
-
-
-
     # add for inventorhy management
     quantity = models.PositiveIntegerField(default=0, blank=True, null=True)
     subcategory = models.CharField(max_length=30, choices=SUBCATEGORY_CHOICES)
@@ -140,6 +128,11 @@ class Product(models.Model):
     image4 = models.ImageField(upload_to='products/', blank=True, null=True)
 
     is_new = models.BooleanField(default=False)
+
+    length = models.FloatField(default=10,  blank=True, null=True)  # in cm
+    width = models.FloatField(default=10,  blank=True, null=True)   # in cm
+    height = models.FloatField(default=5,  blank=True, null=True)   # in cm
+    weight = models.FloatField(default=500,  blank=True, null=True)  # in grams
 
     def __str__(self):
         return self.title
@@ -170,19 +163,6 @@ class CartItem(models.Model):
     
 
 
-from .models import CartItem
-
-@login_required
-def checkout(request):
-    cart_items = CartItem.objects.select_related('product').filter(user=request.user, availability=False)
-
-    total = sum(item.product.price * item.quantity for item in cart_items)
-
-    return render(request, 'checkout.html', {
-        'cart_items': cart_items,
-        'total': total,
-    })
-
 
 
 
@@ -206,8 +186,7 @@ payment_status_choices = (
 class Placed_Order(models.Model):
     id= models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    # address = models.ForeignKey(Address, on_delete=models.CASCADE)
-    address = models.ForeignKey('livingstone_app.Address', on_delete=models.CASCADE)
+    address = models.ForeignKey(Address, on_delete=models.CASCADE)
     product=models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
     status = models.CharField(choices=STATUS_CHOICES, max_length=50, default="Pending")
@@ -216,6 +195,8 @@ class Placed_Order(models.Model):
     product_id_number=models.CharField(max_length=255, unique=True, default=None, blank=True, null=True)
     order_id = models.CharField(max_length=10000000, null=True, blank=True, default=None) 
     datetime_of_payment = models.DateTimeField(default=timezone.now)
+    tracking_code = models.CharField(max_length=1000, blank=True, null=True)
+    label_url = models.URLField(blank=True, null=True)
     transaction_id = models.CharField(max_length=10000000, null=True, blank=True)
     mihpayid = models.CharField(max_length=10000000, null=True, blank=True)
     hash = models.CharField(max_length=10000000, null=True, blank=True)
@@ -223,15 +204,6 @@ class Placed_Order(models.Model):
     def __str__(self):
         return str(self.product)
     
-    # def save(self, *args, **kwargs):
-    #     if not self.expected_delivery_date:
-    #         self.expected_delivery_date = self.datetime_of_payment + timedelta(days=7)
-        
-    #     if not self.offer:
-    #         off = (self.actual_price-self.selling_price)/self.actual_price
-    #         self.offer = round(off * 100, 2)
-        
-    #     super().save(*args, **kwargs)
 
 
 
@@ -240,8 +212,12 @@ class Order_Tracker(models.Model):
     orderInfo = models.ForeignKey(Placed_Order, on_delete=models.CASCADE, null=True, blank=True)
     update_id= models.AutoField(primary_key=True)
     tracking_id= models.CharField(max_length=90000)
-    update_desc= models.CharField(max_length=5000)
-    timestamp= models.DateField(auto_now_add= True)
+    tracking_code = models.CharField(max_length=1000, blank=True, null=True)
+    label_url = models.URLField(blank=True, null=True)
+    update_desc = models.TextField()
+    current_status = models.CharField(max_length=50, blank=True, null=True)
+    timestamp = models.DateTimeField(default=timezone.now)
+
 
     def __str__(self): 
         return self.update_desc[0:7] + "..."
@@ -251,30 +227,25 @@ class Order_Tracker(models.Model):
 
 
 
-# model for order history save
-
-class Order(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    order_id = models.CharField(max_length=100, unique=True)
-    address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    paid_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
-    payment_method = models.CharField(max_length=50, default='Credit Card')
-    payment_details = models.CharField(max_length=100, default='Card ending with 0000')
+class PayuWebhook(models.Model):
+    txnid = models.CharField(max_length=1000)
+    mihpayid = models.CharField(max_length=1000)
+    source = models.CharField(max_length=50)  # 'payu', 'easypost'
+    payload = models.TextField()
+    headers = models.TextField(blank=True, null=True)
+    received_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.order_id
-
-class OrderItem(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
-    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
-    quantity = models.PositiveIntegerField()
-    size = models.CharField(max_length=10, blank=True)
-    delivery_status = models.CharField(max_length=50, default="In - Transit")
-    expected_delivery = models.DateField()
-
-    def __str__(self):
-        return f"{self.product.title} x {self.quantity}"
+        return f"{self.source} - {self.received_at}"
+    
 
 
 
+
+
+# class EasyPostWebhook(models.Model):
+#     event_type = models.CharField(max_length=100)
+#     tracking_code = models.CharField(max_length=100)
+#     status = models.CharField(max_length=100)
+#     payload = models.TextField()
+#     received_at = models.DateTimeField(auto_now_add=True)

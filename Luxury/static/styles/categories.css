@@ -87,7 +87,6 @@ ul
   border-radius: 8px;
   width: 100%;
   max-width: 700px;
-  
 }
 
 .title {
@@ -201,8 +200,8 @@ ul
 
 .text-overlay {
   position: absolute;
-  top: 66% !important;
-  left: 17% !important;
+  top: 70%;
+  left: 10%;
   color: white;
   max-width: 90%;
   z-index: 1;
@@ -257,74 +256,53 @@ ul
 .next {
   right: 10px;
 }
-/* Tablets and smaller (≤991px) */
-@media (max-width: 991px) {
-  .shop-category {
-    padding: 30px 20px;
-  }
 
+@media (max-width: 768px) {
   .category-card {
-    width: 280px;
+    width: 250px;
     height: 350px;
   }
 
-  .text-overlay h2 {
+  .text-overlay h2,
+  .text-overlay h4,
+  .text-overlay h1,
+  .text-overlay p {
     font-size: 4vw;
   }
 
-  .text-overlay h4 {
-    font-size: 2vw;
-  }
-
-  .text-overlay h1 {
-    font-size: 3vw;
-  }
-
-  .text-overlay p {
-    font-size: 1.8vw;
+  .text-overlay {
+    top: 65%;
+    left: 5%;
   }
 }
 
-/* Phones (≤576px) */
-@media (max-width: 576px) {
-  .shop-category {
-    padding: 20px 10px;
-  }
-
-  .category-slider {
-    gap: 15px;
-  }
-
+@media (max-width: 480px) {
   .category-card {
-    width: 297px;
-    height: 320px;
+    width: 200px;
+    height: 300px;
   }
 
   .text-overlay {
     top: 60%;
-    left: 8%;
+    left: 5%;
   }
 
-  .text-overlay h2 {
-    font-size: 5vw;
-  }
-
-  .text-overlay h4 {
-    font-size: 3vw;
-  }
-
-  .text-overlay h1 {
-    font-size: 4vw;
-  }
-
+  .text-overlay h2,
+  .text-overlay h4,
+  .text-overlay h1,
   .text-overlay p {
-    font-size: 2.8vw;
-  }
-
-  .slider-btn {
-    display: none;
+    font-size: 4.5vw;
   }
 }
+
+
+.category-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: inline-block;
+}
+
+
 
 
 
@@ -411,7 +389,6 @@ ul
 .sidebar_promo_subtitle {
   font-size: 1.2vw;
   margin-bottom: 20px;
-  color: wheat;
 }
 
 .sidebar_promo_button {
@@ -450,7 +427,6 @@ ul
 
   .sidebar_promo_subtitle {
     font-size: 14px;
-    color: wheat;
   }
 
   .sidebar_promo_button a {
@@ -460,7 +436,6 @@ ul
 
   .sidebar_promo_content {
     padding: 20px;
-    top: 155px;
   }
 }
 
@@ -484,8 +459,7 @@ ul
 .hero-content {
   width: 45%;
   height: 600px;
-  /* background-color: rgb(166 130 60); */
-  background-color: rgba(166, 130, 60, 0.8) !important;
+  background-color: rgb(166 130 60);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -552,7 +526,6 @@ ul
 @media (max-width: 768px) {
   .accesssories_section {
     flex-direction: column;
-  
   }
 
   .hero-content,
@@ -562,7 +535,7 @@ ul
   }
 
   .hero-image {
-      height: 395px; 
+    height: 300px;
   }
 
   .hero-content h1 {

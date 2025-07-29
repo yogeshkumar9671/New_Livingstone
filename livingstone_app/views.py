@@ -4,99 +4,108 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
-from .models import UserProfile, Address
+from .models import UserProfile
 import random
 from django.contrib.auth.decorators import login_required
 from .forms import ProfileForm
-from django.views.decorators.csrf import csrf_exempt
 
 
-from .models import Profile, Address, Placed_Order, Order_Tracker, Order
-from .forms import AddressForm
+from .models import Profile, Address, Placed_Order, Order_Tracker
 
 
+from datetime import datetime
+import easypost
+from django.conf import settings  
 
+easypost.api_key = settings.EASYPOST_API_KEY
+client = easypost.EasyPostClient(settings.EASYPOST_API_KEY)
 
 def index(request):
+    # # Create recipient (to) address
+    # to_address = client.address.create(
+    #     name="John Doe",
+    #     street1="388 Townsend Street",
+    #     city="San Francisco",
+    #     state="CA",
+    #     zip="94107",
+    #     country="US",
+    #     phone="4159876543"
+    # )
+    # print("to address ================ ", to_address)
+
+    # # Create sender (from) address
+    # from_address = client.address.create(
+    #     company="EasyPost",
+    #     street1="417 Montgomery Street",
+    #     city="San Francisco",
+    #     state="CA",
+    #     zip="94104",
+    #     country="US",
+    #     phone="4151234567"
+    # )
+    # print("from address ================ ", from_address)
+
+    # # Create parcel
+    # parcel = client.parcel.create(
+    #     length=10,
+    #     width=6,
+    #     height=4,
+    #     weight=500  # grams
+    # )
+    # print("parcel ================ ", parcel)
+
+    # # Create shipment
+    # shipment = client.shipment.create(
+    #     to_address=to_address,
+    #     from_address=from_address,
+    #     parcel=parcel
+    # )
+    # print("Available Rates:", shipment.rates)
+
+    # # Buy the shipment using the lowest rate
+    # # if shipment.rates:
+    # #     lowest = shipment.lowest_rate()
+    # #     print("Lowest Rate:=========", lowest)
+
+    # #     # Buy the shipment
+    # #     bought_shipment = client.shipment.buy(shipment.id, rate=lowest)
+    # #     print("shipment ================ ", bought_shipment)
+    # #     print("tracking_code ======== ", bought_shipment.tracking_code)
+    # #     print("postage_label ======== ", bought_shipment.postage_label.label_url)
+
+
+    # if shipment.rates:
+    #     lowest = shipment.lowest_rate(carriers=["USPS"])  # Specify USPS only
+    #     print("Lowest Rate:", lowest)
+
+    #     bought_shipment = client.shipment.buy(shipment.id, rate=lowest)
+    #     print("tracking_code ======== ", bought_shipment.tracking_code)
+    #     print("postage_label ======== ", bought_shipment.postage_label.label_url)
+
+
+
+    #     # You can pass the label URL to your template if needed
+    #     return render(request, 'index.html', {
+    #         'label_url': bought_shipment.postage_label.label_url,
+    #         'tracking_code': bought_shipment.tracking_code
+    #     })
+
+    # else:
+    #     print("❌ No rates found")
+    #     return render(request, 'index.html', {
+    #         'error': 'No shipping rates found for the given addresses and parcel.'
+    #     })
+
     return render(request, 'index.html')
+
+
+
 
 
 def men(request):
     return render(request, 'men.html')
 
-# class ProfileView(View):
-#     def get(self, request):
-#         TotalCartItems=0
-#         if request.user.is_authenticated:
-#             TotalCartItems = len(Cart_Item.objects.filter(user=request.user))
-#             forms = CustomerAddressForm()
-#             context = {
-#                 'forms':forms,
-#                 "TotalCartItems":TotalCartItems,
-#             }
-#             return render(request, 'app/profile.html',context)
-#         else: 
-#             return redirect("/login")
 
-#     def post(self, request):
-#         if request.method == "POST":
-#             forms = CustomerAddressForm(request.POST)
-            
-#             if forms.is_valid():
-#                 current_user = request.user
-#                 full_name = forms.cleaned_data['full_name']
-#                 locality = forms.cleaned_data['locality']
-#                 mobile=forms.cleaned_data['mobile_number']
-#                 email=forms.cleaned_data['email']
-#                 house_no=forms.cleaned_data['house_no']
-#                 area=forms.cleaned_data['area']
-#                 landmark=forms.cleaned_data['landmark']
-#                 state = forms.cleaned_data['state']
-#                 city = forms.cleaned_data['city']
-#                 pincode = forms.cleaned_data['pincode']
-#                 home = forms.cleaned_data['home']
-#                 office = forms.cleaned_data['office']
-                
-#                 address_type = request.POST.get("addressType")
-                
-#                 if address_type == "home":
-#                     home_address = True
-#                 else:
-#                     home_address = False
-                    
-#                 if address_type == "office":
-#                     office_address = True
-#                 else:
-#                     office_address = False
-                
-#                 address = Address(user=current_user, full_name=full_name, locality=locality, mobile_number=mobile, email=email, house_no=house_no, area=area, landmark=landmark, state=state, city=city, pincode=pincode, home=home_address, office=office_address)
-#                 address.save()
-#                 messages.success(request, "Congratulations !! Profile Updated Successfully.")
-        
-#         forms = CustomerAddressForm()
-#         context = {
-#             'forms':forms
-#         }
-#         return render(request, 'app/profile.html',context)
-    
-    
-
-
-# class ProductView(View):
-#     def get(self, request):
-#         TotalCartItems=0
-#         if request.user.is_authenticated:
-#             TotalCartItems = len(Cart_Item.objects.filter(user=request.user))
-
-#         featured_product = Product.objects.filter(category='FEATURED')[:5]
-
-#         context={
-#         "featured":featured_product,
-#         "TotalCartItems":TotalCartItems,
-#         }
-#         return render(request, 'app/home.html',context)
-    
-    
 
 
 
@@ -121,54 +130,6 @@ def cart(request):
 def wishlist(request):
     return render(request, 'wishlist.html')
 
-
-
-
-def search_products(request):
-    query = request.GET.get('q', '')
-    sort = request.GET.get('sort', 'relevance')
-    selected_price = request.GET.get('price')
-    selected_subcategory = request.GET.get('subcategory')
-
-    products = Product.objects.all()
-
-    if query:
-        products = products.filter(
-            Q(title__icontains=query) |
-            Q(category__icontains=query) |
-            Q(subcategory__icontains=query)
-        )
-
-    if selected_subcategory:
-        products = products.filter(subcategory=selected_subcategory)
-
-    if selected_price:
-        try:
-            min_price, max_price = map(int, selected_price.split('-'))
-            products = products.filter(price__gte=min_price, price__lte=max_price)
-        except ValueError:
-            pass
-
-    
-    if sort == 'low_to_high':
-        products = products.order_by('price')
-    elif sort == 'high_to_low':
-        products = products.order_by('-price')
-    elif sort == 'newest':
-        products = products.order_by('-id')
-    else:  
-        products = products.order_by('title')
-
-    return render(request, 'search_list.html', {
-        'products': products,
-        'query': query,
-        'sort': sort,
-        'selected_price': selected_price,
-        'selected_subcategory': selected_subcategory
-    })
-
-
-
 def track_order(request):
     return render(request, 'track_order.html')
 
@@ -182,18 +143,8 @@ def kashnaar_view(request):
     return render(request, 'kashnaar.html')
 
 
-# def guest_checkout(request):
-#     return render(request, 'guest_checkout.html')
-
-
-def privacy_policy(request):
-    return render(request, 'privacy Policy.html')
-
-def refund_policy(request):
-    return render(request, 'refund policy.html') 
-def tearms_policy(request):
-    return render(request, 'tearms policy.html')   
-
+def guest_checkout(request):
+    return render(request, 'guest_checkout.html')
 
 
 
@@ -206,7 +157,7 @@ def sign_in(request):
         if user is not None:
             if user.userprofile.is_verified:
                 login(request, user)
-                return redirect('index')  
+                return redirect('index')  #  Redirects to homepage
             else:
                 messages.error(request, 'Please verify your account first.')
         else:
@@ -311,10 +262,6 @@ def load_profile_section(request):
     return render(request, 'profile_settings.html')
 
 
-
-
-
-
 # for save user profile details
 
 
@@ -352,7 +299,7 @@ def product_list(request, category=None, subcategory=None):
     if category:
         products = products.filter(category=category)
 
-    # Only filter by subcategory if it's not all
+    # Only filter by subcategory if it's not "all"
     if subcategory and subcategory.lower() != 'all':
         products = products.filter(subcategory=subcategory)
 
@@ -422,12 +369,12 @@ def add_to_cart(request, product_id):
         if item_already_in_cart and product.quantity >= quantity_requested:
             cart_product = CartItem.objects.get(product=product, user=request.user)
             cart_product.quantity = quantity_requested
-            cart_product.availability = False
+            cart_product.availability = True
             cart_product.save()
             return redirect('/cart')
             
         elif not item_already_in_cart and product.quantity >= quantity_requested:
-            CartItem(product=product, quantity=quantity_requested, availability=False,  user=request.user).save()
+            CartItem(product=product, quantity=quantity_requested, availability=True,  user=request.user).save()
             messages.success(request, f"{product.title} added to cart.")
 
         else:
@@ -440,20 +387,6 @@ def add_to_cart(request, product_id):
 
 
 
-
-from .models import CartItem
-
-@csrf_exempt
-def remove_from_cart_backend(request):
-    if request.method == 'POST':
-        item_id = request.POST.get('item_id')
-        try:
-            item = CartItem.objects.get(id=item_id)
-            item.delete()
-            return JsonResponse({'success': True})
-        except CartItem.DoesNotExist:
-            return JsonResponse({'success': False, 'error': 'Item not found'})
-    return JsonResponse({'success': False, 'error': 'Invalid request'})
 
 
 
@@ -538,10 +471,7 @@ from paywix.payu import Payu
 import hashlib
 from random import randint
 @login_required(login_url="/login")
-
-
 def checkout(request):
-    
     TotalCartItems=0
     if request.user.is_authenticated:
         TotalCartItems = len(CartItem.objects.filter(user=request.user))
@@ -635,7 +565,6 @@ def checkout(request):
                 "hash" : hash_,
                 "hash_string" : hash_string,
             }
-            print("====", data)
             data.update({"txnid": txnid})
 
             Payu_data = payu.transaction(**data)
@@ -648,7 +577,8 @@ def checkout(request):
             messages.error(request, "Order Id is Missing")
             return redirect('/deliveryaddress')
 
-        callback_url = 'https://'+ str(get_current_site(request))+"/handlerequest/"
+        # callback_url = 'https://'+ str(get_current_site(request))+"/handlerequest/"
+        callback_url = 'http://'+ str(get_current_site(request))+"/handlerequest/"
     context={
         "add":add,
         "totalamount":totalamount,
@@ -663,16 +593,8 @@ def checkout(request):
 
 
 
-
-
-
-
-
-
-
-
 from django.core.mail import EmailMultiAlternatives
-
+from django.views.decorators.csrf import csrf_exempt
 from django.template.loader import get_template
 from datetime import datetime
 @csrf_exempt
@@ -694,9 +616,6 @@ def handlerequest(request):
                 order_db.hash=hash
                 order_db.save()
 
-                print("inside for loop", order_db.mihpayid)
-                print("inside for loop", order_db.hash)
-
                             
             if status == 'success':
                 order_db = [p for p in CartItem.objects.all() if p.transaction_id==transaction_id and p.availability==True ]
@@ -717,14 +636,17 @@ def handlerequest(request):
 
 
 
-
-
  
         
 # from datetime import datetime
+# import easypost
+# from django.conf import settings  
+
+# easypost.api_key = settings.EASYPOST_API_KEY
+# client = easypost.EasyPostClient(settings.EASYPOST_API_KEY)
 # def payment_done(request):
 #     user=request.user
-    
+
 #     mail_date = []
 #     mail_order_id = []
 #     mail_product_id = []
@@ -737,84 +659,160 @@ def handlerequest(request):
 #     status = request.GET.get('status')
 #     mode = request.GET.get('mode')
 
-#     print("payment done == mihpayid", mihpayid)
-#     print("payment done == transaction_id", transaction_id, "type", type(transaction_id))
-#     print("payment done == status", status)
-#     print("payment done == mode", mode)
-#     print("payment done == user", user)
-    
 #     if status == 'success':
-#         order_db = [p for p in CartItem.objects.all() if p.user==request.user and p.transaction_id==transaction_id and p.mihpayid==mihpayid and p.availability==True ]
-        
-#         for order_db in order_db:
-#             address=Address.objects.get(id=order_db.address and user==request.user)
-#             prod=Product.objects.get(id=order_db.product.id)
+#         order_items = [p for p in CartItem.objects.all() if p.user == user and p.transaction_id == transaction_id and p.mihpayid == mihpayid and p.availability == True]
 
-#             if prod.quantity >= order_db.quantity: 
-#                 available_stock = prod.quantity-order_db.quantity
-#                 prod.quantity = available_stock
-#                 prod.save()
-#             else:
-#                 # Handle the error: maybe raise an exception or redirect with an error message
-#                 return HttpResponse("Insufficient stock for product: " + prod.name)
-                    
-#             order_placed = Placed_Order(price=order_db.product.price, order_id=order_db.order_id, product_id_number=order_db.product_id_number, user=user, address=address, transaction_id=order_db.transaction_id, product=order_db.product, quantity=order_db.quantity, payment_status=1, mihpayid=order_db.mihpayid, hash=order_db.hash)
-#             order_placed.save()
+#         for item in order_items:
+#             try:
+#                 address = Address.objects.get(id=item.address.id, user=user)
+#                 product = Product.objects.get(id=item.product.id)
 
-#             update= Order_Tracker(tracking_id=order_db.product_id_number, update_desc="The order has been placed", orderInfo=order_placed)
-#             update.save()            
-                        
-#             mail_date.append(order_db.datetime)
-#             mail_order_id.append(order_db.order_id)
-#             mail_product_id.append(order_db.product_id_number)
-#             mail_product_title.append(order_db.product.title)
-#             mail_quantity.append(order_db.quantity)
-#             mail_total_cost.append(order_db.product.price)
+#                 if product.quantity < item.quantity:
+#                     return HttpResponse("Insufficient stock for product: " + product.title)
+#                 else:
+#                     product.quantity -= item.quantity
+#                     product.save()
+
+#                     placed_order = Placed_Order(
+#                         price=product.price,
+#                         order_id=item.order_id,
+#                         product_id_number=item.product_id_number,
+#                         user=user,
+#                         address=address,
+#                         transaction_id=item.transaction_id,
+#                         product=product,
+#                         quantity=item.quantity,
+#                         payment_status=1,
+#                         mihpayid=item.mihpayid,
+#                         hash=item.hash
+#                     )
+#                     placed_order.save()
             
-#             order_db.delete()
+#                     try:
+#                         to_address = client.address.create(
+#                             name=address.full_name,
+#                             street1=f"{address.house_no}, {address.area}",
+#                             city=address.city,
+#                             state=address.state,
+#                             zip=address.pincode,
+#                             country="IN",
+#                             phone=address.mobile_number
+#                         )
 
-#     all_datetime=mail_date[0]
-#     datetime_string=str(all_datetime)
-#     order_datetime=datetime.fromisoformat(datetime_string)
-#     order_date=order_datetime.date()
-#     total=0
-#     email=address.email
-#     house_no=address.house_no
-#     area=address.area
-#     city=address.city
-#     state=address.state
-#     pincode=address.pincode
-#     circle = "\u25E6"
-#     disc = "\u25CF"
-#     product_info = []
-#     for i in range(len(mail_product_title)):
-#         # info = f" {disc} {mail_product_id[i]} - {mail_product_title[i]} - {mail_quantity[i]} x Rs{mail_total_cost[i]:.2f} = Rs{mail_quantity[i]*mail_total_cost[i]:.2f}"
-#         info = f" {disc} {mail_product_title[i]} - {mail_quantity[i]} x Rs{mail_total_cost[i]:.2f} = Rs{mail_quantity[i]*mail_total_cost[i]:.2f}"
-#         total += mail_quantity[i]*mail_total_cost[i]
-#         product_info.append(info)
+#                         from_address = client.address.create(
+#                             company="Livingstone Luxury",
+#                             street1="A-38, sector 67",
+#                             city="Noida",
+#                             state="UP",
+#                             zip="201301",
+#                             country="IN",
+#                             phone="18001234567"
+#                         )
 
-#     template1 = f"Dear {address.full_name} \n\nThank you for your recent purchase from our store. We are pleased to confirm that your order has been received and is being processed. Below are the details of your order: \n\nOrder ID: {mail_order_id[0]}\nDate of Purchase: {order_date}\n\n"
-#     template2 = "Order Summary:\n{}"
-#     template3 = template2.format('\n'.join(product_info))
-#     template4 = f"\n {disc} Shipping: 70INR\n {disc} Taxes: Rs6.00\n {disc} Total: Rs{total}\n\nShipping Information:\n{address.full_name}\n{house_no}, {area}\n{city}, {state} {pincode}\nDelivery Method: Standard Shipping\nEstimated Delivery Date: March 30, 2023\n\nPayment Information:\nPayment Method: {mode}\nTotal Amount Paid: Rs{70+total}\n\nContact Information:\nIf you have any questions or concerns about your order, please do not hesitate to contact us at 1-800-123-4567 or support@livingstoneinstitute.com.\n\nCancellation and Return Policy:\nYou can cancel your order within 24 hours of placing it. If you are not completely satisfied with your purchase, you can return it for a full refund within 07 days.\n\nThank you for choosing our store. We appreciate your business and hope to see you again soon.\n\nSincerely,\nLivingstone Luxury Team."
-    
-#     template5=template1+template3+template4
+#                         parcel = client.parcel.create(
+#                             length=product.length,
+#                             width=product.width,
+#                             height=product.height,
+#                             weight=product.weight
+#                         )
 
-#     send_mail(
-#         f'Order Confirmation: {mail_order_id[0]} from JTPL STORE',
+#                         shipment = client.shipment.create(
+#                             to_address=to_address,
+#                             from_address=from_address,
+#                             parcel=parcel
+#                         )
+                    
+#                         if shipment.rates:
+#                             lowest = shipment.lowest_rate() 
+#                             bought_shipment = client.shipment.buy(shipment.id, rate=lowest)
+
+#                             label_url = bought_shipment.postage_label.label_url if bought_shipment.postage_label else "Label unavailable"
+
+#                             tracker = Order_Tracker(
+#                                 tracking_id=item.product_id_number,
+#                                 tracking_code = bought_shipment.tracking_code,
+#                                 label_url = label_url,
+#                                 update_desc="The order has been placed",
+#                                 orderInfo=placed_order
+#                             )
+#                             tracker.save()  
+
+#                             order = placed_order(
+#                                 tracking_code = bought_shipment.tracking_code,
+#                                 label_url = label_url
+#                             )
+#                             order.save()  
+
+#                         else:
+#                             tracker = Order_Tracker(
+#                                 tracking_id=item.product_id_number,
+#                                 tracking_code="Shipment not assigned",
+#                                 label_url="Shipment not assigned",
+#                                 update_desc="The order has been placed",
+#                                 orderInfo=placed_order
+#                             )
+#                             tracker.save()
+                    
+#                     except Exception as ship_err:
+#                         print("❌ EasyPost shipment error:", ship_err)
+#                         tracker = Order_Tracker(
+#                             tracking_id=item.product_id_number,
+#                             tracking_code="Shipment Error",
+#                             label_url="Error",
+#                             update_desc="The order has been placed (no shipment)",
+#                             orderInfo=placed_order
+#                         )
+#                         tracker.save()   
+                
+#                     mail_date.append(item.datetime)
+#                     mail_order_id.append(item.order_id)
+#                     mail_product_id.append(item.product_id_number)
+#                     mail_product_title.append(item.product.title)
+#                     mail_quantity.append(item.quantity)
+#                     mail_total_cost.append(item.product.price)
+                    
+#                     item.delete()
+
+#             except Exception as err:
+#                 print("❌ Order processing error:", err)
+#                 continue
+
+#         all_datetime=mail_date[0]
+#         datetime_string=str(all_datetime)
+#         order_datetime=datetime.fromisoformat(datetime_string)
+#         order_date=order_datetime.date()
+#         total=0
+#         email=address.email
+#         house_no=address.house_no
+#         area=address.area
+#         city=address.city
+#         state=address.state
+#         pincode=address.pincode
+#         circle = "\u25E6"
+#         disc = "\u25CF"
+#         product_info = []
+#         for i in range(len(mail_product_title)):
+#             info = f" {disc} {mail_product_title[i]} - {mail_quantity[i]} x Rs{mail_total_cost[i]:.2f} = Rs{mail_quantity[i]*mail_total_cost[i]:.2f}"
+#             total += mail_quantity[i]*mail_total_cost[i]
+#             product_info.append(info)
+
+#         template1 = f"Dear {address.full_name} \n\nThank you for your recent purchase from our store. We are pleased to confirm that your order has been received and is being processed. Below are the details of your order: \n\nOrder ID: {mail_order_id[0]}\nDate of Purchase: {order_date}\n\n"
+#         template2 = "Order Summary:\n{}"
+#         template3 = template2.format('\n'.join(product_info))
+#         template4 = f"\n {disc} Shipping: 70INR\n {disc} Taxes: Rs6.00\n {disc} Total: Rs{total}\n\nShipping Information:\n{address.full_name}\n{house_no}, {area}\n{city}, {state} {pincode}\nDelivery Method: Standard Shipping\nEstimated Delivery Date: March 30, 2023\n\nPayment Information:\nPayment Method: {mode}\nTotal Amount Paid: Rs{70+total}\n\nContact Information:\nIf you have any questions or concerns about your order, please do not hesitate to contact us at 1-800-123-4567 or support@livingstoneinstitute.com.\n\nCancellation and Return Policy:\nYou can cancel your order within 24 hours of placing it. If you are not completely satisfied with your purchase, you can return it for a full refund within 07 days.\n\nThank you for choosing our store. We appreciate your business and hope to see you again soon.\n\nSincerely,\nLivingstone Luxury Team."
         
-#         template5,
+#         template5=template1+template3+template4
 
-#         'nisha@johnnette.com',
-#         [f'{email}'],
-#         fail_silently=False,
-#     )     
+#         send_mail(
+#             f'Order Confirmation: {mail_order_id[0]} from Livingstone Luxury',
+            
+#             template5,
+
+#             'nisha@johnnette.com',
+#             [f'{email}'],
+#             fail_silently=False,
+#         )     
 #     return redirect("/orders")
-
-
-
-
-
 
 
 
@@ -824,50 +822,12 @@ def handlerequest(request):
         
 from datetime import datetime
 import easypost
-# easypost.api_key = settings.EASYPOST_API_KEY
+from django.conf import settings  
+
+easypost.api_key = settings.EASYPOST_API_KEY
+client = easypost.EasyPostClient(settings.EASYPOST_API_KEY)
 def payment_done(request):
     user=request.user
-
-    # Create EasyPost shipment
-    # to_address = easypost.Address.create(
-    #     name=address.full_name,
-    #     street1=address.house_no + ", " + address.area,
-    #     city=address.city,
-    #     state=address.state,
-    #     zip=address.pincode,
-    #     country="IN",
-    #     phone="9999999999"  # Optional
-    # )
-    
-
-    # from_address = easypost.Address.create(
-    #     company="JohnnetteStore",
-    #     street1="123 Main St",
-    #     city="Mumbai",
-    #     state="MH",
-    #     zip="400001",
-    #     country="IN",
-    #     phone="18001234567"
-    # )
-
-    # parcel = easypost.Parcel.create(
-    #     length=10,
-    #     width=5,
-    #     height=4,
-    #     weight=500  # in grams
-    # )
-
-    # shipment = easypost.Shipment.create(
-    #     to_address=to_address,
-    #     from_address=from_address,
-    #     parcel=parcel
-    # )
-
-    # # Buy the cheapest rate
-    # shipment.buy(rate=shipment.lowest_rate())
-
-    # tracking_code = shipment.tracking_code
-    # label_url = shipment.postage_label.label_url
 
     mail_date = []
     mail_order_id = []
@@ -881,97 +841,125 @@ def payment_done(request):
     status = request.GET.get('status')
     mode = request.GET.get('mode')
 
-
     if status == 'success':
-        order_db = [p for p in CartItem.objects.all() if p.user==request.user and p.transaction_id==transaction_id and p.mihpayid==mihpayid and p.availability==True ]
-        
-        # orders = [
-        #     item for item in CartItem.objects.all()
-        #     if item.user == user and item.transaction_id == transaction_id and item.mihpayid == mihpayid and item.availability
-        # ]
+        order_items = [p for p in CartItem.objects.all() if p.user == user and p.transaction_id == transaction_id and p.mihpayid == mihpayid and p.availability == True]
 
-        for order_db in order_db:
-            address=Address.objects.get(id=order_db.address and user==request.user)
-            prod=Product.objects.get(id=order_db.product.id)
-
-            if prod.quantity >= order_db.quantity: 
-                available_stock = prod.quantity-order_db.quantity
-                prod.quantity = available_stock
-                prod.save()
-            else:
-                # Handle the error: maybe raise an exception or redirect with an error message
-                return HttpResponse("Insufficient stock for product: " + prod.name)
-                    
-            order_placed = Placed_Order(
-                price=order_db.product.price, 
-                order_id=order_db.order_id, 
-                product_id_number=order_db.product_id_number, 
-                user=user, 
-                address=address, 
-                transaction_id=order_db.transaction_id, 
-                product=order_db.product, 
-                quantity=order_db.quantity, 
-                payment_status=1, 
-                mihpayid=order_db.mihpayid, 
-                hash=order_db.hash
-                )
-            order_placed.save()
-
-            
-            # EasyPost shipment
+        for item in order_items:
             try:
-                to_address = easypost.Address.create(
-                    name=address.full_name,
-                    street1=f"{address.house_no}, {address.area}",
-                    city=address.city,
-                    state=address.state,
-                    zip=address.pincode,
-                    country="IN",
-                    phone="9999999999"
-                )
+                # Safely get address
+                address = Address.objects.get(id=item.address and user==request.user)
+                product = Product.objects.get(id=item.product.id)
 
-                from_address = easypost.Address.create(
-                    company="JohnnetteStore",
-                    street1="123 Main St",
-                    city="Mumbai",
-                    state="MH",
-                    zip="400001",
-                    country="IN",
-                    phone="18001234567"
-                )
-
-                parcel = easypost.Parcel.create(
-                    length=10,
-                    width=6,
-                    height=4,
-                    weight=500  
-                )
-
-                shipment = easypost.Shipment.create(
-                    to_address=to_address,
-                    from_address=from_address,
-                    parcel=parcel
-                )
-
-                # Buy label with cheapest rate
-                shipment.buy(rate=shipment.lowest_rate())
-
-                # Save tracking info in order (add these fields in model if not present)
-
-            except Exception as e:
-                print("EasyPost error:", e)
-
-            update= Order_Tracker(tracking_id=order_db.product_id_number, update_desc="The order has been placed", orderInfo=order_placed)
-            update.save()            
-                        
-            mail_date.append(order_db.datetime)
-            mail_order_id.append(order_db.order_id)
-            mail_product_id.append(order_db.product_id_number)
-            mail_product_title.append(order_db.product.title)
-            mail_quantity.append(order_db.quantity)
-            mail_total_cost.append(order_db.product.price)
+                if product.quantity < item.quantity:
+                    return HttpResponse("Insufficient stock for product: " + product.title)
+                
+                else:
             
-            order_db.delete()
+                    # Create EasyPost shipment
+                    try:
+                        to_address = client.address.create(
+                            name="John Doe",
+                            street1="388 Townsend Street",
+                            city="San Francisco",
+                            state="CA",
+                            zip="94107",
+                            country="US",
+                            phone="4159876543"
+                        )
+                        from_address = client.address.create(
+                            company="EasyPost",
+                            street1="417 Montgomery Street",
+                            city="San Francisco",
+                            state="CA",
+                            zip="94104",
+                            country="US",
+                            phone="4151234567"
+                        )
+                        parcel = client.parcel.create(
+                            length=10,
+                            width=6,
+                            height=4,
+                            weight=500  
+                        )
+                        shipment = client.shipment.create(
+                            to_address=to_address,
+                            from_address=from_address,
+                            parcel=parcel
+                        )
+
+                        if shipment.rates:
+                            lowest = shipment.lowest_rate(carriers=["USPS"]) 
+                            bought_shipment = client.shipment.buy(shipment.id, rate=lowest)
+
+                            label_url = bought_shipment.postage_label.label_url if bought_shipment.postage_label else "Label unavailable"
+
+                            # Save the order
+                            placed_order = Placed_Order(
+                                price=product.price,
+                                order_id=item.order_id,
+                                product_id_number=item.product_id_number,
+                                user=user,
+                                address=address,
+                                transaction_id=item.transaction_id,
+                                product=product,
+                                quantity=item.quantity,
+                                payment_status=1,
+                                mihpayid=item.mihpayid,
+                                hash=item.hash,
+                                tracking_code = bought_shipment.tracking_code,
+                                label_url = label_url
+                            )
+                            placed_order.save()
+
+                            tracker = Order_Tracker(
+                                tracking_id=item.product_id_number,
+                                tracking_code = bought_shipment.tracking_code,
+                                label_url = label_url,
+                                update_desc="The order has been placed",
+                                orderInfo=placed_order
+                            )
+                            tracker.save()  
+
+                            # Update stock
+                            product.quantity -= item.quantity
+                            product.save()
+
+                        else:
+                            # No rates available, mark as pending shipment
+                            tracker = Order_Tracker(
+                                tracking_id=item.product_id_number,
+                                tracking_code="Shipment not assigned",
+                                label_url="Shipment not assigned",
+                                update_desc="The order has been placed",
+                                orderInfo=placed_order
+                            )
+                            tracker.save()
+                    
+                    except Exception as ship_err:
+                        print("❌ EasyPost shipment error:", ship_err)
+                        # Save fallback tracker info
+                        tracker = Order_Tracker(
+                            tracking_id=item.product_id_number,
+                            tracking_code="Shipment Error",
+                            label_url="Error",
+                            update_desc="The order has been placed (no shipment)",
+                            orderInfo=placed_order
+                        )
+                        tracker.save()   
+                
+            except Exception as err:
+                print("❌ Order processing error:", err)
+                continue 
+
+            mail_date.append(item.datetime)
+            mail_order_id.append(item.order_id)
+            mail_product_id.append(item.product_id_number)
+            mail_product_title.append(item.product.title)
+            mail_quantity.append(item.quantity)
+            mail_total_cost.append(item.product.price)
+
+            item.delete()
+
 
     all_datetime=mail_date[0]
     datetime_string=str(all_datetime)
@@ -988,7 +976,6 @@ def payment_done(request):
     disc = "\u25CF"
     product_info = []
     for i in range(len(mail_product_title)):
-        # info = f" {disc} {mail_product_id[i]} - {mail_product_title[i]} - {mail_quantity[i]} x Rs{mail_total_cost[i]:.2f} = Rs{mail_quantity[i]*mail_total_cost[i]:.2f}"
         info = f" {disc} {mail_product_title[i]} - {mail_quantity[i]} x Rs{mail_total_cost[i]:.2f} = Rs{mail_quantity[i]*mail_total_cost[i]:.2f}"
         total += mail_quantity[i]*mail_total_cost[i]
         product_info.append(info)
@@ -1001,7 +988,7 @@ def payment_done(request):
     template5=template1+template3+template4
 
     send_mail(
-        f'Order Confirmation: {mail_order_id[0]} from JTPL STORE',
+        f'Order Confirmation: {mail_order_id[0]} from Livingstone Luxury',
         
         template5,
 
@@ -1009,13 +996,160 @@ def payment_done(request):
         [f'{email}'],
         fail_silently=False,
     )     
-    return redirect("/orders")
+    return redirect("/account")
 
+
+
+
+
+
+
+
+# views.py or webhook_views.py
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
+from .models import PayuWebhook
+import json
+
+@csrf_exempt
+def payu_webhook(request):
+    if request.method == "POST":
+        try:
+            data = request.POST
+            txnid = data.get("txnid")
+            status = data.get("status")  # success, failure, pending, etc.
+            mihpayid = data.get("mihpayid")
+
+            # 1. Log the webhook
+            PayuWebhook.objects.create(
+                source="payu",
+                payload=str(data),
+                headers=json.dumps(dict(request.headers)),
+                txnid=txnid,
+                mihpayid=mihpayid
+            )
+
+            # 2. Try updating Placed_Order
+            placed_orders = Placed_Order.objects.filter(transaction_id=txnid)
+            if placed_orders.exists():
+                for order in placed_orders:
+                    order.payment_status = status
+                    order.mihpayid = mihpayid
+                    order.save()
+                return HttpResponse("Placed_Order updated via webhook", status=200)
+
+            # 3. Fallback: Try updating CartItem (if order not placed yet)
+            cart_items = CartItem.objects.filter(transaction_id=txnid)
+            if cart_items.exists():
+                for item in cart_items:
+                    item.payment_status = status
+                    item.mihpayid = mihpayid
+                    item.save()
+                return HttpResponse("CartItem updated via webhook", status=200)
+
+            # 4. Nothing found
+            return HttpResponse("No matching transaction found", status=404)
+
+        except Exception as e:
+            print("❌ PayU webhook error:", e)
+            return HttpResponse("Internal server error", status=500)
+
+    return HttpResponse("Invalid request method", status=405)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# import easypost
+# easypost.api_key = "your_test_api_key"
+
+# webhook = easypost.Webhook.create(
+#     url="https://yourdomain.com/webhooks/easypost/"
+# )
+
+
+# @csrf_exempt
+# def easypost_webhook(request):
+#     if request.method == 'POST':
+#         payload = json.loads(request.body)
+
+#         if payload.get("object") == "Event" and payload.get("description") == "tracker.updated":
+#             tracking_code = payload["result"]["tracking_code"]
+#             status = payload["result"]["status"]
+#             est_delivery = payload["result"].get("est_delivery_date")
+
+#             try:
+#                 order = Placed_Order.objects.get(tracking_code=tracking_code)
+#                 Order_Tracker.objects.create(
+#                     tracking_id=order.product_id_number,
+#                     update_desc=f"Status updated: {status}",
+#                     orderInfo=order
+#                 )
+#             except Placed_Order.DoesNotExist:
+#                 pass  # Log or handle missing order
+
+#         return JsonResponse({"status": "received"}, status=200)
+#     return JsonResponse({"error": "Invalid method"}, status=405)
 # ======x====== PayUmoney integration =======x======
 # ======x====== PayUmoney integration ==============
 
 
 
+# views.py
+# import hmac
+# import hashlib
+# import json
+# from django.conf import settings
+# from django.http import JsonResponse, HttpResponseForbidden
+# from django.views.decorators.csrf import csrf_exempt
+# from .models import Placed_Order, Order_Tracker
+
+# @csrf_exempt
+# def easypost_webhook(request):
+#     if request.method != 'POST':
+#         return JsonResponse({'error': 'Invalid method'}, status=405)
+
+#     # Step 1: Extract Signature Header
+#     signature = request.headers.get('X-Hmac-Signature')
+#     if not signature:
+#         return HttpResponseForbidden("Missing signature")
+
+#     # Step 2: Verify HMAC Signature
+#     secret = settings.EASYPOST_WEBHOOK_SECRET.encode()
+#     computed_hmac = hmac.new(secret, request.body, hashlib.sha256).hexdigest()
+
+#     if not hmac.compare_digest(signature, computed_hmac):
+#         return HttpResponseForbidden("Invalid signature")
+
+#     # Step 3: Process Webhook Payload
+#     payload = json.loads(request.body)
+#     if payload.get("object") == "Event" and payload.get("description") == "tracker.updated":
+#         tracking_code = payload["result"]["tracking_code"]
+#         status = payload["result"]["status"]
+
+#         try:
+#             order = Placed_Order.objects.get(tracking_code=tracking_code)
+#             Order_Tracker.objects.create(
+#                 tracking_id=order.product_id_number,
+#                 update_desc=f"Status updated: {status}",
+#                 orderInfo=order
+#             )
+#         except Placed_Order.DoesNotExist:
+#             pass
+
+#     return JsonResponse({"status": "verified"})
 
 
 
@@ -1095,6 +1229,119 @@ def orders(request):
 
 
 
+# @csrf_exempt
+# def payu_webhook(request):
+#     if request.method == "POST":
+#         try:
+#             data = request.POST
+#             status = data.get("status")  # success, failure, pending
+#             txnid = data.get("txnid")
+#             mihpayid = data.get("mihpayid")
+
+#             print("PayU Webhook Received:", data)
+
+#             cart_items = CartItem.objects.filter(transaction_id=txnid)
+
+#             for item in cart_items:
+#                 item.mihpayid = mihpayid
+#                 item.payment_status = status
+#                 item.save()
+
+#             return HttpResponse("Webhook received", status=200)
+#         except Exception as e:
+#             print("PayU Webhook error:", e)
+#             return HttpResponse("Error", status=500)
+
+#     return HttpResponse("Invalid method", status=405)
+
+
+
+
+
+
+
+
+
+
+
+
+# import json
+# from django.views.decorators.csrf import csrf_exempt
+# from django.http import JsonResponse
+
+# @csrf_exempt
+# def easypost_webhook(request):
+#     try:
+#         payload = json.loads(request.body.decode('utf-8'))
+#         event_type = payload.get('description')  # e.g., "tracker.updated"
+#         tracker = payload.get('result', {}).get('tracking_code')
+#         status = payload.get('result', {}).get('status')  # "in_transit", "delivered", etc.
+
+#         print("EasyPost Webhook:", event_type, tracker, status)
+
+#         # Update tracker model
+#         tracker_obj = Order_Tracker.objects.filter(tracking_code=tracker).first()
+#         if tracker_obj:
+#             tracker_obj.update_desc = f"Status changed to {status}"
+#             tracker_obj.save()
+
+#         return JsonResponse({"message": "Webhook received"}, status=200)
+#     except Exception as e:
+#         print("EasyPost Webhook error:", e)
+#         return JsonResponse({"error": "Invalid data"}, status=400)
+
+
+
+
+
+
+
+
+# import hmac
+# import hashlib
+
+# @csrf_exempt
+# def easypost_webhook(request):
+#     payload = request.body
+#     secret = settings.EASYPOST_WEBHOOK_SECRET
+#     provided_signature = request.headers.get("X-Hmac-Signature")
+
+#     expected_signature = hmac.new(
+#         key=secret.encode(),
+#         msg=payload,
+#         digestmod=hashlib.sha256
+#     ).hexdigest()
+
+#     if provided_signature != expected_signature:
+#         return JsonResponse({"error": "Invalid signature"}, status=403)
+
+#     # Proceed to parse the payload...
+
+
+
+# WebhookLog.objects.create(
+#     source="payu",
+#     payload=str(request.POST),
+#     headers=json.dumps(dict(request.headers))
+# )
+
+
+
+# WebhookLog.objects.create(
+#     source="easypost",
+#     payload=request.body.decode("utf-8"),
+#     headers=json.dumps(dict(request.headers))
+# )
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1143,7 +1390,7 @@ def checkout_final(request):
         item.product.quantity -= item.quantity
         item.product.save()
 
-   
+    # Clear the cart after successful checkout
     user_cart.delete()
 
     return JsonResponse({'message': 'Checkout successful'})
@@ -1151,47 +1398,82 @@ def checkout_final(request):
 
 
 
+
+
+
+
+
+
+
+
+
+def search_products(request):
+    query = request.GET.get('q', '')
+    sort = request.GET.get('sort', 'relevance')
+    selected_price = request.GET.get('price')
+    selected_subcategory = request.GET.get('subcategory')
+
+    products = Product.objects.all()
+
+    if query:
+        products = products.filter(
+            Q(title__icontains=query) |
+            Q(category__icontains=query) |
+            Q(subcategory__icontains=query)
+        )
+
+    if selected_subcategory:
+        products = products.filter(subcategory=selected_subcategory)
+
+    if selected_price:
+        try:
+            min_price, max_price = map(int, selected_price.split('-'))
+            products = products.filter(price__gte=min_price, price__lte=max_price)
+        except ValueError:
+            pass
+
+    
+    if sort == 'low_to_high':
+        products = products.order_by('price')
+    elif sort == 'high_to_low':
+        products = products.order_by('-price')
+    elif sort == 'newest':
+        products = products.order_by('-id')
+    else:  
+        products = products.order_by('title')
+
+    return render(request, 'search_list.html', {
+        'products': products,
+        'query': query,
+        'sort': sort,
+        'selected_price': selected_price,
+        'selected_subcategory': selected_subcategory
+    })
+
+
+def privacy_policy(request):
+    return render(request, 'privacy Policy.html')
+
+def refund_policy(request):
+    return render(request, 'refund policy.html') 
+def tearms_policy(request):
+    return render(request, 'tearms policy.html')   
+
+
 #  to save order history 
 @login_required
 def load_order_history_section(request):
-    orders = Order.objects.filter(user=request.user).prefetch_related('items__product')
+    # orders = Placed_Order.objects.filter(user=request.user).prefetch_related('items__product')
+    orders = Placed_Order.objects.filter(user=request.user).select_related('product')
+    print("order items = ",orders)
     return render(request, 'my_order.html', {'orders': orders})
 
 
 
 
 
-
-
-
-
-# view for checkout/billing address
-
-
-
-
-
-def billing_address_view(request):
-    guest_email = request.session.get("guest_email", None)
-    if not guest_email:
-        return redirect("guest_checkout")
-
-    default_address = Address.objects.filter(user=request.user, is_default=True).first()
-
-    return render(request, "billing_address.html", {
-        "guest_email": guest_email,
-        "default_address": default_address,
-        "user": request.user
-    })
-
-
-
-
-
-
-
 # view for address management
-
+from livingstone_app.forms import AddressForm
 @login_required
 def address_list_view(request):
     addresses = Address.objects.filter(user=request.user)
@@ -1234,18 +1516,3 @@ def delete_address_view(request, pk):
     return redirect('address_list')
 
 
-
-
-
-
-def Deliveryaddress(request):
-    form = AddressForm() 
-
-    if request.method == "POST":
-        form = AddressForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('some-success-url')  
-
-    addresses = Address.objects.all() 
-    return render(request, 'deliveryaddress.html', {'form': form, 'add': addresses})

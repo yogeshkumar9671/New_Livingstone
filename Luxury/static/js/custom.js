@@ -380,8 +380,6 @@ function updateWishlistCount() {
 
 
 
-  
-
 
 
 
