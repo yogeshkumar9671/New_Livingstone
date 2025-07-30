@@ -410,6 +410,11 @@
       link.addEventListener('click', showDashboardSection);
     });
 
+    const defaultSection = document.querySelector('a[data-section="order_history"]');
+    if (defaultSection) {
+    defaultSection.click();
+  }
+
     renderDashboardWishlist();
   });
 

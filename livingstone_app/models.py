@@ -65,12 +65,26 @@ class Address(models.Model):
 
 
 
+class Color(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+    hex_code = models.CharField(max_length=7, blank=True, null=True)  # Optional
+
+    def __str__(self):
+        return self.name
+
+class Size(models.Model):
+    name = models.CharField(max_length=10, unique=True)
+
+    def __str__(self):
+        return self.name
+
 
 
 
 # model for product listing
-
+from django.core.exceptions import ValidationError
 from django.db import models
+from django.utils.text import slugify
 
 class Product(models.Model):
     CATEGORY_CHOICES = [
@@ -109,14 +123,15 @@ class Product(models.Model):
     ]
 
     title = models.CharField(max_length=255)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    color = models.CharField(max_length=100, blank=True, null=True)
-    size = models.CharField(max_length=10, choices=SIZE_CHOICES, blank=True, null=True)
+    slug = models.SlugField(unique=True, blank=True, null=True)
     category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
+    subcategory = models.CharField(max_length=30, choices=SUBCATEGORY_CHOICES)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    color = models.ManyToManyField(Color, blank=True)
+    size = models.ManyToManyField(Size, blank=True)
 
     # add for inventorhy management
     quantity = models.PositiveIntegerField(default=0, blank=True, null=True)
-    subcategory = models.CharField(max_length=30, choices=SUBCATEGORY_CHOICES)
 
     description = models.TextField(blank=True, null=True)
     delivery_info = models.TextField(blank=True, null=True)
@@ -134,8 +149,24 @@ class Product(models.Model):
     height = models.FloatField(default=5,  blank=True, null=True)   # in cm
     weight = models.FloatField(default=500,  blank=True, null=True)  # in grams
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base_slug = slugify(self.title)
+            slug = base_slug
+            num = 1
+            while Product.objects.filter(slug=slug).exists():
+                slug = f"{base_slug}-{num}"
+                num += 1
+            self.slug = slug
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.title
+    
+
+
+
+
 
 
 
@@ -149,6 +180,8 @@ class CartItem(models.Model):
     order_id = models.CharField(max_length=10000000, null=True, blank=True, default=None) 
     product_id_number=models.CharField(max_length=255, unique=True, default=None, blank=True, null=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    selected_color = models.ForeignKey(Color, on_delete=models.SET_NULL, null=True, blank=True)
+    selected_size = models.ForeignKey(Size, on_delete=models.SET_NULL, null=True, blank=True)
     quantity = models.PositiveIntegerField(default=1)
     added_at = models.DateTimeField(auto_now_add=True)
     availability=models.BooleanField(default=False)
@@ -188,6 +221,8 @@ class Placed_Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     address = models.ForeignKey(Address, on_delete=models.CASCADE)
     product=models.ForeignKey(Product, on_delete=models.CASCADE)
+    selected_color = models.ForeignKey(Color, on_delete=models.SET_NULL, null=True, blank=True)
+    selected_size = models.ForeignKey(Size, on_delete=models.SET_NULL, null=True, blank=True)
     quantity = models.PositiveIntegerField(default=1)
     status = models.CharField(choices=STATUS_CHOICES, max_length=50, default="Pending")
     price = models.FloatField(blank=True, null=True)

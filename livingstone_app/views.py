@@ -255,7 +255,8 @@ def custom_logout(request):
 
 # user account
 def account_dashboard(request):
-    return render(request, 'dashboard.html')
+    my_orders = Placed_Order.objects.all()
+    return render(request, 'dashboard.html', {'my_orders':my_orders})
 
 
 def load_profile_section(request):
@@ -358,27 +359,39 @@ def product_details(request, product_id):
 # view for inventory management
 
 
-from .models import Product, CartItem
+from .models import Product, CartItem, Color, Size
 
 def add_to_cart(request, product_id):
+
+    color = request.POST.get("color")
+    size = request.POST.get("size")
     product = get_object_or_404(Product, id=product_id)
+    selected_color = get_object_or_404(Color, id=color)
+    selected_size = get_object_or_404(Size, id=size)
     quantity_requested = int(request.POST.get('quantity'))
+
+
+    print(selected_color, selected_size, product_id)
+
     item_already_in_cart = CartItem.objects.filter(Q(product=product_id) & Q(user=request.user)).exists() 
 
-    if product_id:
-        if item_already_in_cart and product.quantity >= quantity_requested:
-            cart_product = CartItem.objects.get(product=product, user=request.user)
-            cart_product.quantity = quantity_requested
-            cart_product.availability = True
-            cart_product.save()
-            return redirect('/cart')
-            
-        elif not item_already_in_cart and product.quantity >= quantity_requested:
-            CartItem(product=product, quantity=quantity_requested, availability=True,  user=request.user).save()
-            messages.success(request, f"{product.title} added to cart.")
+    if product_id: 
+        if selected_color and selected_size:
+            if item_already_in_cart and product.quantity >= quantity_requested:
+                cart_product = CartItem.objects.get(product=product, user=request.user)
+                cart_product.quantity = quantity_requested
+                cart_product.availability = True
+                cart_product.selected_color = selected_color
+                cart_product.selected_size = selected_size
+                cart_product.save()
+                return redirect('/cart')
+                
+            elif not item_already_in_cart and product.quantity >= quantity_requested:
+                CartItem(product=product, quantity=quantity_requested, availability=True,  user=request.user).save()
+                messages.success(request, f"{product.title} added to cart.")
 
         else:
-            messages.error(request, "Not enough stock available.")
+            messages.error(request, "Please Select Size and Color!.")
             return redirect('productdetails', product_id=product.id)    
     else:
         messages.error(request, "Not enough stock available.")
@@ -489,6 +502,7 @@ def checkout(request):
     order=0
     totalamount = 0
     selling_price = 0
+    shipping_amount=500
     cart_product = [p for p in CartItem.objects.all() if p.user == request.user and p.availability==True]
     if cart_product:
         for p in cart_product:
@@ -587,6 +601,8 @@ def checkout(request):
         "selling_price":selling_price,
         "TotalCartItems":TotalCartItems,
         "data":Payu_data,
+        "shipping_amount":shipping_amount,
+        "Total_with_Shipping":totalamount+shipping_amount
     }
     return render(request, 'checkout.html', context)
 
@@ -907,7 +923,9 @@ def payment_done(request):
                                 mihpayid=item.mihpayid,
                                 hash=item.hash,
                                 tracking_code = bought_shipment.tracking_code,
-                                label_url = label_url
+                                label_url = label_url,
+                                selected_color=item.selected_color,
+                                selected_size=item.selected_size,
                             )
                             placed_order.save()
 

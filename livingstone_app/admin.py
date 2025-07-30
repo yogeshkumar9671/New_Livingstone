@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Profile, Product, CartItem, Order_Tracker, Placed_Order, Address
+from .models import Profile, Product, CartItem, Order_Tracker, Placed_Order, Address, Color, Size
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
@@ -32,9 +32,26 @@ class CartModelAdmin(admin.ModelAdmin):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('title', 'category', 'subcategory', 'price', 'color', 'size')
-    list_filter = ('category', 'subcategory', 'color', 'size')
+    list_display = ('title', 'category', 'subcategory', 'price', 'get_colors', 'get_sizes')
+    list_filter = ('category', 'subcategory')
     search_fields = ('title', 'description')
+    filter_horizontal = ('color', 'size')  # Matches field names in your Product model
+
+    def get_colors(self, obj):
+        return ", ".join([color.name for color in obj.color.all()])
+    get_colors.short_description = 'Colors'
+
+    def get_sizes(self, obj):
+        return ", ".join([size.name for size in obj.size.all()])
+    get_sizes.short_description = 'Sizes'
+
+@admin.register(Color)
+class ColorAdmin(admin.ModelAdmin):
+    list_display = ['name', 'hex_code']
+
+@admin.register(Size)
+class SizeAdmin(admin.ModelAdmin):
+    list_display = ['name']
 
 
 
@@ -67,3 +84,5 @@ class OrderUpdateModelAdmin(admin.ModelAdmin):
             return format_html("<a href='{}'>{}</a>", link, obj.orderInfo.product_id_number)
         else:
             return "No order information"
+        
+

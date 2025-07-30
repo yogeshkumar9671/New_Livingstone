@@ -262,21 +262,21 @@
       <th style="width: 165px;">&nbsp;</th>
       <th style="text-align: center;">QUANTITY</th>
       <th style="text-align: right;">PRICE</th>
-      <th style="text-align: right;">TOTAL</th>
+      <!-- <th style="text-align: right;">TOTAL</th> -->
     </tr>
   </thead>
   <tbody>
     {% for item in cart_items %}
     <tr>
       <td>
-        <img src="{{ item.product.image.url }}" alt="{{ item.product.title }}" style="width: 80px; height: 100px; object-fit: cover;" />
+        <img src="{{ item.product.image1.url }}" alt="{{ item.product.title }}" style="width: 80px; height: 100px; object-fit: cover;" />
       </td>
       <td class="product-details">
         <strong>{{ item.product.title }}</strong>
       </td>
-      <td style="text-align: center;">{{ item.quantity }}</td>
-      <td style="text-align: right;">₹ {{ item.product.price }}</td>
-      <td style="text-align: right;">₹ {{ item.product.price|floatformat:2|add:item.quantity|floatformat:2 }}</td>
+      <td style="text-align: center;" class="quantity">{{ item.quantity }}</td>
+      <td style="text-align: right;" class="price">₹ {{ item.product.price }}</td>
+      <!-- <td style="text-align: right;" class="total">₹ </td> -->
     </tr>
     {% endfor %}
   </tbody>
@@ -307,10 +307,10 @@
     <div class="billing-summary" style="flex: 0.8;">
       <h2 style="font-family: 'Georgia', serif; color: #0a2b55;">Billing Summary</h2>
       <div style="margin-top: 20px;">
-          <p style="display: flex; justify-content: space-between;"><span>Items total</span><span>₹ {{ total|floatformat:2 }}</span></p>
-          <p style="display: flex; justify-content: space-between;"><span>Shipping</span><span>₹ 0.00</span></p>
+          <p style="display: flex; justify-content: space-between;"><span>Items total</span><span>₹ {{ totalamount|floatformat:2 }}</span></p>
+          <p style="display: flex; justify-content: space-between;"><span>Shipping</span><span>₹ {{ shipping_amount|floatformat:2 }}</span></p>
         <hr />
-          <p style="display: flex; justify-content: space-between; font-weight: bold;"><span>Total For Your Order</span><span>₹ {{ total|floatformat:2 }}</span></p>
+          <p style="display: flex; justify-content: space-between; font-weight: bold;"><span>Total For Your Order</span><span>₹ {{ Total_with_Shipping|floatformat:2 }}</span></p>
                   <p style="font-size: 12px; margin-top: 20px;">
           The total amount you pay includes all applicable customs duties & taxes. We guarantee no additional charges on delivery.
         </p>

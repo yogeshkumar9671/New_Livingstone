@@ -192,12 +192,12 @@
     <h1>My Orders</h1>
     <p class="subheading">View and edit all your pending, delivered, and returned orders here.</p>
 
-    {% if orders %}
-      {% for order in orders %}
+    {% if my_orders %}
+      {% for order in my_orders %}
         <div class="order-header">
           <div>
             <span>#{{ order.order_id }}</span>
-            <div style="font-size: 13px; color: #666;">Order Placed: {{ order.created_at|date:"D, d M Y" }}</div>
+            <div style="font-size: 13px; color: #666;">Order Placed: {{ order.datetime_of_payment|date:"D, d M Y" }}</div>
           </div>
           <button class="track-btn" onclick="trackOrder()">TRACK ORDER</button>
         </div>
