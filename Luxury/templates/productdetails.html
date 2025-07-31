@@ -225,7 +225,6 @@
 
         <div class="product-details sticky-top" style="top: 96px; padding: 75px; background: #fff;">
 
-
           
           <h4 id="productTitle" class="product-title">{{ product.title }}</h4>
           <p class="product-brand">Livingstone Luxury</p>
@@ -330,13 +329,13 @@
               <label for="quantity"><strong>Quantity:</strong></label>
               <input type="number" name="quantity" id="quantityInput" class="form-control" min="1" max="{{ product.quantity }}" value="1" required>
             </div>
+            <!-- This button will submit the form AND open the slide panel -->
+            <button class="btn w-100 custom-bag-btn" style="background-color: #041e3a; color: #fff;">
+             Add to Bag
+            </button>
 
           </form>
 
-          <!-- This button will submit the form AND open the slide panel -->
-          <button onclick="submitCartAndOpenBag()" class="btn w-100 custom-bag-btn" style="background-color: #041e3a; color: #fff;">
-           Add to Bag
-          </button>
 
           <!-- Show stock -->
           <p class="mt-2"><strong>Available Stock:</strong> <strong>{{ product.quantity }}</strong></p>           

@@ -1,17 +1,17 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}{% endblock title %}
-{% block description %}{% endblock description %}
-{% block keywords %}{% endblock keywords %}
+{% block title %}Cart{% endblock title %}
 
 {% block page_css %}
+<!-- Use your existing styles -->
 <link rel="stylesheet" href="{% static 'styles/bootstrap4/bootstrap.min.css' %}" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-<link href="{% static 'plugins/malihu-custom-scrollbar/jquery.mCustomScrollbar.css' %}" rel="stylesheet" type="text/css">
-<link rel="stylesheet" type="text/css" href="{% static 'plugins/jquery-ui-1.12.1.custom/jquery-ui.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static 'styles/categories.css' %}">
-<link rel="stylesheet" href="{% static 'styles/main_styles.css' %}" />
-<link rel="stylesheet" href="{% static 'styles/responsive.css' %}" />
+<link href="{% static 'plugins/malihu-custom-scrollbar/jquery.mCustomScrollbar.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'plugins/jquery-ui-1.12.1.custom/jquery-ui.css' %}">
+<link rel="stylesheet" href="{% static 'styles/categories.css' %}">
+<link rel="stylesheet" href="{% static 'styles/main_styles.css' %}">
+<link rel="stylesheet" href="{% static 'styles/responsive.css' %}">
+
 <style>
   .pt-5, .py-5 { padding-top: 5rem !important; }
   .main_nav ul li a { color: #000; }
@@ -26,171 +26,243 @@
   .checkout_container {
     margin-top: 10rem;
   }
+
+  /* .quantity-box {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  width: 100px;
+  justify-content: space-between;
+} */
+
+    /* 
+
+.qty-btn {
+  background: #f7f7f7;
+  border: none;
+  width: 30px;
+  height: 30px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.qty-input {
+  width: 30px;
+  text-align: center;
+  border: none;
+  font-weight: bold;
+  font-size: 16px;
+  background: #f7f7f7;
+}
+
+
+
+.cart-right {
+   margin-left: 31px;
+}
+
+.quantity-box input { 
+    padding: 1px;
+} */
+</style>
+<style>
+  /* .checkout_container {
+    margin-top: 10rem;
+  }
+
+  .quantity-box {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    width: 100px;
+    justify-content: space-between;
+  }
+
+  .qty-btn {
+    background: #f7f7f7;
+    border: none;
+    width: 30px;
+    height: 30px;
+    font-size: 18px;
+    cursor: pointer;
+  }
+
+  .qty-input {
+    width: 30px;
+    text-align: center;
+    border: none;
+    font-weight: bold;
+    font-size: 16px;
+    background: #f7f7f7;
+  }
+
+  .cart-right {
+    margin-left: 31px;
+  } */
 </style>
 {% endblock page_css %}
 
 {% block content %}
-
-
 <body>
-<div class="checkout_container">
-  <div class="checkout-header">
-    <button>PROCEED TO CHECKOUT</button>
-    <a href="#">Continue Shopping</a>
-  </div>
-  <h2>SHOPPING BAG (<span id="itemCount">0</span>)</h2>
-  <div id="cartItems"></div>
-  <div class="promo">APPLY A PROMO CODE <a>+ADD</a></div>
-  <div class="summary">
-    <div class="summary-box">
-      <p><strong>SUBTOTAL</strong> <span>₹ <span id="subtotal">0.00</span></span></p>
-      <p><strong>ESTIMATED TOTAL</strong> <span>₹ <span id="total">0.00</span></span></p>
-      <small>Page does not contain any content.</small>
-      <button onclick="finalizeCheckout()">PROCEED TO CHECKOUT</button>
+  <div class="checkout_container">
+    <div class="checkout-header">
+      <button onclick="window.location.href='{% url 'billing_address' %}'">PROCEED TO CHECKOUT</button>
+      <a href="/">Continue Shopping</a>
     </div>
-  </div>
-</div>
 
-{% endblock content %}
+    <h2>SHOPPING BAG (<span id="itemCount">{{ TotalCartItems }}</span>)</h2>
 
-{% block page_js %}
-<script>
-  const cart = JSON.parse(localStorage.getItem("cart")) || [];
-  console.log("Cart from localStorage:", cart);
+    <div id="cartItems">
+      {% if carts %}
+        {% for item in carts %}
+          <div class="cart-item">
+            <div class="cart-left">
+              <a href="/product/{{ item.product.id }}/">
+                <img src="{{ item.product.image1.url }}" alt="{{ item.product.title }}" />
+              </a>
+              <div class="cart-details">
+                <h4>{{ item.product.title }}</h4>
+                <p><strong>Colour:</strong> {{ item.selected_color.name }}</p>
+                <p><strong>Size:</strong> {{ item.selected_size.name }}</p>
+                <p><strong>Category:</strong> {{ item.product.category }} </p>
+              </div>
+            </div>
 
-  function renderCart() {
-    const container = document.getElementById("cartItems");
-    let subtotal = 0;
-    let itemCount = 0;
-    container.innerHTML = "";
+            <div class="cart-right">
+              <div class="quantity-box" data-index="{{ forloop.counter0 }}">
+                <div style="float: left; display: flex; align-items: center; justify-content: center;">
+                  <a class="minus-cart btn" pid="{{ item.product.id }}"><i class="fas fa-minus-square fa-lg"></i></a>
+                  <span id="quantity" style="display: inline-block; border: 1px solid gray; width: 50px; border-radius: 3px; text-align: center;">{{ item.quantity }}</span>
+                  <a class="plus-cart btn" pid="{{ item.product.id }}"><i class="fas fa-plus-square fa-lg"></i></a>
+                </div>
+              </div>
 
-    if (cart.length === 0) {
-      container.innerHTML = `
+              <div class="icons">
+                <a href="/product/{{ item.product.id }}/" class="edit" data-index="{{ forloop.counter0 }}" title="Edit">✎</a>
+                <a href="#" class="remove remove_cart" pid="{{ item.product.id }}" data-index="{{ forloop.counter0 }}" title="Remove">✖</a>
+                <a href="/wishlist/" class="wishlist" data-index="{{ forloop.counter0 }}" title="Add to Wishlist">♡</a>
+              </div>
+              <p>₹{{ item.product.price|floatformat:2 }} </p>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
         <div style="text-align: center; margin-top: 60px;">
           <h3>Your Shopping Bag is Empty</h3>
           <a href="/" style="text-decoration: underline;">« Continue Shopping</a>
         </div>
-      `;
-      document.getElementById("subtotal").textContent = "0.00";
-      document.getElementById("total").textContent = "0.00";
-      document.getElementById("itemCount").textContent = "0";
-      return;
-    }
+      {% endif %}
+    </div>
 
-    container.innerHTML = cart.map((item, index) => {
-      const price = parseFloat(item.price.replace(/[^\d.]/g, ''));
-      const total = price * item.quantity;
-      subtotal += total;
-      itemCount += item.quantity;
+    <div class="promo">APPLY A PROMO CODE <a>+ADD</a></div>
 
-      return `
-        <div class="cart-item">
-          <div class="cart-left">
-
-            <a href="/product/${item.id}/">
-              <img src="${item.image}" alt="${item.title}" />
-            </a>
-
-            
-            <div class="cart-details">
-              <h4>${item.title}</h4>
-              <p>Style Number: 3616853485740</p>
-              <p>Qty: ${item.quantity}</p>
-            </div>
-
-          </div>
-          <div class="cart-right">
-            <select data-index="${index}" class="qty-select">
-              ${[1,2,3,4,5].map(q => `<option value="${q}" ${q === item.quantity ? 'selected' : ''}>${q}</option>`).join('')}
-            </select>
-            <div class="icons">
-              <span class="edit" data-index="${index}" title="Edit">✎</span>
-              <span class="remove" data-index="${index}" title="Remove">✖</span>
-              <span class="wishlist" data-index="${index}" title="Add to Wishlist">♡</span>
-            </div>
-            <p>₹${price.toFixed(2)}</p>
-            <p><strong>₹${total.toFixed(2)}</strong></p>
-          </div>
-        </div>
-      `;
-    }).join("");
-
-    document.getElementById("subtotal").textContent = subtotal.toFixed(2);
-    document.getElementById("total").textContent = subtotal.toFixed(2);
-    document.getElementById("itemCount").textContent = itemCount;
-
-    attachIconEvents();
-
-    document.querySelectorAll(".qty-select").forEach(select => {
-      select.addEventListener("change", function () {
-        const index = parseInt(this.getAttribute("data-index"));
-        cart[index].quantity = parseInt(this.value);
-        localStorage.setItem("cart", JSON.stringify(cart));
-        renderCart();
-      });
-    });
-  }
-
-  function attachIconEvents() {
-    document.querySelectorAll(".remove").forEach(btn => {
-      btn.addEventListener("click", function () {
-        const index = parseInt(this.getAttribute("data-index"));
-        cart.splice(index, 1);
-        localStorage.setItem("cart", JSON.stringify(cart));
-        renderCart();
-      });
-    });
+    {% if carts %}
+    <div class="summary">
+      <div class="summary-box">
+        <!-- <p><strong>SUBTOTAL</strong> <span>₹ <span id="subtotal">{{ amount|floatformat:2 }}</span></span></p> -->
+        <p><strong>ESTIMATED TOTAL</strong> <span>₹ <span id="total">{{ totalamount }}</span></span></p>
+        <button id="total" onclick="window.location.href='{% url 'billing_address' %}'">PROCEED TO CHECKOUT</button>
+      </div>
+    </div>
+    {% else %}
+    <div class="summary">
+      <div class="summary-box">
+        <!-- <p><strong>SUBTOTAL</strong> <span>₹ <span id="subtotal">{{ amount|floatformat:2 }}</span></span></p> -->
+        <p><strong>ESTIMATED TOTAL</strong> <span>₹ <span id="total">{{ totalamount }}</span></span></p>
+        <button id="total" onclick="window.location.href='{% url 'cart' %}'">PROCEED TO CHECKOUT</button>
+      </div>
+    </div>
+    {% endif %}
 
     
-    document.querySelectorAll(".edit").forEach(btn => {
-      btn.addEventListener("click", function () {
-        const index = parseInt(this.getAttribute("data-index"));
-        alert("Edit function is not implemented yet for item: " + cart[index].title);
-      });
-    });
+  </div>
+</body>
+{% endblock %}
 
-    document.querySelectorAll(".wishlist").forEach(btn => {
-      btn.addEventListener("click", function () {
-        const index = parseInt(this.getAttribute("data-index"));
-        const item = cart[index];
-        alert(`${item.title} moved to wishlist.`);
-        cart.splice(index, 1);
-        localStorage.setItem("cart", JSON.stringify(cart));
-        renderCart();
-      });
-    });
-  }
+{% block page_js %}
 
-  renderCart();
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.plus-cart').click(function() {
+            var id = $(this).attr("pid").toString();
+            console.log(id)
+            var elm = this.parentNode.children[1]
+
+            $.ajax({
+                type: "GET",
+                url: "/pluscart",
+                data: {
+                    prod_id: id
+                },
+                success: function(data) {
+                    console.log(data)
+                    elm.innerText = data.quantity
+                    document.getElementById('cartItemCount').innerText = data.TotalCartItems
+                    document.getElementById('total').innerText = data.totalamount
+                }
+            })
+        })
+    })
 </script>
-
-
-<!-- reduce product quantity and store quantity when product remove from cart  -->
 
 <script>
+    $(document).ready(function() {
+        $('.minus-cart').click(function() {
+            var id = $(this).attr("pid").toString();
+            console.log(id)
+            var elm = this.parentNode.children[1]
 
-  function finalizeCheckout() {
-  window.location.href = "{% url 'billing_address' %}";
-}
+            $.ajax({
+                type: "GET",
+                url: "/minuscart",
+                data: {
+                    prod_id: id
+                },
+                success: function(data) {
+                    console.log(data)
+                    elm.innerText = data.quantity
+                    document.getElementById('total').innerText = data.totalamount
+                    document.getElementById('cartItemCount').innerText = data.TotalCartItems
+                }
+            })
+        })
+    })
+</script>
 
+<script>
+    $(document).ready(function() {
+        $('.remove_cart').click(function() {
+            var id = $(this).attr("pid").toString();
+            console.log(id)
+            //var elm = this.parentNode.parentNode.parentNode;
 
-function getCookie(name) {
-  let cookieValue = null;
-  if (document.cookie && document.cookie !== "") {
-    const cookies = document.cookie.split(";");
-    for (let i = 0; i < cookies.length; i++) {
-      const cookie = cookies[i].trim();
-      if (cookie.substring(0, name.length + 1) === name + "=") {
-        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-        break;
-      }
-    }
-  }
-  return cookieValue;
-}
+            var elm = this
+
+            $.ajax({
+                type: "GET",
+                url: "/remove_cart",
+                data: {
+                    prod_id: id
+                },
+                success: function(data) {
+                    document.getElementById('total').innerText = data.totalamount
+                    document.getElementById('cartItemCount').innerText = data.TotalCartItems
+                    elm.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.remove()
+                    location.reload();
+                }
+            })
+        })
+    })
 </script>
 
 
+
+
+
+
+<!-- Keep your JS scripts if needed -->
 <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
 <script src="{% static 'styles/bootstrap4/popper.js' %}"></script>
 <script src="{% static 'styles/bootstrap4/bootstrap.min.js' %}"></script>
@@ -199,6 +271,4 @@ function getCookie(name) {
 <script src="{% static 'plugins/parallax-js-master/parallax.min.js' %}"></script>
 <script src="{% static 'plugins/colorbox/jquery.colorbox-min.js' %}"></script>
 <script src="{% static 'js/custom.js' %}"></script>
-<script src="{% static 'script.js' %}"></script>
-</body>
 {% endblock page_js %}

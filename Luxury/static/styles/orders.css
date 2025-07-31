@@ -1,0 +1,48 @@
+.detail {
+    flex-wrap: nowrap;
+    text-align: left;
+    padding-left: 10px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.detail>div {
+    margin-top: 5px;
+}
+
+.company_logo {
+    width: 20%;
+    border: 3px solid rgba(1, 1, 66, 0.3);
+    border-radius: 10px;
+    font-weight: bolder;
+}
+
+.company_logo img {
+    display: flex;
+    width: 100%;
+}
+
+.brand_name {
+    color: black;
+    overflow: hidden;
+    font-weight: bold;
+}
+
+.actual_price {
+    color: gray;
+    overflow: hidden;
+}
+
+.off_upto {
+    color: green;
+}
+
+.item {
+    display: flex;
+    justify-content: space-between;
+}
+
+.card_right {
+    flex: 90%;
+    padding-left: 20px;
+}

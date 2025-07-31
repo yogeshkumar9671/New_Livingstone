@@ -21,80 +21,6 @@ easypost.api_key = settings.EASYPOST_API_KEY
 client = easypost.EasyPostClient(settings.EASYPOST_API_KEY)
 
 def index(request):
-    # # Create recipient (to) address
-    # to_address = client.address.create(
-    #     name="John Doe",
-    #     street1="388 Townsend Street",
-    #     city="San Francisco",
-    #     state="CA",
-    #     zip="94107",
-    #     country="US",
-    #     phone="4159876543"
-    # )
-    # print("to address ================ ", to_address)
-
-    # # Create sender (from) address
-    # from_address = client.address.create(
-    #     company="EasyPost",
-    #     street1="417 Montgomery Street",
-    #     city="San Francisco",
-    #     state="CA",
-    #     zip="94104",
-    #     country="US",
-    #     phone="4151234567"
-    # )
-    # print("from address ================ ", from_address)
-
-    # # Create parcel
-    # parcel = client.parcel.create(
-    #     length=10,
-    #     width=6,
-    #     height=4,
-    #     weight=500  # grams
-    # )
-    # print("parcel ================ ", parcel)
-
-    # # Create shipment
-    # shipment = client.shipment.create(
-    #     to_address=to_address,
-    #     from_address=from_address,
-    #     parcel=parcel
-    # )
-    # print("Available Rates:", shipment.rates)
-
-    # # Buy the shipment using the lowest rate
-    # # if shipment.rates:
-    # #     lowest = shipment.lowest_rate()
-    # #     print("Lowest Rate:=========", lowest)
-
-    # #     # Buy the shipment
-    # #     bought_shipment = client.shipment.buy(shipment.id, rate=lowest)
-    # #     print("shipment ================ ", bought_shipment)
-    # #     print("tracking_code ======== ", bought_shipment.tracking_code)
-    # #     print("postage_label ======== ", bought_shipment.postage_label.label_url)
-
-
-    # if shipment.rates:
-    #     lowest = shipment.lowest_rate(carriers=["USPS"])  # Specify USPS only
-    #     print("Lowest Rate:", lowest)
-
-    #     bought_shipment = client.shipment.buy(shipment.id, rate=lowest)
-    #     print("tracking_code ======== ", bought_shipment.tracking_code)
-    #     print("postage_label ======== ", bought_shipment.postage_label.label_url)
-
-
-
-    #     # You can pass the label URL to your template if needed
-    #     return render(request, 'index.html', {
-    #         'label_url': bought_shipment.postage_label.label_url,
-    #         'tracking_code': bought_shipment.tracking_code
-    #     })
-
-    # else:
-    #     print("❌ No rates found")
-    #     return render(request, 'index.html', {
-    #         'error': 'No shipping rates found for the given addresses and parcel.'
-    #     })
 
     return render(request, 'index.html')
 
@@ -253,10 +179,17 @@ def custom_logout(request):
     return redirect('index')
 
 
+
+@login_required
+def load_order_history_section(request):
+    orders = Placed_Order.objects.filter(user=request.user).select_related('product')
+    return render(request, 'my_order.html', {'orders': orders})
+
 # user account
+@login_required
 def account_dashboard(request):
-    my_orders = Placed_Order.objects.all()
-    return render(request, 'dashboard.html', {'my_orders':my_orders})
+    orders = Placed_Order.objects.filter(user=request.user).select_related('product')
+    return render(request, 'dashboard.html', {'my_orders':orders})
 
 
 def load_profile_section(request):
@@ -325,6 +258,8 @@ from django.db.models import Q
 def product_details(request, product_id):
     product = get_object_or_404(Product, id=product_id)
 
+    print("this is color = ",product.color)
+
     item_already_in_cart = False
     if request.user.is_authenticated:
         item_already_in_cart = CartItem.objects.filter(Q(product=product.id) & Q(user=request.user)).exists() 
@@ -360,42 +295,236 @@ def product_details(request, product_id):
 
 
 from .models import Product, CartItem, Color, Size
-
+@login_required(login_url="/login")
 def add_to_cart(request, product_id):
-
     color = request.POST.get("color")
     size = request.POST.get("size")
     product = get_object_or_404(Product, id=product_id)
-    selected_color = get_object_or_404(Color, id=color)
-    selected_size = get_object_or_404(Size, id=size)
+    selected_color = get_object_or_404(Color, id=color) if color else None
+    selected_size = get_object_or_404(Size, id=size) if size else None
     quantity_requested = int(request.POST.get('quantity'))
 
 
-    print(selected_color, selected_size, product_id)
+    print("color", selected_color, "size", selected_size, "id", product_id)
 
     item_already_in_cart = CartItem.objects.filter(Q(product=product_id) & Q(user=request.user)).exists() 
 
     if product_id: 
-        if selected_color and selected_size:
-            if item_already_in_cart and product.quantity >= quantity_requested:
-                cart_product = CartItem.objects.get(product=product, user=request.user)
-                cart_product.quantity = quantity_requested
-                cart_product.availability = True
-                cart_product.selected_color = selected_color
-                cart_product.selected_size = selected_size
-                cart_product.save()
-                return redirect('/cart')
-                
-            elif not item_already_in_cart and product.quantity >= quantity_requested:
-                CartItem(product=product, quantity=quantity_requested, availability=True,  user=request.user).save()
-                messages.success(request, f"{product.title} added to cart.")
-
-        else:
-            messages.error(request, "Please Select Size and Color!.")
-            return redirect('productdetails', product_id=product.id)    
+        if item_already_in_cart and product.quantity >= quantity_requested:
+            cart_product = CartItem.objects.get(product=product, user=request.user)
+            cart_product.quantity = quantity_requested
+            cart_product.availability = True
+            cart_product.selected_color = selected_color
+            cart_product.selected_size = selected_size
+            cart_product.save()
+            return redirect('/cart')
+            
+        elif not item_already_in_cart and product.quantity >= quantity_requested:
+            CartItem(
+                product=product, 
+                quantity=quantity_requested, 
+                availability=True,  
+                user=request.user,
+                selected_color = selected_color,
+                selected_size = selected_size
+            ).save()
+            messages.success(request, f"{product.title} added to cart.")
+            return redirect('/cart')
+  
     else:
         messages.error(request, "Not enough stock available.")
     return redirect('productdetails', product_id=product.id)
+
+
+
+
+
+@login_required(login_url="/login")
+def show_cart(request):
+    TotalCartItems=0
+    if request.user.is_authenticated:
+        TotalCartItems = CartItem.objects.filter(user=request.user).count()
+
+    if request.user.is_authenticated:
+        user = request.user
+        cart = CartItem.objects.filter(user=user).order_by('-id')
+
+        amount = 0
+        totalamount = 0
+        cart_product = [p for p in cart]
+        
+        if cart_product:
+            for p in cart_product:
+                product_quantity = p.quantity
+                product_price = p.product.price
+                stock_quantity = p.product.quantity
+
+                if product_quantity > stock_quantity:
+                    if stock_quantity > 1:
+                        p.quantity = stock_quantity
+                    else:
+                        p.quantity=p.product.quantity
+                    p.save()
+
+                item_total = p.quantity * p.product.price
+
+                setattr(p, 'item_total', item_total)
+                # Calculate item total and add to cart item object
+                amount += item_total
+
+
+            totalamount = amount
+
+            
+        else:
+            cart = None 
+
+    context = {
+        "carts":cart,
+        "totalamount":totalamount,
+        "amount":amount,
+        "TotalCartItems":TotalCartItems,
+    }
+    return render(request, 'cart.html',context)
+
+
+
+
+
+
+
+# import requests
+@login_required(login_url="/login")
+def plus_cart(request):
+    TotalCartItems=0
+    if request.user.is_authenticated:
+        TotalCartItems = CartItem.objects.filter(user=request.user).count()
+
+    if request.method == 'GET':
+        prod_id = request.GET['prod_id']
+        cart_item = CartItem.objects.get(Q(product=prod_id) & Q(user=request.user) & Q(availability=True))
+
+        if cart_item.quantity < cart_item.product.quantity:
+            cart_item.quantity += 1
+            cart_item.save()
+
+        else:
+            cart_item.quantity += 0
+            cart_item.save()
+            messages.error(request, "Only few items are available in stock")
+        
+        amount = 0
+        totalamount = 0
+        # discount = 0
+        # selling_price = 0
+        cart_product = [p for p in CartItem.objects.all() if p.user == request.user and p.availability==True]
+        for p in cart_product:
+            tempamount = (p.quantity*p.product.price)
+            amount += tempamount
+
+
+            if p.quantity > p.product.quantity:
+                if p.product.quantity > 1:
+                    # p.quantity=p.product.number_of_products_in_stock-1
+                    p.quantity=p.product.quantity+0
+                    p.save()
+                else:
+                    p.quantity=p.product.quantity
+                    p.save()
+
+            totalamount = amount
+        data = {
+            "quantity":cart_item.quantity,
+            "totalamount":totalamount,
+            "amount":amount,
+            "TotalCartItems":TotalCartItems,
+        }
+        return JsonResponse(data)
+    
+    
+    
+    
+    
+
+
+
+@login_required(login_url="/login")
+def minus_cart(request):
+    TotalCartItems=0
+    if request.user.is_authenticated:
+        TotalCartItems = CartItem.objects.filter(user=request.user).count()
+
+    if request.method == 'GET':
+        prod_id = request.GET['prod_id']
+        cart_item = CartItem.objects.get(Q(product=prod_id) & Q(user=request.user) & Q(availability=True))
+
+        cart_item.quantity -= 1
+        if cart_item.quantity == 0:
+            cart_item.quatity += 1
+        cart_item.save()
+        
+        amount = 0
+        totalamount = 0
+        # discount = 0
+        # selling_price = 0
+        cart_product = [p for p in CartItem.objects.all() if p.user == request.user and p.availability==True]
+        for p in cart_product:
+            tempamount = (p.quantity*p.product.price)
+            amount += tempamount
+        
+
+            if p.quantity > p.product.quantity:
+                if p.product.quantity > 1:
+                    p.quantity=p.product.quantity-1
+                    p.save()
+                else:
+                    p.quantity=p.product.quantity
+                    p.save()
+
+            totalamount = amount
+
+        data = {
+            "quantity":cart_item.quantity,
+            "totalamount":totalamount,
+            "amount":amount,
+            "TotalCartItems":TotalCartItems
+        }
+        return JsonResponse(data)
+
+
+
+
+
+
+
+@login_required(login_url="/login")
+def remove_cart(request):
+    TotalCartItems=0
+    if request.user.is_authenticated:
+        TotalCartItems = CartItem.objects.filter(user=request.user).count()
+
+    if request.method == 'GET':
+        prod_id = request.GET['prod_id']
+        cart_item = CartItem.objects.get(Q(product=prod_id) & Q(user=request.user))
+        cart_item.delete()
+        
+        amount = 0
+        totalamount = 0
+    
+        cart_product = [p for p in CartItem.objects.all() if p.user == request.user]
+        for p in cart_product:
+            tempamount = (p.quantity*p.product.price)
+            amount += tempamount
+
+            totalamount = amount
+
+        data = {
+            "amount":amount,
+            "totalamount":totalamount,
+            "TotalCartItems":TotalCartItems
+        }
+        return JsonResponse(data)
+
 
 
 
@@ -646,189 +775,9 @@ def handlerequest(request):
         "status":status,
         "mode":mode,
     }
-    return render(request, "transaction_successfull.html", context)
+    return render(request, "payment_done.html", context)
 
 
-
-
-
- 
-        
-# from datetime import datetime
-# import easypost
-# from django.conf import settings  
-
-# easypost.api_key = settings.EASYPOST_API_KEY
-# client = easypost.EasyPostClient(settings.EASYPOST_API_KEY)
-# def payment_done(request):
-#     user=request.user
-
-#     mail_date = []
-#     mail_order_id = []
-#     mail_product_id = []
-#     mail_product_title = []
-#     mail_quantity = []
-#     mail_total_cost = []
-
-#     transaction_id = request.GET.get('transaction_id')
-#     mihpayid = request.GET.get('mihpayid')
-#     status = request.GET.get('status')
-#     mode = request.GET.get('mode')
-
-#     if status == 'success':
-#         order_items = [p for p in CartItem.objects.all() if p.user == user and p.transaction_id == transaction_id and p.mihpayid == mihpayid and p.availability == True]
-
-#         for item in order_items:
-#             try:
-#                 address = Address.objects.get(id=item.address.id, user=user)
-#                 product = Product.objects.get(id=item.product.id)
-
-#                 if product.quantity < item.quantity:
-#                     return HttpResponse("Insufficient stock for product: " + product.title)
-#                 else:
-#                     product.quantity -= item.quantity
-#                     product.save()
-
-#                     placed_order = Placed_Order(
-#                         price=product.price,
-#                         order_id=item.order_id,
-#                         product_id_number=item.product_id_number,
-#                         user=user,
-#                         address=address,
-#                         transaction_id=item.transaction_id,
-#                         product=product,
-#                         quantity=item.quantity,
-#                         payment_status=1,
-#                         mihpayid=item.mihpayid,
-#                         hash=item.hash
-#                     )
-#                     placed_order.save()
-            
-#                     try:
-#                         to_address = client.address.create(
-#                             name=address.full_name,
-#                             street1=f"{address.house_no}, {address.area}",
-#                             city=address.city,
-#                             state=address.state,
-#                             zip=address.pincode,
-#                             country="IN",
-#                             phone=address.mobile_number
-#                         )
-
-#                         from_address = client.address.create(
-#                             company="Livingstone Luxury",
-#                             street1="A-38, sector 67",
-#                             city="Noida",
-#                             state="UP",
-#                             zip="201301",
-#                             country="IN",
-#                             phone="18001234567"
-#                         )
-
-#                         parcel = client.parcel.create(
-#                             length=product.length,
-#                             width=product.width,
-#                             height=product.height,
-#                             weight=product.weight
-#                         )
-
-#                         shipment = client.shipment.create(
-#                             to_address=to_address,
-#                             from_address=from_address,
-#                             parcel=parcel
-#                         )
-                    
-#                         if shipment.rates:
-#                             lowest = shipment.lowest_rate() 
-#                             bought_shipment = client.shipment.buy(shipment.id, rate=lowest)
-
-#                             label_url = bought_shipment.postage_label.label_url if bought_shipment.postage_label else "Label unavailable"
-
-#                             tracker = Order_Tracker(
-#                                 tracking_id=item.product_id_number,
-#                                 tracking_code = bought_shipment.tracking_code,
-#                                 label_url = label_url,
-#                                 update_desc="The order has been placed",
-#                                 orderInfo=placed_order
-#                             )
-#                             tracker.save()  
-
-#                             order = placed_order(
-#                                 tracking_code = bought_shipment.tracking_code,
-#                                 label_url = label_url
-#                             )
-#                             order.save()  
-
-#                         else:
-#                             tracker = Order_Tracker(
-#                                 tracking_id=item.product_id_number,
-#                                 tracking_code="Shipment not assigned",
-#                                 label_url="Shipment not assigned",
-#                                 update_desc="The order has been placed",
-#                                 orderInfo=placed_order
-#                             )
-#                             tracker.save()
-                    
-#                     except Exception as ship_err:
-#                         print("❌ EasyPost shipment error:", ship_err)
-#                         tracker = Order_Tracker(
-#                             tracking_id=item.product_id_number,
-#                             tracking_code="Shipment Error",
-#                             label_url="Error",
-#                             update_desc="The order has been placed (no shipment)",
-#                             orderInfo=placed_order
-#                         )
-#                         tracker.save()   
-                
-#                     mail_date.append(item.datetime)
-#                     mail_order_id.append(item.order_id)
-#                     mail_product_id.append(item.product_id_number)
-#                     mail_product_title.append(item.product.title)
-#                     mail_quantity.append(item.quantity)
-#                     mail_total_cost.append(item.product.price)
-                    
-#                     item.delete()
-
-#             except Exception as err:
-#                 print("❌ Order processing error:", err)
-#                 continue
-
-#         all_datetime=mail_date[0]
-#         datetime_string=str(all_datetime)
-#         order_datetime=datetime.fromisoformat(datetime_string)
-#         order_date=order_datetime.date()
-#         total=0
-#         email=address.email
-#         house_no=address.house_no
-#         area=address.area
-#         city=address.city
-#         state=address.state
-#         pincode=address.pincode
-#         circle = "\u25E6"
-#         disc = "\u25CF"
-#         product_info = []
-#         for i in range(len(mail_product_title)):
-#             info = f" {disc} {mail_product_title[i]} - {mail_quantity[i]} x Rs{mail_total_cost[i]:.2f} = Rs{mail_quantity[i]*mail_total_cost[i]:.2f}"
-#             total += mail_quantity[i]*mail_total_cost[i]
-#             product_info.append(info)
-
-#         template1 = f"Dear {address.full_name} \n\nThank you for your recent purchase from our store. We are pleased to confirm that your order has been received and is being processed. Below are the details of your order: \n\nOrder ID: {mail_order_id[0]}\nDate of Purchase: {order_date}\n\n"
-#         template2 = "Order Summary:\n{}"
-#         template3 = template2.format('\n'.join(product_info))
-#         template4 = f"\n {disc} Shipping: 70INR\n {disc} Taxes: Rs6.00\n {disc} Total: Rs{total}\n\nShipping Information:\n{address.full_name}\n{house_no}, {area}\n{city}, {state} {pincode}\nDelivery Method: Standard Shipping\nEstimated Delivery Date: March 30, 2023\n\nPayment Information:\nPayment Method: {mode}\nTotal Amount Paid: Rs{70+total}\n\nContact Information:\nIf you have any questions or concerns about your order, please do not hesitate to contact us at 1-800-123-4567 or support@livingstoneinstitute.com.\n\nCancellation and Return Policy:\nYou can cancel your order within 24 hours of placing it. If you are not completely satisfied with your purchase, you can return it for a full refund within 07 days.\n\nThank you for choosing our store. We appreciate your business and hope to see you again soon.\n\nSincerely,\nLivingstone Luxury Team."
-        
-#         template5=template1+template3+template4
-
-#         send_mail(
-#             f'Order Confirmation: {mail_order_id[0]} from Livingstone Luxury',
-            
-#             template5,
-
-#             'nisha@johnnette.com',
-#             [f'{email}'],
-#             fail_silently=False,
-#         )     
-#     return redirect("/orders")
 
 
 
@@ -911,7 +860,7 @@ def payment_done(request):
 
                             # Save the order
                             placed_order = Placed_Order(
-                                price=product.price,
+                                price=product.price*item.quantity,
                                 order_id=item.order_id,
                                 product_id_number=item.product_id_number,
                                 user=user,
@@ -1087,91 +1036,7 @@ def payu_webhook(request):
 
 
 
-
-
-
-# import easypost
-# easypost.api_key = "your_test_api_key"
-
-# webhook = easypost.Webhook.create(
-#     url="https://yourdomain.com/webhooks/easypost/"
-# )
-
-
-# @csrf_exempt
-# def easypost_webhook(request):
-#     if request.method == 'POST':
-#         payload = json.loads(request.body)
-
-#         if payload.get("object") == "Event" and payload.get("description") == "tracker.updated":
-#             tracking_code = payload["result"]["tracking_code"]
-#             status = payload["result"]["status"]
-#             est_delivery = payload["result"].get("est_delivery_date")
-
-#             try:
-#                 order = Placed_Order.objects.get(tracking_code=tracking_code)
-#                 Order_Tracker.objects.create(
-#                     tracking_id=order.product_id_number,
-#                     update_desc=f"Status updated: {status}",
-#                     orderInfo=order
-#                 )
-#             except Placed_Order.DoesNotExist:
-#                 pass  # Log or handle missing order
-
-#         return JsonResponse({"status": "received"}, status=200)
-#     return JsonResponse({"error": "Invalid method"}, status=405)
-# ======x====== PayUmoney integration =======x======
-# ======x====== PayUmoney integration ==============
-
-
-
-# views.py
-# import hmac
-# import hashlib
-# import json
-# from django.conf import settings
-# from django.http import JsonResponse, HttpResponseForbidden
-# from django.views.decorators.csrf import csrf_exempt
-# from .models import Placed_Order, Order_Tracker
-
-# @csrf_exempt
-# def easypost_webhook(request):
-#     if request.method != 'POST':
-#         return JsonResponse({'error': 'Invalid method'}, status=405)
-
-#     # Step 1: Extract Signature Header
-#     signature = request.headers.get('X-Hmac-Signature')
-#     if not signature:
-#         return HttpResponseForbidden("Missing signature")
-
-#     # Step 2: Verify HMAC Signature
-#     secret = settings.EASYPOST_WEBHOOK_SECRET.encode()
-#     computed_hmac = hmac.new(secret, request.body, hashlib.sha256).hexdigest()
-
-#     if not hmac.compare_digest(signature, computed_hmac):
-#         return HttpResponseForbidden("Invalid signature")
-
-#     # Step 3: Process Webhook Payload
-#     payload = json.loads(request.body)
-#     if payload.get("object") == "Event" and payload.get("description") == "tracker.updated":
-#         tracking_code = payload["result"]["tracking_code"]
-#         status = payload["result"]["status"]
-
-#         try:
-#             order = Placed_Order.objects.get(tracking_code=tracking_code)
-#             Order_Tracker.objects.create(
-#                 tracking_id=order.product_id_number,
-#                 update_desc=f"Status updated: {status}",
-#                 orderInfo=order
-#             )
-#         except Placed_Order.DoesNotExist:
-#             pass
-
-#     return JsonResponse({"status": "verified"})
-
-
-
-# @csrf_exempt   
+@csrf_exempt   
 def payment_failed(request):
     TotalCartItems=0
     if request.user.is_authenticated:
@@ -1180,7 +1045,7 @@ def payment_failed(request):
     context={
         "TotalCartItems":TotalCartItems,
     }
-    return render(request, "transaction_failed.html", context)
+    return render(request, "payment_failed.html", context)
         
         
         
@@ -1194,167 +1059,7 @@ def orders(request):
     if request.user.is_authenticated:
         TotalCartItems = len(CartItem.objects.filter(user=request.user))
     op=Placed_Order.objects.filter(user=request.user).order_by('-id')
-    return render(request, 'orders.html', {"order_placed":op, "TotalCartItems":TotalCartItems})
-
-
-
-
-
-# def search(request):
-#     TotalCartItems=0
-#     if request.user.is_authenticated:
-#         TotalCartItems = len(Cart_Item.objects.filter(user=request.user))
-
-#     query = request.GET['query']
-
-#     if len(query)>78:
-#         products = Product.objects.none()
-#     elif not query:
-#         products = Product.objects.none()
-#     else:
-#         excluded_categories = Q(category__icontains="HIDE") | Q(category__icontains="FEATURED")
-#         ProductTitle = Product.objects.filter(product_title__icontains=query).exclude(excluded_categories)
-#         ProductBrand = Product.objects.filter(brand_name__icontains=query).exclude(excluded_categories)
-#         ProductDiscription = Product.objects.filter(product_discription__icontains=query).exclude(excluded_categories)
-#         products = ProductTitle.union(ProductDiscription).union(ProductBrand)
-        
-#     paginator = Paginator(products,10)
-#     page_number = request.GET.get('page')
-#     SearchFinalData = paginator.get_page(page_number)
-#     total_pages = SearchFinalData.paginator.num_pages
-#     page_list = [n+1 for n in range(total_pages)]
-    
-    
-#     cart_item_list=[]
-#     if request.user.is_authenticated:
-#         cart_item = Cart_Item.objects.filter(user=request.user)
-    
-#         for c in cart_item:
-#             cart_item_list.append(c.product.id)
-        
-#     context={
-#         "products":products,
-#         "cart_item":cart_item_list,
-#         "query":query,
-#         "TotalCartItems":TotalCartItems,
-#         "SearchFinalData":SearchFinalData,
-#         "total_pages":total_pages,
-#         "page_list":page_list,
-#     }
-#     return render(request, 'app/search.html', context)
-
-
-
-
-
-# @csrf_exempt
-# def payu_webhook(request):
-#     if request.method == "POST":
-#         try:
-#             data = request.POST
-#             status = data.get("status")  # success, failure, pending
-#             txnid = data.get("txnid")
-#             mihpayid = data.get("mihpayid")
-
-#             print("PayU Webhook Received:", data)
-
-#             cart_items = CartItem.objects.filter(transaction_id=txnid)
-
-#             for item in cart_items:
-#                 item.mihpayid = mihpayid
-#                 item.payment_status = status
-#                 item.save()
-
-#             return HttpResponse("Webhook received", status=200)
-#         except Exception as e:
-#             print("PayU Webhook error:", e)
-#             return HttpResponse("Error", status=500)
-
-#     return HttpResponse("Invalid method", status=405)
-
-
-
-
-
-
-
-
-
-
-
-
-# import json
-# from django.views.decorators.csrf import csrf_exempt
-# from django.http import JsonResponse
-
-# @csrf_exempt
-# def easypost_webhook(request):
-#     try:
-#         payload = json.loads(request.body.decode('utf-8'))
-#         event_type = payload.get('description')  # e.g., "tracker.updated"
-#         tracker = payload.get('result', {}).get('tracking_code')
-#         status = payload.get('result', {}).get('status')  # "in_transit", "delivered", etc.
-
-#         print("EasyPost Webhook:", event_type, tracker, status)
-
-#         # Update tracker model
-#         tracker_obj = Order_Tracker.objects.filter(tracking_code=tracker).first()
-#         if tracker_obj:
-#             tracker_obj.update_desc = f"Status changed to {status}"
-#             tracker_obj.save()
-
-#         return JsonResponse({"message": "Webhook received"}, status=200)
-#     except Exception as e:
-#         print("EasyPost Webhook error:", e)
-#         return JsonResponse({"error": "Invalid data"}, status=400)
-
-
-
-
-
-
-
-
-# import hmac
-# import hashlib
-
-# @csrf_exempt
-# def easypost_webhook(request):
-#     payload = request.body
-#     secret = settings.EASYPOST_WEBHOOK_SECRET
-#     provided_signature = request.headers.get("X-Hmac-Signature")
-
-#     expected_signature = hmac.new(
-#         key=secret.encode(),
-#         msg=payload,
-#         digestmod=hashlib.sha256
-#     ).hexdigest()
-
-#     if provided_signature != expected_signature:
-#         return JsonResponse({"error": "Invalid signature"}, status=403)
-
-#     # Proceed to parse the payload...
-
-
-
-# WebhookLog.objects.create(
-#     source="payu",
-#     payload=str(request.POST),
-#     headers=json.dumps(dict(request.headers))
-# )
-
-
-
-# WebhookLog.objects.create(
-#     source="easypost",
-#     payload=request.body.decode("utf-8"),
-#     headers=json.dumps(dict(request.headers))
-# )
-
-
-
-
-
+    return render(request, 'dashbord.html', {"order_placed":op, "TotalCartItems":TotalCartItems})
 
 
 

@@ -175,17 +175,27 @@
     <p>Thank you! Your payment has been processed.</p>
 
     <div class="details">
-      <p><strong>Transaction ID:</strong> #TXN12345678</p>
-      <p><strong>Amount Paid:</strong> ₹18,800.00</p>
-      <p><strong>Date:</strong> <span id="date"></span></p>
+      <!-- <p><strong>Transaction ID:</strong> #TXN12345678</p>
+      <p><strong>Amount Paid:</strong> ₹18,800.00</p> -->
+      <!-- <p><strong>Date:</strong> <span id="date"></span></p> -->
     </div>
 
     <div class="btn-group">
       <a href="/">Go to Home</a>
-      <a href="/account/orders">View Orders</a>
+      <a href="/account/">View Orders</a>
     </div>
   </div>
 </div>
+
+
+
+<form id="myForm" action="/paymentdone" class="d-inline">
+    {% csrf_token %}
+    <input type="hidden" name="transaction_id" value="{{ transaction_id }}" id="transaction_id">
+    <input type="hidden" name="mihpayid" value="{{ mihpayid }}" id="mihpayid">
+    <input type="hidden" name="status" value="{{ status }}" id="status">
+    <input type="hidden" name="mode" value="{{ mode }}" id="mode">
+</form>
 
 {% endblock content %}
 
@@ -194,6 +204,10 @@
 
 
 
+<script>
+    window.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('myForm').submit();
+    });
 </script>
 
 <script>

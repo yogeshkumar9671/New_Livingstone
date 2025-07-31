@@ -168,10 +168,16 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 # from django.contrib.sites.shortcuts import get_current_site
 #========= PayUmoney Credentials ===========
 #======== test mode ========
+# PAYU_CONFIG = {
+#     "merchant_key": "Zpf2AW",
+#     "merchant_salt": "8i0VrUBR4xGt8RJvjkWhCTYrupZakQSG",
+#     "mode": "test",
+# }
+
 PAYU_CONFIG = {
-    "merchant_key": "Zpf2AW",
-    "merchant_salt": "8i0VrUBR4xGt8RJvjkWhCTYrupZakQSG",
-    "mode": "test",
+    "merchant_key": "xjK4xC",
+    "merchant_salt": "ht7BysBR4v9UySYQrVDJjSjitysTvngd",
+    "mode": "live",
 }
 
 

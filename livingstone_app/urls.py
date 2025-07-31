@@ -47,9 +47,11 @@ urlpatterns = [
     path('addresses/edit/<int:pk>/', views.edit_address_view, name='edit_address'),
     path('addresses/delete/<int:pk>/', views.delete_address_view, name='delete_address'),
 
+    path('my-orders/section/', views.load_order_history_section, name='load_order_history_section'),
 
-
- 
+    path('minuscart/', views.minus_cart, name='minuscart'),
+    path('pluscart/', views.plus_cart, name='pluscart'),
+    path('remove_cart/', views.remove_cart, name='remove_cart'),
 
 
 
@@ -58,7 +60,7 @@ urlpatterns = [
     path('products/<str:category>/<str:subcategory>/', views.product_list, name='product_list'),
     path('product/<int:product_id>/', views.product_details, name='productdetails'),
     path('add-to-cart/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
-    path('cart/', views.cart, name='cart'),
+    path('cart/', views.show_cart, name='cart'),
     path('billing-address/', views.billing_address, name='billing_address'),
     path('checkout/', views.checkout, name='checkout'),
     path('paymentdone/', views.payment_done, name='paymentdone'),

@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Cart{% endblock title %}
+
+{% block page_css %}
+<!-- Use your existing styles -->
+<link rel="stylesheet" href="{% static 'styles/bootstrap4/bootstrap.min.css' %}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link href="{% static 'plugins/malihu-custom-scrollbar/jquery.mCustomScrollbar.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'plugins/jquery-ui-1.12.1.custom/jquery-ui.css' %}">
+<link rel="stylesheet" href="{% static 'styles/categories.css' %}">
+<link rel="stylesheet" href="{% static 'styles/main_styles.css' %}">
+<link rel="stylesheet" href="{% static 'styles/responsive.css' %}">
+
+<style>
+  .checkout_container {
+    margin-top: 10rem;
+  }
+
+  .quantity-box {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    width: 100px;
+    justify-content: space-between;
+  }
+
+  .qty-btn {
+    background: #f7f7f7;
+    border: none;
+    width: 30px;
+    height: 30px;
+    font-size: 18px;
+    cursor: pointer;
+  }
+
+  .qty-input {
+    width: 30px;
+    text-align: center;
+    border: none;
+    font-weight: bold;
+    font-size: 16px;
+    background: #f7f7f7;
+  }
+
+  .cart-right {
+    margin-left: 31px;
+  }
+</style>
+{% endblock page_css %}
+
+{% block content %}
+<body>
+  <div class="checkout_container">
+    <div class="checkout-header">
+      <button onclick="window.location.href='{% url 'billing_address' %}'">PROCEED TO CHECKOUT</button>
+      <a href="/">Continue Shopping</a>
+    </div>
+
+    <h2>SHOPPING BAG (<span id="itemCount">{{ TotalCartItems }}</span>)</h2>
+
+    <div id="cartItems">
+      {% if carts %}
+        {% for item in carts %}
+          <div class="cart-item">
+            <div class="cart-left">
+              <a href="/product/{{ item.product.id }}/">
+                <img src="{{ item.product.image.url }}" alt="{{ item.product.title }}" />
+              </a>
+              <div class="cart-details">
+                <h4>{{ item.product.title }}</h4>
+                <p>Colour: {{ item.color.name }}</p>
+                <p>Size: {{ item.size.name }}</p>
+                <p>Style Number: {{ item.product.style_number }}</p>
+                <p>Qty: {{ item.quantity }}</p>
+              </div>
+            </div>
+
+            <div class="cart-right">
+              <div class="quantity-box" data-index="{{ forloop.counter0 }}">
+                <button class="qty-btn minus">−</button>
+                <input type="text" class="qty-input" value="{{ item.quantity }}" readonly>
+                <button class="qty-btn plus">+</button>
+              </div>
+
+              <div class="icons">
+                <span class="edit" data-index="{{ forloop.counter0 }}" title="Edit">✎</span>
+                <span class="remove" data-index="{{ forloop.counter0 }}" title="Remove">✖</span>
+                <span class="wishlist" data-index="{{ forloop.counter0 }}" title="Add to Wishlist">♡</span>
+              </div>
+              <p>₹{{ item.product.price|floatformat:2 }}</p>
+              <p><strong>₹</strong></p>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <div style="text-align: center; margin-top: 60px;">
+          <h3>Your Shopping Bag is Empty</h3>
+          <a href="/" style="text-decoration: underline;">« Continue Shopping</a>
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="promo">APPLY A PROMO CODE <a>+ADD</a></div>
+
+    <div class="summary">
+      <div class="summary-box">
+        <p><strong>SUBTOTAL</strong> <span>₹ <span id="subtotal">{{ amount|floatformat:2 }}</span></span></p>
+        <p><strong>ESTIMATED TOTAL</strong> <span>₹ <span id="total">{{ amount|floatformat:2 }}</span></span></p>
+        <small>Page does not contain any content.</small>
+        <button onclick="window.location.href='{% url 'billing_address' %}'">PROCEED TO CHECKOUT</button>
+      </div>
+    </div>
+  </div>
+</body>
+{% endblock %}
+
+{% block page_js %}
+<!-- Keep your JS scripts if needed -->
+<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+<script src="{% static 'styles/bootstrap4/popper.js' %}"></script>
+<script src="{% static 'styles/bootstrap4/bootstrap.min.js' %}"></script>
+<script src="{% static 'plugins/OwlCarousel2-2.2.1/owl.carousel.js' %}"></script>
+<script src="{% static 'plugins/easing/easing.js' %}"></script>
+<script src="{% static 'plugins/parallax-js-master/parallax.min.js' %}"></script>
+<script src="{% static 'plugins/colorbox/jquery.colorbox-min.js' %}"></script>
+<script src="{% static 'js/custom.js' %}"></script>
+{% endblock page_js %}
